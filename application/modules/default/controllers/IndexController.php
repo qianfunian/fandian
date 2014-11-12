@@ -74,11 +74,11 @@ class IndexController extends Msd_Controller_Default
     public function checkGiftAction()
     {
         //控制请求次数
-        if (intval($this->sess->get('flag')) < 50) {
-            $giftId = $this->_request->getParam('giftid');
-            $giftId = md5(strtoupper($giftId));
+        if (intval($this->sess->get('flag')) < 100) {
+            $giftId = trim($this->_request->getParam('giftid'));
 
             if (preg_match('/^[A-Z\d]{12}$/', $giftId)) {
+                $giftId = md5(strtoupper($giftId));
                 $gtTable = Msd_Dao::table('giftticket');
                 $row = $gtTable->verify($giftId);
 
