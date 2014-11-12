@@ -96,13 +96,32 @@
                             </tr>
                         <?php } ?>
                         <tr>
-                            <td>饭店网礼品券</td>
+                            <td>饭店网礼品券(注:最多可以使用三张)</td>
                             <td>
-                                <input type="text" name="giftcard" id="giftcard" value="请输入12位礼品券号" maxLength="12"
+                                <input type="text" name="giftcard[]" id="giftcard1" class="giftcart" value="请输入12位礼品券号"
+                                       maxLength="12"
                                        style="width:120px"/>&nbsp;&nbsp;
-                                <span id="renter" style="display:none;cursor:pointer">重新输入</span>
-                                &nbsp;&nbsp;<span id="giftmsg" style="color:red"></span>
-                                <button id="more" style="display:none"></button> 
+                                <span id="renter1" style="display:none;cursor:pointer">重新输入</span>
+                                &nbsp;&nbsp;<span id="giftmsg1" style="color:red"></span>
+                                <button id="more1" style="display:none"></button>
+                                <br/>
+
+                                <input type="text" name="giftcard[]" id="giftcard2" class="giftcart" value="请输入12位礼品券号"
+                                       maxLength="12"
+                                       style="width:120px"/>&nbsp;&nbsp;
+                                <span id="renter2" style="display:none;cursor:pointer">重新输入</span>
+                                &nbsp;&nbsp;<span id="giftmsg2" style="color:red"></span>
+                                <button id="more2" style="display:none"></button>
+
+                                <br/>
+
+                                <input type="text" name="giftcard[]" id="giftcard3" class="giftcart" value="请输入12位礼品券号"
+                                       maxLength="12"
+                                       style="width:120px"/>&nbsp;&nbsp;
+                                <span id="renter3" style="display:none;cursor:pointer">重新输入</span>
+                                &nbsp;&nbsp;<span id="giftmsg3" style="color:red"></span>
+                                <button id="more3" style="display:none"></button>
+
                             </td>
                         </tr>
                         <tr>
@@ -129,24 +148,21 @@
 <div class="clear"></div>
 <script type="text/javascript">
     $(document).ready(function () {
-        $('#giftcard').focus();
-        $('#giftcard').keydown(function () {
+        $('#giftcard1').focus();
+        $('.giftcard').keydown(function () {
             if ($(this).val() == '请输入12位礼品券号') {
                 $(this).val('');
             }
         });
-        $('#giftcard').keyup(function () {
-            if ($(this).val().length >= 12) {
-                //$(this).attr("disabled","true");
-                $('#renter').show();
-                //ajax验证礼品券号是否有效
 
+        $('#giftcard1').keyup(function () {
+            if ($(this).val().length >= 12) {
+                $('#renter1').show();
                 $.ajax({
                     type: "POST", dataType: "text", async: true, url: FANDIAN_BASE_URL + "index/check-gift",
                     data: {"giftid": $(this).val()},
                     success: function (data) {
-                        $('#giftmsg').html(data);
-                        //$('#more').click();
+                        $('#giftmsg1').html(data);
                     },
                     error: function (res, msg, err) {
                         alert(msg);
@@ -154,31 +170,56 @@
                 });
             }
         });
-        $("#more").colorbox({
-                            href: '#user_more',
-                            title: '使用更多礼品券',
-                            inline: true,
-                            width: "300px",
-                            height: "100px",
-                            onLoad: function () {
-                            },
-                            onComplete: function () {
-                            },
-
-                            onClosed: function () {
-                            }
-                        });
-        $('#renter').click(function () {
+        $('#renter1').click(function () {
             $(this).hide();
-            $('#more').hide();
-            $('#giftmsg').html('');
-            $('#giftcard').removeAttr("disabled");
-            $('#giftcard').val('').focus();
+            $('#giftmsg1').html('');
+            $('#giftcard1').removeAttr("disabled");
+            $('#giftcard1').val('').focus();
         });
 
-        $('#morel').click(function () {
-            giftNo = $('#giftcard').val();
-            window.open('http://order.fandian.com/gift/GiftTicketShow.aspx?&TotalAmount=<?php echo $this->total;?>&Number=' + giftNo);
+        //-------------------------------
+        $('#giftcard2').keyup(function () {
+            if ($(this).val().length >= 12) {
+                $('#renter2').show();
+                $.ajax({
+                    type: "POST", dataType: "text", async: true, url: FANDIAN_BASE_URL + "index/check-gift",
+                    data: {"giftid": $(this).val()},
+                    success: function (data) {
+                        $('#giftmsg2').html(data);
+                    },
+                    error: function (res, msg, err) {
+                        alert(msg);
+                    }
+                });
+            }
+        });
+        $('#renter2').click(function () {
+            $(this).hide();
+            $('#giftmsg2').html('');
+            $('#giftcard2').removeAttr("disabled");
+            $('#giftcard2').val('').focus();
+        });
+        //-------------------------------
+        $('#giftcard3').keyup(function () {
+            if ($(this).val().length >= 12) {
+                $('#renter3').show();
+                $.ajax({
+                    type: "POST", dataType: "text", async: true, url: FANDIAN_BASE_URL + "index/check-gift",
+                    data: {"giftid": $(this).val()},
+                    success: function (data) {
+                        $('#giftmsg3').html(data);
+                    },
+                    error: function (res, msg, err) {
+                        alert(msg);
+                    }
+                });
+            }
+        });
+        $('#renter3').click(function () {
+            $(this).hide();
+            $('#giftmsg3').html('');
+            $('#giftcard3').removeAttr("disabled");
+            $('#giftcard3').val('').focus();
         });
     })
 </script>
