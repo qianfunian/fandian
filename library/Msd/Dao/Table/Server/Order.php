@@ -733,6 +733,14 @@ class Msd_Dao_Table_Server_Order extends Msd_Dao_Table_Server
 	//调用优惠券存储过程
     public function giftccgc($phone, $codes)
     {
-        $this->db->query("exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "','" . $codes[1] . "','" . $codes[3] . "'");
+        $codes = array_values($codes);
+        $count = count($codes);
+        if ($count == 1) {
+            $this->db->query("exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "'");
+        } elseif ($count == 2) {
+            $this->db->query("exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "','" . $codes[1] . "'");
+        } elseif ($count == 3) {
+            $this->db->query("exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "','" . $codes[1] . "','" . $codes[3] . "'");
+        }
     }
 }

@@ -500,21 +500,25 @@ class SubmitController extends Msd_Controller_Default
                 if (!empty($gguid)) {
                     $gtTable = Msd_Dao::table('giftticket');
                     foreach ($gguid as $row) {
+                        if (trim($row) == '请输入12位礼品券号') {
+                            continue;
+                        }
                         $code = md5(strtoupper(trim($row)));
                         $data = $gtTable->verify($code);
-                        if ($data) {
+                        if ($data[0]['UsedState'] == 'NoUsed') {
                             $codes[] = $code;
                         } else {
                             $codes[] = '';
                             Msd_Log::getInstance()->gift('调用失败-礼品好不存在:' . $row);
                         }
                     }
+                    $codes = array_filter($codes);
                     if (!empty($codes)) {
                         $oTable->giftccgc($phone, $codes);
                     }
                 }
             } catch (Exception $e) {
-                Msd_Log::getInstance()->debug(var_export($e, true));
+                Msd_Log::getInstance()->gift(var_export($e, true));
             }
 
             $cart->empty_cart();
