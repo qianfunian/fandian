@@ -1,0 +1,87 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<style type="text/css">
+#feedback-table
+{
+	width:100%;
+}
+th { 
+font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+color: #4f6b72; 
+border-right: 1px solid #C1DAD7; 
+border-bottom: 1px solid #C1DAD7; 
+border-top: 1px solid #C1DAD7; 
+letter-spacing: 2px; 
+text-transform: uppercase; 
+text-align: left; 
+padding: 6px 6px 6px 12px; 
+background: #CAE8EA  no-repeat; 
+} 
+
+td { 
+border-right: 1px solid #C1DAD7; 
+border-bottom: 1px solid #C1DAD7; 
+background: #fff; 
+font-size:12px; 
+padding: 6px 6px 6px 12px; 
+color: #4f6b72; 
+} 
+</style>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="con-left">
+        <div class="my-news">
+          <div class="news">我的饭店网</div>
+          <ul>
+          <?php include_once dirname(__FILE__).'/../include/left_nav.phtml';?>
+          </ul>
+        </div>
+      </div>
+      <div class="con-right">
+        <div class="my-content">
+        <h1>我的留言</h1>
+            <table id="feedback-table"> 
+            <tr>
+            <th width='60%'>内容</th>
+            <th>时间</th>
+            <th>回复</th>
+            <th>操作</th>
+            </tr>
+            <?php if (count($this->rows)>0) { ?>
+			<?php foreach ($this->rows as $row) { ?>
+			<tr>
+			<td><?php echo $row['Content'];?></td>
+			
+			<td><?php echo $this->Dt($row['CreateTime']);?></td>
+			<td>
+			<?php if ($row['DisplayFlag'] && $row['ReplyContent']) { ?>
+			<?php echo $row['ReplyContent'];?>
+			<?php } else {  ?>
+			暂无回复
+			<?php } ?>
+			</td>
+			<td>
+			<a href='<?php echo $this->scriptUrl;?>feedback/del?AutoId=<?php echo $row['AutoId'];?>' onclick="return confirm('确定要删除该留言？');">删除</a>
+			</td>
+			</tr>
+			<?php }}else {?>
+			<tr><td colspan='5'>暂无留言</td></tr>
+			<?php }?>
+            </table>
+			<div class='page_linksbig'><?php echo $this->page_links;?></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>
+
+
+
+

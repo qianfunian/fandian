@@ -1,0 +1,135 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+
+<div class="clear"></div>
+<div class="wrap">
+  <div class="clear"></div>
+  <div class="row">
+    <div class="twelvecol" id="wrapper">
+      <div class="step-left" style="width:100%">
+        <div class="my-step-left">
+          <div class="step-fenge">
+            <div class="dif-p">
+				您的地址在：<span class="coordname"><?php echo $this->CityConfig->name;?>,&nbsp;</span>
+				<?php if ($_COOKIE['coord_name']) { ?>位于 <span class="coordname"><?php echo $_COOKIE['coord_name'];?></span> 附近<?php } ?>
+                <div class="dif-pos"><a href="javascript:void(0)" id="repos">重新定位</a></div>
+            </div>
+            <div class="clear"></div>
+            
+            <ul style="padding:10px;">
+                <li><span>菜系分类：</span></li>
+                <li class='<?php if (!$this->request['ctg'] && !$this->cName) { ?>act-list<?php } ?>'>
+                <span><a href='<?php echo $this->Vendorurl(array(
+				'keyword' => $this->keyword,
+				'distance' => $this->distance,
+				'category' => null,
+				'sort' => $this->request['sort']
+				));?>'>全部</a></span>
+			    </li>
+			    <?php foreach ($this->categories as $CtgGuid=>$CtgName) { ?>
+				<li class='<?php if ($this->request['ctg']==$CtgGuid || $this->cName==$CtgName) { ?>act-list<?php } ?>'>
+				<span>
+				<a href='<?php echo $this->Vendorurl(array(
+						'keyword' => $this->keyword,
+						'distance' => $this->distance,
+						'category' => $CtgName,
+						'sort' => $this->request['sort']
+						));?>'><?php echo $CtgName;?></a></span></li> 
+				<?php } ?>	
+            </ul>
+            
+            <div class="clear"></div>
+            <ul style="padding:5px 10px;">
+                <li><span>商家距离：</span></li>
+                <li class='<?php if ($this->distance==3000) { ?>act-list<?php } ?>'>
+                <span><a href='<?php echo $this->Vendorurl(array(
+						'keyword' => $this->keyword,
+						'distance' => 3000,
+						'category' => $this->cName,
+						'sort' => $this->request['sort']
+						));?>' >3公里内</a></span></li> 
+				<li class='<?php if ($this->distance==5000) { ?>act-list<?php } ?>'>
+				<span><a href='<?php echo $this->Vendorurl(array(
+						'keyword' => $this->keyword,
+						'distance' => 5000,
+						'category' => $this->cName,
+						'sort' => $this->request['sort']
+						));?>'>5公里内</a></span></li>
+				<li class='<?php if ($this->distance==99999) { ?>act-list<?php } ?>'>
+				<span><a href='<?php echo $this->Vendorurl(array(
+						'keyword' => $this->keyword,
+						'distance' => 99999,
+						'category' => $this->cName,
+						'sort' => $this->request['sort']
+						));?>' >不限距离</a></span></li>
+			</ul>
+          </div>
+          <div class="clear"></div>
+          <div class="step-fenge">
+            <div class="step-sort">
+              <ul class="step-sort-icon">
+                <li class="step-hot">
+                <a style="<?php if(strpos($_SERVER['REQUEST_URI'],'sort/distance')){?>border:1px solid #FF4400<?php }else{?>border:1px solid #CCC<?php }?>"
+                href='<?php echo $this->Vendorurl(array(
+				'keyword' => $this->keyword,
+				'distance' => $this->distance,
+				'category' => $this->cName,
+				'sort' => 'distance'	
+				));?>'></a>
+				</li>
+                <li class="step-cost step-all-hover">
+                <a style="<?php if(strpos($_SERVER['REQUEST_URI'],'sort/rate')){?>border:1px solid #FF4400<?php }else{?>border:1px solid #CCC<?php }?>"
+                href="<?php echo $this->Vendorurl(array(
+				'keyword' => $this->keyword,
+				'distance' => $this->distance,
+				'category' => $this->cName,
+				'sort' => 'rate'	
+				));?>
+                "></a></li>
+                <li class="step-view">
+                <a href="<?php echo $this->baseUrl?>vendor/view-vendor" id="history_view_vendors"></a>
+                </li>
+                <li class="step-order">
+                <a href="<?php echo $this->baseUrl?>vendor/ordered-vendor" id="history_order_vendors"></a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="clear"></div>
+          <?php foreach ($this->rows as $row) { ?>
+          <div class="step-shop">
+            <div class="step-shop-pic">
+	            <a class='a_vendor_small_logo' href='<?php echo $this->scriptUrl;?>vendor/<?php echo $row['VendorName'];?>/service/<?php echo $this->ServiceName;?><?php echo strlen($this->keyword) ? '/keyword/'.$this->keyword : '';?>'>
+				<img height=54px width=83px style="margin:10px auto" alt='<?php echo $row['VendorName'];?>' src='<?php echo Msd_Waimaibao_Vendor::imageUrl(array('VendorGuid' => $row['VendorGuid']));?>' />
+				</a>
+            </div>
+            <ul class="step-shop-info">
+              <li class="step-shop-name">
+              <a href='<?php echo $this->scriptUrl;?>vendor/<?php echo $row['VendorName'];?>/service/<?php echo $this->ServiceName;?><?php echo strlen($this->keyword) ? '/keyword/'.$this->keyword : '';?>'>
+			  <h4><?php echo $this->Wrapkeyword($this->Fvendorname($row['VendorName']), $this->keyword);?></h4>
+			  </a>
+              </li>
+              <li>商家地址:<?php echo $row['RegionName'].'&nbsp'.$row['Address']?> <?php if($row['Distance']){ echo '(距离：'.$this->Km($row['Distance']).')';}?></li>
+              <li>
+                <p>服务时间:<?php echo $row['ServiceTimeString']?></p>
+                <p>
+                <?php $simg = $this->VendorServiceTimeIcon($row, $this->ServiceName, $this->ourServices)?'icon-open.png':'icon-rest.png';?>					
+                <img src="<?php echo $this->baseUrl?>common/images/<?php echo $simg?>" width="49" height="18" alt="rest" />
+                </p>
+              </li>
+              <li>人气：<?php echo (int)$row['HotRate'];?>&nbsp;运费：<?php echo $this->Freight($row['Distance'], $row['VendorGuid']);?></li>
+            </ul>
+            <div class="step-shop-btn"><a href='<?php echo $this->scriptUrl;?>vendor/<?php echo $row['VendorName'];?>/service/<?php echo $this->ServiceName;?><?php echo strlen($this->keyword) ? '/keyword/'.$this->keyword : '';?>'>查看菜单</a></div>
+          </div>
+          <?php }?>
+          <div class="paging">
+            <?php echo $this->page_links;?>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>		
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

@@ -1,0 +1,57 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div id='main'>
+<div class="feedback_title"><h2>站内地图</h2></div>
+	<div id="lmain" class="left sitemapleft">
+		<ol class='sitemap_ol'>
+			<li class='ol_title'><a href='<?php echo $this->baseUrl;?>'>首页</a></li>
+			<li class='ol_title'><a href='<?php echo $this->baseUrl;?>step'>我要订餐</a>
+			<li class='ol_title'>商家分类
+						<ol class='landscape'>
+							<?php
+							foreach ($this->sitemap['ctgs'] as $row) {
+							?>
+							<li><a href='<?php echo $this->baseUrl;?><?php echo $row['url'];?>'><?php echo $row['CtgName'];?></a></li>
+							<?php
+							}
+							?>							
+						</ol>
+					</li>
+			<li class='clear ol_title'>所有商家
+				<ol class='landscape'>
+					<?php
+					foreach ($this->sitemap['vendors'] as $row) {
+					?>
+					<li><a href='<?php echo $this->baseUrl;?><?php echo $row['url'];?>'><?php echo $row['VendorName'];?></a></li>
+					<?php
+					}
+					?>									
+				</ol>
+			</li>	
+		</ol>
+	</div>
+	
+	<div id="rmain" class="right" style="">
+		<h4>热门链接</h4>
+		<ol>
+			<li><a href='<?php echo $this->baseUrl;?>step'>我要点餐</a></li>
+			<?php
+			$i = 0; 
+			foreach ($this->sitemap['vendors'] as $row) {
+				if ($i<15) {
+			?>
+			<li><a href='<?php echo $this->baseUrl;?><?php echo $row['url'];?>'><?php echo $row['VendorName'];?></a></li>
+			<?php 
+					$i++;
+				} else {
+					break;
+				}
+			}
+			?>
+		</ol>
+	</div>
+
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+</div>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

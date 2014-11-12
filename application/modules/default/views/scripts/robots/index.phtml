@@ -1,0 +1,11 @@
+<?php Msd_Output::prepareTxt();?>
+#
+# robots.txt
+# <?php echo $this->baseDomain;?>
+
+
+Sitemap: http://<?php echo $this->baseDomain;?>/sitemap.xml
+
+Disallow: /order/
+Disallow: /member/
+<?php Msd_Output::doOutput();?>

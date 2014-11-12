@@ -1,0 +1,40 @@
+
+						<?php if ($this->controllerParams['from']!='tuan' && Msd_Cookie::oc('items', 'tuan_')) { ?>
+						<li id='steptip8'  style='display:block;'>
+							<h3 class='h3title'>【待提交的团膳订单】</h3>
+							
+							<div class='order_tips order_tobe_submit'>
+							<a href='<?php echo $this->scriptUrl;?>order/confirm?from=tuan'>您有待提交的团膳订单，点击此处提交</a>
+							</div>
+						</li>
+						<?php } ?>
+										
+						<?php if (($this->cName!='order' || $this->ServiceName!='普通') && Msd_Cookie::oc('items')) { ?>
+						<li id='steptip5'  style='display:block;'>
+							<h3 class='h3title'>【待提交的订单】</h3>
+							
+							<div class='order_tips order_tobe_submit'>
+							<a href='<?php echo $this->scriptUrl;?>order/confirm/service/普通'>您有待提交的订单，点击此处提交</a>
+							</div>
+						</li>
+						<?php } ?>
+						
+						<?php if (($this->cName!='order' || $this->ServiceName!='下午茶') && Msd_Cookie::oc('items', 'x_')) { ?>
+						<li id='steptip8'  style='display:block;'>
+							<h3 class='h3title'>【待提交的下午茶订单】</h3>
+							
+							<div class='order_tips order_tobe_submit'>
+							<a href='<?php echo $this->scriptUrl;?>order/confirm/service/下午茶'>您有待提交的下午茶订单，点击此处提交</a>
+							</div>
+						</li>
+						<?php } ?>
+						
+						<?php if (($this->cName!='order' || $this->ServiceName!='夜宵') && Msd_Cookie::oc('items', 'y_')) { ?>
+						<li id='steptip9'  style='display:block;'>
+							<h3 class='h3title'>【待提交的夜宵订单】</h3>
+							
+							<div class='order_tips order_tobe_submit'>
+							<a href='<?php echo $this->scriptUrl;?>order/confirm/service/夜宵'>您有待提交的夜宵订单，点击此处提交</a>
+							</div>
+						</li>
+						<?php } ?>

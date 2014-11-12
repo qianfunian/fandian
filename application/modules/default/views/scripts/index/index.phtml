@@ -1,0 +1,127 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div id="banner">
+        <div class="slides_container">
+	      <?php for ($i=0;$i<=14;$i++) { if ($this->data['banners']['img_url_'.$i]) { ?>
+	      <?php if ($this->data['banners']['link_url_'.$i]) { ?><a href='<?php echo $this->data['banners']['link_url_'.$i];?>' target='_blank'><?php } ?><img  style="width:680px;height:280px" src='<?php echo preg_match('/^http/i', $this->data['banners']['img_url_'.$i]) ? $this->data['banners']['img_url_'.$i] : $this->imageUrl.$this->data['banners']['img_url_'.$i];?>?<?php echo FANDIAN_APP_VER;?>' /><?php if ($this->data['banners']['link_url_'.$i]) { ?></a><?php } ?>
+		  <?php } } ?>
+	    </div>
+      </div>
+      <div class="my-tools">
+        <div class="slideshow">
+        <table>
+        <tr style="height:28px"><td>饭店网官方微信</td><td>饭店网Android客户端</td></tr>
+        <tr>
+            <td>
+               <?php if($this->city == 'wx'){?>
+                   <img src="<?php echo $this->Basehref();?>common/images/wx.jpg">
+                <?php }else if($this->city == 'sz'){?>
+                   <img src="<?php echo $this->Basehref();?>common/images/sz.jpg">
+                <?php }else if($this->city == 'cz'){?>
+                   <img height='100px' width='100px' src="<?php echo $this->Basehref();?>common/images/czwx59.jpg">
+                <?php }else if($this->city == 'sh'){?>
+                   <img height='100px' width='100px' src="<?php echo $this->Basehref();?>common/images/shwx.jpg">
+		<?php }else if($this->city == 'nj'){?>
+
+                   <img height='100px' width='100px' src="<?php echo $this->Basehref();?>common/images/njwx.jpg">
+		<?php }?>
+            </td>
+            <td><a target="_blank" href="http://x.fandian.com/fandian.apk"><img src="<?php echo $this->Basehref();?>common/images/android.png?v=1"></a></td></tr>
+        </table>
+        </div>
+        <div class="news">饭店网公告</div>
+        <ul>
+           <?php foreach ($this->data['announce'] as $row) { ?>
+           <li><a href='<?php echo $this->scriptUrl;?>announce/<?php echo $row['Title'];?>' target='_blank' alt='<?php echo addslashes($row['Title']);?>'><?php echo $this->Cutstr($row['Title'], 20);?></a></li>
+           <?php }?>
+        </ul>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div class="row">
+    <div class="twelvecol">
+      <div class="line">
+        <div class="hot-title">热门外卖<span class="index-info">友情提醒：本网站所有菜品图片仅供参考以实物为准，菜品价格以当日店堂价格为准。</span></div>
+        <div class="realtime">
+          <p class="new-order">最新订单</p>
+          <div class="scroll">
+            <ul class="list" style="margin-top: 0px;">
+              <?php 
+              foreach ($this->order_announce as $i=>$row) { 
+              	if(($i+1)%2==1){echo "<li>";}
+              	echo $row['Content'];
+              	if(($i+1)%2!=0){echo "&nbsp;&nbsp;<font color='black'>|</font>&nbsp;&nbsp;";}
+              	if(($i+1)%2==0){echo "</li>";}
+              } ?>
+            </ul>
+          </div>
+        </div>
+        <ul class="all-shops">
+            <?php foreach ($this->data['hot_bcs'] as $i=>$item) {if ($i<10) {?>
+            <li <?php if($i!=0&&($i+1)%5==0){echo "class='last'";}?>>
+            <div class="hot-shops">
+            <a href="<?php echo $this->scriptUrl;?>vendor/<?php echo $item['VendorName'];?>?add=<?php echo $item['ItemGuid'];?>">
+            <img height="90px" width="165px" alt='<?php echo addslashes($item['ItemName']);?>' title="<?php echo addslashes($item['ItemName']);?>" src='<?php echo $this->Itembigurl($item, $this->staticUrl.'design/product/nopic.jpg');?>?<?php echo FANDIAN_APP_VER?>' />
+            </a>
+            </div>
+            <div class="hot-name"><?php echo $this->Cutstr($item['ItemName'],8);?></div>
+            <div class="hot-order">
+            <span class="hot-price"><?php echo $item['UnitPrice']==0?'时价':'￥'.$item['UnitPrice']?></span>
+            <button type="button" title="立即订餐" class="button btn-cart" onclick="javascript:location.href='<?php echo $this->scriptUrl;?>vendor/<?php echo $item['VendorName'];?>?add=<?php echo $item['ItemGuid'];?>'"><span>立即订餐</span></button>
+            </div>
+          </li>
+          <?php if($i!=0&&($i+1)%5==0){?><div class="clear"></div><?php }}}?>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="twelvecol">
+      <div class="line">
+        <div class="recommend-title">推荐餐厅<span class="index-info">饭店网，美味送到家！500000+次的成功送餐经验，为您提供最佳服务！</span></div>
+        <div class="recommend-shops">
+          <div class="recommend-pic">
+            <ul>
+              <?php foreach ($this->data['rec_vendors'] as $vendor) { ?>
+              <li>
+                <div class="recommend-shop" style="text-align:center"> 
+                <a href='<?php echo $this->scriptUrl;?>vendor/<?php echo $vendor['VendorName'];?>'>
+                <img height="100px" width="186px" title="<?php echo $vendor['VendorName']?>&#13;特色：<?php echo $vendor['CtgName']?>&#13;地址：<?php echo $vendor['Address'];?>" alt="<?php echo $vendor['VendorName']?>" src="<?php echo Msd_Waimaibao_Vendor::imageSpecUrl(array('VendorGuid' => $vendor['VendorGuid']));?>?<?php echo FANDIAN_APP_VER?>" />
+                </a>
+                </div>
+                <div class="recommend-name" style="height:60px">
+                <a href='<?php echo $this->scriptUrl;?>vendor/<?php echo $vendor['VendorName'];?>'>
+                <?php echo $this->Cutstr($this->Fvendorname($vendor['VendorName']),8);?>
+                </a>
+                <p>特色：<?php echo $vendor['CtgName']?></p>
+                <p>地址：<?php echo  $this->Cutstr($vendor['Address'],7)?></p>
+                </div>
+              </li>
+              <?php }?>
+            </ul>
+          </div>
+          <div class="recommend-text last">
+            <div class="ranking-tab">
+              <p class="ranking">人气排行</p>
+              <ul>
+              <?php foreach ($this->data['vendor_ranks'] as $row) { ?>
+              <li><a href="<?php echo $this->scriptUrl;?>vendor/<?php echo $row['VendorName'];?>"><?php echo $row['VendorName'];?></a><span><?php echo (int)$row['Sales']?></span></li>
+              <?php } ?>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

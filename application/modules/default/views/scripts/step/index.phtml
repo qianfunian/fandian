@@ -1,0 +1,67 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="step-process">
+        <ul class="step-text">
+          <li class="act-text">选择街道</li>
+          <li>选择餐厅</li>
+          <li>选择菜品</li>
+          <li>确认订单</li>
+          <li>完成订餐</li>
+        </ul>
+        <ul>
+          <li class="act-step"><span><a href="javascript:void()">1</a></span></li>
+          <li><span><a href="javascript:void()">2</a></span></li>
+          <li><span><a href="javascript:void()">3</a></span></li>
+          <li><span><a href="javascript:void()">4</a></span></li>
+          <li><span><a href="javascript:void()">5</a></span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div class="row">
+    <div class="twelvecol">
+      <div class="step-left">
+        <div class="my-step-left">
+          <p>您当前在：<span><?php echo Msd_Config::cityConfig()->name;?></span></p>
+          <div class="clear"></div>
+          <p>为了列出您所在区域的餐厅，请输入您所在的酒店，公寓楼小区或路名的地址。</p>
+          <div class="clear"></div>
+          <div class="add_history">
+            <input type="text" onblur="if (this.value ==''){this.value='如：街道，交叉路口，明显建筑物等'}$('#stepadd').val(this.value)" onfocus="if (this.value =='如：街道，交叉路口，明显建筑物等'){this.value =''}" value="如：街道，交叉路口，明显建筑物等" class="my-input" onkeyup="return AddressInputed(event);">
+            <input type="image" src="./css/images/search-his.png" value="搜索" class="my-submit-his inline"  href="#modal_address_map" onclick="return MapSearch();" />
+            <input type="image" src="./css/images/add-his.png" class="my-submit-his inline_used_address" href="#modal_used_address" onclick="Fandian_UsedAddress(this);" />
+          </div>
+          <div class="clear"></div>
+          <?php if (!$this->s) { ?>
+          <p>不设地址，<a href="<?php echo $this->scriptUrl;?>vendor">先看看有什么商家</a></p>			
+		  <?php } ?>
+          <div class="clear"></div>
+        </div>
+      </div>
+      <div class="step-right">
+        <div class="my-step-right">
+          <p>【说明】</p>
+          <ul class="my-info">
+            <li class="s1">请在输入框里填写您的地址</li>
+            <li class="s2">点击确定按钮，弹出地图标记选择框</li>
+            <li class="s3">选择与您要送餐的地址相近的地标位置</li>
+          </ul>
+          <div class="or-select">或者</div>
+          <ul class="my-info">
+            <li class="s1">登录以后，选择曾用地址.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

@@ -1,0 +1,76 @@
+<?php include_once(dirname(__FILE__).'/cities/'.MSD_FORCE_CITY.'.phtml');?>
+<div class="site-footer">
+  <div class="row">
+    <div class="twelvecol" id="footer">
+      <div class="phone-400"> <span>400-114-7777</span>
+        <div class="follow">
+          <ul>
+            <li class="microblog"><a href="http://weibo.com/msdws" target="_blank">关注我们</a></li>
+            <li class="suggest"><a href="<?php echo $this->baseUrl;?>feedback">帮助我们改进</a></li>
+          </ul>
+        </div>
+      </div>
+      <ul class="footer-menu">
+        <li class="footer-normal"><span class="footer-time">服务时间</span>
+          <ul>
+            <li><span class="footer-arrow">正&#12288;常：<?php echo $this->CityConfig->spec->service_time->normal;?></span></li>
+            <li><span class="footer-arrow">阴雨天：<?php echo $this->CityConfig->spec->service_time->rain;?></span></li>
+            <li><span class="footer-arrow">冻雪天：<?php echo $this->CityConfig->spec->service_time->cold;?></span></li>
+          </ul>
+        </li>
+        <li class="footer-normal"><span class="footer-area">服务范围</span>
+          <ul>
+            <li><span class="footer-arrow">正&#12288;常：市区</span></li>
+            <li><span class="footer-arrow">阴雨天：市区5公里</span></li>
+            <li><span class="footer-arrow">冻雪天：市区3公里</span></li>
+          </ul>
+        </li>
+        <li class="footer-normal"><span class="footer-info">服务说明</span>
+          <ul>
+            <?php echo $this->Articlelist('service', $this->CityConfig->db->article->category->service);?>
+          </ul>
+        </li>
+        <li class="footer-normal"><span class="footer-other">其它说明</span>
+          <ul>
+            <?php echo $this->Articlelist('others', $this->CityConfig->db->article->category->others);?>
+          </ul>
+        </li>
+        <li class="footer-special"><span class="footer-about">关于我们</span>
+          <ul>
+            <?php echo $this->Articlelist('aboutus', $this->CityConfig->db->article->category->aboutus);?>
+          </ul>
+        </li>
+      </ul>
+      <div class="copyright">
+        <p> 联系电话：<?php echo $this->CityConfig->spec->contact_phone;?> 传真：<?php echo $this->CityConfig->spec->contact_fax;?> 地址：<?php echo $this->CityConfig->spec->address;?></p>
+        <p> 增值电信业务经营许可证：苏B2-20100003 ｜<a href='http://www.miibeian.gov.cn/' target='_blank'>苏ICP备字10025138号-2</a></p>
+        <p> Copyright &copy; 2009-2012  江苏汇洋信息科技股份有限公司 版权所有</p>
+        <?php if (APPLICATION_ENV=='production') { ?>
+        <script type='text/javascript' src='<?php echo Msd_Config::cityConfig()->cnzz;?>'></script>
+        <?php } ?>
+      </div>
+    </div>
+  </div>
+</div>
+<div style='display:none'>
+<div id='modal_address_map'>
+    <div style="float:left;margin-bottom:5px">
+    <font color="#999" style="font-size: 14px;line-height:20px">温馨提醒：为了更好的为您服务，请在下框中输入您所在的位置，搜索并选择您所在的附近地标，谢谢！</font>
+    <?php if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') != TRUE) {?>
+    <div style="float:right"><input style="margin-left:20px;" type='button' id='address_guess' class="fancybox" name='address_guess' value='试试自动定位' onclick='Fandian_Geolocation();' /></div>
+    <?php }?>
+    </div>
+    <div style="background: url('./common/images/btn_01.png') no-repeat scroll 0 0 transparent;height: 33px; padding-left: 40px;float:left;margin-bottom:5px">
+    <input type="text" value="如：街道，交叉路口，明显建筑物等" class="my-input" name="maddress" id="mkey">
+    <input type="image" id="msearch" class="my-submit inline" value="搜索" src="/common/images/search_submit.png">
+	</div>
+	 
+	<div class='map_container'>
+		<div id='modal_address_map_canvas'></div>
+		<div class='modal_map_rightbar'>
+			<div class='modal_map_rightbar_title'>选择您所在的附近地标</div>
+			<ul id='coords'></ul>
+		</div>
+	</div>
+</div>
+</div>

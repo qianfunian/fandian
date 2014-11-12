@@ -1,0 +1,14 @@
+<?php 
+$base_href = strlen($this->Basehref())>5 ? $this->Basehref() : 'http://'.$_SERVER['SERVER_NAME'].'/'; 
+?>
+<?php Msd_Output::prepareXml();?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/" xmlns:moz="http://www.mozilla.org/2006/browser/search/">
+<ShortName><?php echo $this->MetaPara['title'];?></ShortName>
+<Description><?php echo $this->MetaPara['description'];?></Description>
+<InputEncoding>UTF-8</InputEncoding>
+<Contact>admin@fandian.com</Contact>
+<Image height="16" width="16" type="image/x-icon"><?php echo $base_href;?>favicon.ico</Image>
+<Developer>江苏汇洋信息科技股份有限公司</Developer>
+<Url type="text/html" method="get" template="<?php echo $base_href;?>vendor/search/keyword/{searchTerms}"/>
+</OpenSearchDescription>
+<?php Msd_Output::doOutput();?>

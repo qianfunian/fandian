@@ -1,0 +1,26 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'><a href="<?php echo $this->baseUrl?>fadmin/gift">生日礼品</a>>添加礼品卡</div>
+		
+		<div class='page_now'>添加礼品</div>
+	</div>	
+
+<form method='post' action='<?php echo $this->scriptUrl;?>gift/add' enctype="multipart/form-data">
+<?php if($_GET['m']){?>
+<table cellpadding='5' class='list_table'>
+<tr class="c1"><td width="150px">选择Excel数据文件</td><td><input type="file" name="gift" value="" /></td></tr>
+<tr class="c1"><td></td><td><input type="submit" value="导入数据" /></td></tr>
+</table>
+<?php }else{?>
+<table cellspacing='1' class='list_table'>
+<tr class="c1"><td width="100px">礼品卡号</td><td><input type="text" name="giftcode" id="giftcode" value="" /></td></tr>
+<tr class="c1"><td>面值</td><td><input type="text" name="value" id="value" value="" /></td></tr>
+<tr class="c1"><td></td><td><input type="submit" value="添加" /></td></tr>
+</table>
+<?php }?>
+<input type="hidden" name='m' value='<?php echo isset($_GET['m'])?$_GET['m']:0;?>'/>
+</form>
+</div>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

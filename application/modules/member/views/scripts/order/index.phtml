@@ -1,0 +1,112 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<style type="text/css">
+#order-table
+{
+	width:100%;
+}
+th { 
+font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+color: #4f6b72; 
+border-right: 1px solid #C1DAD7; 
+border-bottom: 1px solid #C1DAD7; 
+border-top: 1px solid #C1DAD7; 
+letter-spacing: 2px; 
+text-transform: uppercase; 
+text-align: left; 
+padding: 6px 6px 6px 12px; 
+background: #CAE8EA  no-repeat; 
+} 
+
+td { 
+border-right: 1px solid #C1DAD7; 
+border-bottom: 1px solid #C1DAD7; 
+background: #fff; 
+font-size:12px; 
+padding: 6px 6px 6px 12px; 
+color: #4f6b72; 
+} 
+
+
+</style>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="con-left">
+        <div class="my-news">
+          <div class="news">我的饭店网</div>
+          <ul>
+          <?php include_once dirname(__FILE__).'/../include/left_nav.phtml';?>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="con-right">
+        <div class="my-content">
+        <form class="formlyWrapper-Base">
+            <table id="order-table">
+              <tbody>
+              <tr>
+                <th width="20%" align="left">订单号</th>
+                <th width="20%">订单商家</th>
+                <th width="15%">客户姓名</th>
+                <th width="10%">状态</th>
+                <th width="20%">订单时间</th>
+                <th width="15%">操作</th>
+              </tr>
+				<?php if (count($this->rows)>0) { ?>
+				
+				<?php foreach ($this->rows as $row) { ?>
+				<tr class="interlace">
+                <td>
+                <?php if ($row['Hash']) { ?>
+				<a href='<?php echo $this->baseUrl;?>order/hash?hash=<?php echo $row['Hash'];?>' target='_blank'>
+				<?php } else { ?>
+				<a href='<?php echo $this->scriptUrl;?>order/show?OrderId=<?php echo $row['OrderGuid'];?>' target='_blank'>
+				<?php } ?>
+                <?php echo $row['OrderId'];?></a></td>
+                <td>
+                <?php echo $this->Fvendorname($row['VendorName']);?>
+                </td>
+                <td><?php echo $row['CustName']?></td>
+                <td><?php echo $this->OSName($row['StatusId']);?></td>
+                <td><?php echo $this->Sdt($row['AddTime'])?></td>
+                <td>
+                
+               <?php if ($row['Hash']) { ?>
+				<a href='<?php echo $this->baseUrl;?>order/hash?hash=<?php echo $row['Hash'];?>' target='_blank'>
+				<?php } else { ?>
+				<a href='<?php echo $this->scriptUrl;?>order/show?OrderId=<?php echo $row['OrderGuid'];?>' target='_blank'>
+				<?php } ?>查看</a>
+                <?php if($row['StatusId']==Msd_Config::appConfig()->order->status->delivered){?> | 
+                <a href='<?php echo $this->scriptUrl;?>order/show?OrderId=<?php echo $row['OrderGuid'];?>' target='_blank'>
+				评价
+				</a>
+				<?php }?></td>
+                </tr>
+					
+				<?php } ?>
+				<?php } else {  ?>
+				<tr class="interlace">
+                <td colspan='6'>暂无订单</td>
+                </tr>
+				<?php } ?>	
+              
+              
+              
+            </tbody></table>
+          </form>
+          <div class='page_linksbig'><?php echo $this->page_links;?></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>
+
+
+

@@ -1,0 +1,56 @@
+<?php Msd_Output::prepareHtml();?>
+<?php echo '<'.'?xml version="1.0" encoding="utf-8"?'.'>'."\n";?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<title><?php echo $this->MetaPara['title'];?></title>
+<meta name="keywords" content="<?php echo $this->MetaPara['keywords'];?>" />
+<meta name="description" content="<?php echo $this->MetaPara['description'];?>" />
+<meta http-equiv="Content-Language" content="zh-CN" />
+<meta name="google-site-verification" content="<?php echo $this->CityConfig->meta->google_site_verification;?>" />
+<meta property="wb:webmaster" content="<?php echo $this->CityConfig->meta->wb_webmaster;?>" />
+<meta property="qc:admins" content="<?php echo $this->CityConfig->meta->qc_admins;?>" />
+<meta name="MSSmartTagsPreventParsing" content="true" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="author" content="无锡市汇洋科技开发有限公司" />
+<meta name="copyright" content="无锡市汇洋科技开发有限公司" />
+<base href="<?php echo !preg_match('/^http/i', $this->Basehref()) ? 'http://'.$_SERVER['HTTP_HOST'].'/' : $this->Basehref();?>" /> 
+<script type='text/javascript'>
+var FANDIAN_DOMAIN = '<?php echo $_SERVER['SERVER_NAME'];?>';
+var FANDIAN_APP_VER = '<?php echo FANDIAN_APP_VER;?>';
+var FANDIAN_BASE_URL = '<?php echo $this->baseUrl;?>';
+var FANDIAN_SCRIPT_URL = '<?php echo $this->scriptUrl;?>';
+var FANDIAN_UID = '<?php echo $this->uid;?>';
+var FANDIAN_IN_DEBUG = <?php echo $this->inDebug ? 'true' : 'false';?>;
+var FANDIAN_STATIC_URL = '<?php echo Msd_Config::appConfig()->static_url;?>';
+var CITY = {};
+var FANDIAN_EXPRESS_FORCE = <?php echo (int)$this->express_force['Force'];?>;
+var FANDIAN_CA_ENABLED = <?php echo $this->close_announce['enabled'] ? 'true' : 'false';?>;
+
+CITY.name = '<?php echo $this->CityConfig->name;?>';
+CITY.longitude = '<?php echo $this->CityConfig->longitude;?>';
+CITY.latitude = '<?php echo $this->CityConfig->latitude;?>';
+
+try {
+	if (!navigator.cookieEnabled) {
+		document.getElementById('nocookie').style.display = 'block';
+	}
+} catch(e){}
+</script>
+</head>
+
+<body id='body_<?php echo $this->cName;?>'>
+
+<script type='text/javascript'>
+try {
+
+	window.parent.alert('<?php echo $this->vMessage;?>');
+	window.parent.getElementById('vote_for_<?php echo $this->vid;?>').reset();
+} catch (e) {}
+</script>
+
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

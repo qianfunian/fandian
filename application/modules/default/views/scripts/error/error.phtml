@@ -1,0 +1,23 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+    
+    <div align="center" >
+    <p style="font-family:Georgia, 'Times New Roman', Times, serif ; font-size:96px; color:#FE6833">404</p>
+    <p style="font-size:24px; font-family:'microsoft yahei'">对不起，您访问的页面不存在！</p>
+	</div>
+    <div align="center" style="color:#434343; padding:20px 0px;">
+		【<a href='javascript:history.go(-1);'>返回上一页</a>】
+		【<a href='<?php echo $this->baseUrl;?>'>返回首页</a>】
+		【<a href='javascript:window.location.reload();'>刷新页面</a>】
+	</div>
+    </div>
+    </div>
+ </div>   
+<div class="clear"></div>		
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

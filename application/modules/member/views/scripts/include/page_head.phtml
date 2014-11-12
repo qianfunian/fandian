@@ -1,0 +1,49 @@
+<?php Msd_Output::prepareHtml();?>
+<?php echo '<'.'?xml version="1.0" encoding="utf-8"?'.'>'."\n";?>
+<!DOCTYPE html>
+<html dir="ltr" lang="zh-CN" xmlns="http://www.w3.org/1999/xhtml"> 
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<title><?php echo $this->MetaPara['title'];?></title>
+<meta name="keywords" content="<?php echo $this->MetaPara['keywords'];?>" />
+<meta name="description" content="<?php echo $this->MetaPara['description'];?>" />
+<meta http-equiv="Content-Language" content="zh-CN" />
+<meta name="google-site-verification" content="<?php echo $this->CityConfig->meta->google_site_verification;?>" />
+<meta property="wb:webmaster" content="<?php echo $this->CityConfig->meta->wb_webmaster;?>" />
+<meta property="qc:admins" content="<?php echo $this->CityConfig->meta->qc_admins;?>" />
+<meta name="MSSmartTagsPreventParsing" content="true" />
+<meta http-equiv="imagetoolbar" content="no" />
+<meta name="author" content="江苏汇洋信息科技股份有限公司" />
+<meta name="copyright" content="江苏汇洋信息科技股份有限公司" />
+<base href="<?php echo !preg_match('/^http/i', $this->Basehref()) ? 'http://'.$_SERVER['HTTP_HOST'].'/' : $this->Basehref();?>" /> 
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="<?php echo $this->MetaPara['title'];?>" />
+<link rel="stylesheet" href="<?php echo $this->baseUrl;?>common/css/styles.css?<?php echo FANDIAN_APP_VER;?>" type="text/css" media="screen" />
+<link rel="stylesheet" href="<?php echo $this->baseUrl;?>common/css/formly.css?<?php echo FANDIAN_APP_VER;?>" type="text/css" />
+<link rel="stylesheet" href="<?php echo $this->jsUrl;?>colorbox/colorbox.css?<?php echo FANDIAN_APP_VER;?>" />
+<!--styles for IE -->
+<!--[if lte IE 7]><link rel="stylesheet" href="<?php echo $this->baseUrl;?>common/css/ie.css?<?php echo FANDIAN_APP_VER;?>" type="text/css" media="screen" /><![endif]-->
+<!--styles -->
+<script src="<?php echo $this->baseUrl;?>common/js/jquery.min.js"></script>
+<script src="<?php echo $this->baseUrl;?>common/js/easing.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl;?>common/js/jquery.ui.totop.js" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl;?>common/js/slides.min.jquery.js" type="text/javascript"></script>
+<script src='<?php echo $this->baseUrl;?>common/js/jquery.autocomplete.js?<?php echo FANDIAN_APP_VER;?>' type='text/javascript'></script>
+<script src="<?php echo $this->baseUrl;?>common/js/main.js?<?php echo FANDIAN_APP_VER;?>" type="text/javascript"></script>
+<script src="<?php echo $this->baseUrl;?>common/js/jquery.colorbox-min.js"></script>
+<script src='<?php echo $this->baseUrl;?>common/js/scroll.js' type='text/javascript'></script>
+
+<script type="text/javascript">
+var FANDIAN_BASE_URL   = '<?php echo $this->baseUrl;?>';
+var FANDIAN_SCRIPT_URL = '<?php echo $this->scriptUrl;?>';
+var FANDIAN_STATIC_URL = '<?php echo Msd_Config::appConfig()->static_url;?>';
+var CITY = {};
+CITY.name = '<?php echo $this->CityConfig->name;?>';
+CITY.longitude = '<?php echo $this->CityConfig->longitude;?>';
+CITY.latitude = '<?php echo $this->CityConfig->latitude;?>';
+</script>
+<script type="text/javascript" src="<?php echo $this->baseUrl;?>common/js/library.js?<?php echo FANDIAN_APP_VER;?>" charset="utf-8"></script>
+</head>
+<body>

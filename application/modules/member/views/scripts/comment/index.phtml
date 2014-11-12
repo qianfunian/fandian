@@ -1,0 +1,50 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div id="main">
+<div class="feedback_title"><h2>我的评论</h2></div>
+
+<div class="pubbox">
+	<?php include_once dirname(__FILE__).'/../include/left_nav.phtml';?>
+	<div id="lr">
+		<form method='post' action='<?php echo $this->scriptUrl;?>profile/do' enctype='multipart/form-data'>
+			<ol id="mypan">
+				<li id="con_one_1" style="display: block">
+
+						<ol>
+						<?php if (count($this->rows)>0) { ?>
+						<?php $seq = 0; ?>
+						<?php foreach ($this->rows as $row) { ?>
+						<li class='myorders myorders_row<?php echo fmod($seq++, 2);?>'>
+							<a href='<?php echo $this->scriptUrl;?>order/show?OrderId=<?php echo $row['OrderGuid'];?>'>
+								<?php echo $row['OrderId'];?> - <?php echo $row['VendorName'];?> - <?php echo $this->OSName($row['StatusId']);?>
+							</a>
+							
+							<span style='float: right;'><?php echo $this->Sdt($row['CreateTime']);?></span>
+							
+								<fieldset>
+									<legend>评论内容</legend>
+									<?php echo nl2br($row['Content']);?>
+								</fieldset>
+						</li>
+						
+						<?php } ?>
+						<?php } else {  ?>
+						<h3 class='error'>您还没有订过餐，无法进行评论</h3>
+						<?php } ?>	
+						</ol>	
+						
+						<ul>
+							<li class='page_links'><?php echo $this->page_links;?></li>
+						</ul>	
+			
+				</li>
+			</ol>
+		</form>
+	</div>
+</div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+
+</div>
+
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

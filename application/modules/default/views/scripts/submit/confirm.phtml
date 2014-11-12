@@ -1,0 +1,186 @@
+<?php include_once dirname(__FILE__) . '/../include/page_head.phtml'; ?>
+<?php include_once dirname(__FILE__) . '/../include/top.phtml'; ?>
+<div class="clear"></div>
+<div class="wrap">
+    <div class="clear"></div>
+    <div class="row">
+        <div class="twelvecol" id="wrapper">
+            <?php echo $this->cart; ?>
+            <div class="my-info">
+                <p class="site-title">配送信息   <?php if ($_GET['error']) { ?><span
+                        style="color:red">您输入的手机号错误，请检查一下，谢谢！</span><?php } ?></p>
+
+                <form method="post" id="submitOrder" action="<?php echo $this->baseUrl; ?>submit">
+                    <table width="100%" class="menu-express">
+                        <tbody>
+                        <tr>
+                            <td width="100px">收餐人</td>
+                            <td><?php echo addslashes(trim($_COOKIE['contactor'])); ?>
+                                <input type="hidden" value="<?php echo $_POST['OrderContactor'] ?>" id="OrderContactor"
+                                       name="OrderContactor"/></td>
+                        </tr>
+                        <tr>
+                            <td>手机号码</td>
+                            <td><?php echo addslashes(trim($_COOKIE['phone'])); ?>
+                                <input type="hidden" value="<?php echo $_POST['OrderPhone'] ?>" id="OrderPhone"
+                                       name="OrderPhone"/></td>
+                        </tr>
+                        <tr>
+                            <td>送餐地址</td>
+                            <td>
+                                <?php $scdz = ($_COOKIE['coord_name'] ? : $_COOKIE['order_address']) . ' ' . $_COOKIE['order_door'] ?>
+                                <font color="#FF4400"><?php echo $scdz ?></font>
+                                <input type="hidden"
+                                       value="<?php echo $_COOKIE['coord_guid'] ? $_COOKIE['order_door'] : $scdz; ?>"
+                                       id="OrderAddress" name="OrderAddress"/>
+                                <input type="hidden" value="<?php echo addslashes($_COOKIE['coord_guid']); ?>"
+                                       id="OrderCoordGuid" name="OrderCoordGuid">
+                            </td>
+                        </tr>
+                        <tr>
+                            <?php if ($_POST['OrderRemark']){ ?>
+                            <td>备注</td>
+                            <td>
+                                <?php echo addslashes($_COOKIE['remark']); ?>
+                                <input type="hidden" value="<?php echo $_POST['OrderRemark']; ?>" id="OrderRemark"
+                                       name="OrderRemark"/></td>
+                        </tr>
+                        <?php } ?>
+                        <tr>
+                            <td>支付方式</td>
+                            <td>
+                                <?php if ($_POST['OrderPaymethod'] == 1) { ?>网上支付&nbsp;&nbsp;<img width="50px"
+                                                                                                  src="<?php $this->baseUrl ?>common/images/pay.jpg" /><?php } else { ?>到付<?php } ?>
+                                <input type="hidden" name="paymethod" value="<?php echo $_POST['OrderPaymethod'] ?>"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="top">送餐时间</td>
+                            <td>
+                                <input type="hidden" name="OrderExpressTime"
+                                       value="<?php echo $_POST['OrderExpressTime'] ?>"/>
+
+                                <?php if ($_POST['OrderExpressTime'] == 0) { ?>
+                                    尽快
+                                <?php
+                                } else {
+                                    switch ((int)$_POST['day']) {
+                                        case 0:
+                                            echo "今天";
+                                            break;
+                                        case 1:
+                                            echo "明天";
+                                            break;
+                                        case 2:
+                                            echo "后天";
+                                            break;
+                                    }
+                                    echo $_POST['hour'] . "点&nbsp" . $_POST['minutes'] . "分";
+                                    ?>
+                                    <input type="hidden" name="day" value="<?php echo $_POST['day'] ?>"/>
+                                    <input type="hidden" name="hour" value="<?php echo $_POST['hour'] ?>"/>
+                                    <input type="hidden" name="minutes" value="<?php echo $_POST['minutes'] ?>"/>
+                                <?php } ?>
+
+                            </td>
+                        </tr>
+                        <?php if (!empty($this->res)) { ?>
+                            <tr>
+                                <td>使用优惠券</td>
+                                <td><select name='ccgc'>
+                                        <?php foreach ($this->res as $row) { ?>
+                                            <option
+                                                value='<?php echo $row['CGuid'] ?>'><?php echo $row['ActName'] ?></option>
+                                        <?php } ?>
+                                    </select></td>
+                            </tr>
+                        <?php } ?>
+                        <tr>
+                            <td>饭店网礼品券</td>
+                            <td>
+                                <input type="text" name="giftcard" id="giftcard" value="请输入12位礼品券号" maxLength="12"
+                                       style="width:120px"/>&nbsp;&nbsp;
+                                <span id="renter" style="display:none;cursor:pointer">重新输入</span>
+                                &nbsp;&nbsp;<span id="giftmsg" style="color:red"></span>
+                                <button id="more" style="display:none"></button> 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <img id="sloading" style="display:none" align="absmiddle"
+                                     src="<?php echo $this->baseUrl ?>common/images/sloading.gif"/>
+                                <?php if (intval($_POST['service'])) { ?>
+                                    <input type="hidden" name="serviceName" value="年夜饭"/>
+                                    <input type="hidden" name="serviceGuid"
+                                           value="3DA0CFCD-2C6D-4DED-B907-3B49B9B392C8"/>
+                                <?php } ?>
+                                <input type="submit" value="确定下单" id="submitButton" class="fancybox" style="margin:0px">
+                                <input type="button" value="返回修改" name="goback" id="goback" class="fancybox"
+                                       style="margin:0px"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#giftcard').focus();
+        $('#giftcard').keydown(function () {
+            if ($(this).val() == '请输入12位礼品券号') {
+                $(this).val('');
+            }
+        });
+        $('#giftcard').keyup(function () {
+            if ($(this).val().length >= 12) {
+                //$(this).attr("disabled","true");
+                $('#renter').show();
+                //ajax验证礼品券号是否有效
+
+                $.ajax({
+                    type: "POST", dataType: "text", async: true, url: FANDIAN_BASE_URL + "index/check-gift",
+                    data: {"giftid": $(this).val()},
+                    success: function (data) {
+                        $('#giftmsg').html(data);
+                        //$('#more').click();
+                    },
+                    error: function (res, msg, err) {
+                        alert(msg);
+                    }
+                });
+            }
+        });
+        $("#more").colorbox({
+                            href: '#user_more',
+                            title: '使用更多礼品券',
+                            inline: true,
+                            width: "300px",
+                            height: "100px",
+                            onLoad: function () {
+                            },
+                            onComplete: function () {
+                            },
+
+                            onClosed: function () {
+                            }
+                        });
+        $('#renter').click(function () {
+            $(this).hide();
+            $('#more').hide();
+            $('#giftmsg').html('');
+            $('#giftcard').removeAttr("disabled");
+            $('#giftcard').val('').focus();
+        });
+
+        $('#morel').click(function () {
+            giftNo = $('#giftcard').val();
+            window.open('http://order.fandian.com/gift/GiftTicketShow.aspx?&TotalAmount=<?php echo $this->total;?>&Number=' + giftNo);
+        });
+    })
+</script>
+<?php include_once dirname(__FILE__) . '/../include/bottom.phtml'; ?>
+<?php include_once dirname(__FILE__) . '/../include/page_foot.phtml'; ?>

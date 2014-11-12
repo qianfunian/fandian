@@ -1,0 +1,39 @@
+<?php Msd_Output::prepareHtml('200', 'gb2312');?>
+<html>
+<head>
+	<title>Please wait ...</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+</head>
+
+<body>
+<form name='onlinepay' id='onlinepay' method='post' action='<?php echo $this->form_action;?>'>
+	<input type='hidden' name='merCert' id='merCert' value='' />
+	<input type='hidden' name='interfaceVersion' id='interfaceVersion' value='1.0.0.0' />
+	<input type='hidden' name='orderid' id='orderid' value='<?php echo substr($this->order_id, 1, 10);?>' />
+	<input type='hidden' name='orderDate' id='orderDate' value='<?php echo str_replace('-', '', $this->order_date);?>' />
+	<input type='hidden' name='orderTime' id='orderTime' value='<?php echo str_replace(':', '', $this->order_time);?>' />
+	<input type='hidden' name='tranType' id='tranType' value='0' />
+	<input type='hidden' name='amount' id='amount' value='<?php echo $this->total;?>' />
+	<input type='hidden' name='curType' id='curType' value='CNY' />
+	<input type='hidden' name='orderContent' id='orderContent' value='<?php echo '通过饭店网点餐';?>' />
+	<input type='hidden' name='orderMono' id='orderMono' value='<?php echo '通过饭店网点餐';?>' />
+	<input type='hidden' name='phdFlag' id='phdFlag' value='' />
+	<input type='hidden' name='notifyType' id='notifyType' value='1' />
+	<input type='hidden' name='merURL' id='merURL' value='<?php echo $this->callback_base;?>order/opcallback' />
+	<input type='hidden' name='goodsURL' id='goodsURL' value='' />
+	<input type='hidden' name='jumpSeconds' id='jumpSeconds' value='0' />
+	<input type='hidden' name='payBatchNo' id='payBatchNo' value='' />
+	<input type='hidden' name='proxyMerName' id='proxyMerName' value='' />
+	<input type='hidden' name='proxyMerType' id='proxyMerType' value='' />
+	<input type='hidden' name='proxyMerCredentials' id='proxyMerCredentials' value='' />
+	<input type='hidden' name='netType' id='netType' value='0' />
+    <input type='hidden' name='issBankNo' id='issBankNo' value='<?php echo $this->bank_no;?>' />
+</form>
+<script type='text/javascript'>
+window.onload = function(){
+	document.getElementById('onlinepay').submit();
+};
+</script>
+</body>
+</html>
+<?php Msd_Output::doOutput();?>

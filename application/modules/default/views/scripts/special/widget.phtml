@@ -1,0 +1,126 @@
+<div class="step-right" id="jcart">
+      <div class="my-step-right">
+      <p>订单详细信息</p>
+	    <ol class='order_vendors' id='order_vendors'>
+		<?php if (count($this->ods)>0) { ?>
+		<?php foreach ($this->ods as $VendorGuid=>$row) {?>
+		<li id='order_vendor_<?php echo $VendorGuid;?>'><span class='order_vendor_title'>【<?php echo $this->Fvendorname($row['VendorName']);?>】</span>
+			<ol class='order_vendor_items' id='order_vendor_items_<?php echo $VendorGuid;?>'>
+				<li class='order_vendor_item_header'>
+					<ul class='order_vendor_item_row'>
+						<li class='order_vendor_item_row_1'>菜名</li>
+						<li class='order_vendor_item_row_2'>份数</li>
+						<li class='order_vendor_item_row_3'>价格</li>
+						<li class='order_vendor_item_row_4'>操作</li>
+					</ul>
+				</li>
+				<?php foreach ($this->ods[$VendorGuid]['items'] as $item) {?>
+				<li id='order_vendor_item_<?php echo $item['ItemGuid'];?>' class='order_vendor_item'>
+					<ul class='order_vendor_item_row'>
+						<li class='order_vendor_item_row_1'><?php echo $item['ItemName'];?></li>
+						<li class='order_vendor_item_row_2'><span id='order_vendor_item_count_<?php echo $item['ItemGuid'];?>'><?php echo $item['_count_'];?></span> <?php echo $item['UnitName'];?></li>
+						<li class='order_vendor_item_row_3'>￥<span id='order_vendor_item_price_<?php echo $item['ItemGuid'];?>'><?php echo $item['_count_']*$item['UnitPrice'];?></span></li>
+						<li class='order_vendor_item_row_4'>
+							<a href='javascript:void(0);' class='add_order_item' onclick="Tuan_AddItem('<?php echo $item['VendorGuid'];?>','<?php echo $item['ItemGuid'];?>'); return false;">+</a>
+							<a href='javascript:void(0);' class='reduce_order_item' onclick="Tuan_ReduceItem('<?php echo $item['VendorGuid'];?>','<?php echo $item['ItemGuid'];?>'); return false;">-</a>
+						</li>
+					</ul>
+				</li>
+				<?php } ?>
+			</ol>
+			<ol class='order_vendor_items' id='order_summary_<?php echo $VendorGuid;?>'>
+				<li>
+					<span style='float:left;'>外送费：￥<span id='order_freight_<?php echo $VendorGuid;?>'><?php echo $row['Freight'];?></span></span>
+					<span style='float:left; margin-left: 100px;'>打包盒：<span id='order_boxes_<?php echo $VendorGuid;?>'><?php echo $this->ods[$VendorGuid]['Boxes'];?></span>，共：￥<span id='order_boxes_price_<?php echo $VendorGuid;?>'><?php echo $this->ods[$VendorGuid]['BoxesTotal'];?></span></span>
+				</li>
+				<li style='clear: both;'>
+				合计：￥<span id='order_total_<?php echo $VendorGuid;?>'><?php echo $this->ods[$VendorGuid]['Total'];?></span>
+				</li>
+				<li>
+					备注：<input type='text' onblur="SaveRemark(this.value, '<?php echo $VendorGuid;?>');" name='order_remark_<?php echo $VendorGuid;?>' id='order_remark_<?php echo $VendorGuid;?>' value='<?php echo $this->remark[$VendorGuid];?>'  size='30' />
+				</li>
+			</ol>
+		</li>
+		<?php } ?>
+		<?php } ?>
+		</ol>
+	    <table cellspacing="5" class='order_vendors' style="width:315px">
+        <tr><td style="width:75px">姓名</td><td><input type='text' name='OrderContactor' id='OrderContactor' value='<?php echo addslashes(trim($_COOKIE['contactor']));?>' onblur="SaveOrderCommon('contactor', this.value);" /></td></tr>
+        <tr><td>电话</td><td><input type='text' name='OrderPhone' id='OrderPhone' value='<?php echo addslashes(trim($_COOKIE['phone']));?>' onblur="SaveOrderCommon('phone', this.value);" onkeyup="CheckPhoneFormat(this)" /></td></tr>
+        <tr><td>送餐地址</td>
+        <td>
+        <input type='text' name='OrderAddress' id='OrderAddress' value='<?php echo addslashes(trim($_COOKIE['address']));?>' onblur="SaveOrderCommon('address', this.value);" />
+		<input type='hidden' name='OrderCoordGuid' id='OrderCoordGuid' value='<?php echo addslashes($_COOKIE['coord_guid']);?>' /></td></tr>
+        
+        <?php if ($this->CityConfig->onlinepay_enabled) { ?>
+        
+        <tr><td>支付方式</td><td>
+		<div class='oef'>
+		<?php echo $this->Radiobox(array(
+				'name' => 'OrderPayMethod',
+				'label' => '到付',
+				'value' => 0,
+				'user_value' => (int)$_COOKIE['paymethod'],
+				'onclick' => "SwitchOrderPayMethod(this)",
+				'id' => 'OrderPayMethod_0',
+				));?>
+		</div>
+		<div class='oef'>
+		<?php echo $this->Radiobox(array(
+				'name' => 'OrderPayMethod',
+				'label' => '网上支付',
+				'value' => 1,
+				'user_value' => (int)$_COOKIE['paymethod'],
+				'onclick' => "SwitchOrderPayMethod(this)",
+				'id' => 'OrderPayMethod_1',
+				));?>		
+		</div>
+		<div class='oef'>
+			<img src='<?php echo $this->imageUrl;?>pay.jpg' alt='网上支付' class='order_express_form_onlinepay_img' />						
+		</div>
+		</td></tr>
+	    <?php } ?>
+				
+       
+        <tr><td valign="top">送餐时间</td><td>
+        <div class='oef'>
+        <?php echo $this->Radiobox(array(
+				'name' => 'OrderExpressTime',
+				'label' => '尽快',
+				'value' => 0,
+				'user_value' => (int)$_COOKIE['express_setting'],
+				'onclick' => "return SwitchOrderExpressTime(this);",
+				'id' => 'OrderExpressTime_0',
+				));?>
+		</div>
+		<div class='oef'>
+		<?php echo $this->Radiobox(array(
+				'name' => 'OrderExpressTime',
+				'label' => '预订',
+				'value' => 1,
+				'user_value' => (int)$_COOKIE['express_setting'],
+				'onclick' => "return SwitchOrderExpressTime(this);",
+				'id' => 'OrderExpressTime_1',
+				));?>
+		</div>
+		<div id='OrderExpressTimePreSettings' style='clear: both; display:<?php if (!$_COOKIE['express_setting']) { ?>none<?php } else { ?>block<?php } ?>;'>
+		<?php echo $this->Orderpreselect(array(
+				'year' => $_COOKIE['pre_year'],
+				'month' => $_COOKIE['pre_month'],
+				'day' => $_COOKIE['pre_day'],
+				'hour' => $_COOKIE['pre_hour'],
+				'minute' => $_COOKIE['pre_minute']
+				));?>
+				</div>			
+        </td></tr>
+        <tr><td>
+        
+        </td><td>
+        <input style="margin:0px" class="b_input" type='button' id='SubmitOrder' name='SubmitOrder' value='提交订单'  onclick="SubmitOrder();" />
+        <input style="margin:0px" class="b_input" type='button' id='ClearOrder' name='ClearOrder' value='清空'  onclick="ClearOrder();"/>	
+        </td></tr>
+        <tr><td></td><td></td></tr>
+        </table>
+        
+        </div>
+      </div>

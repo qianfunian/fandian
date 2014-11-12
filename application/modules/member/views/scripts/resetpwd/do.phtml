@@ -1,0 +1,125 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<link rel="stylesheet" href="<?php echo $this->cssUrl;?>new/formly.css?<?php echo FANDIAN_APP_VER;?>" type="text/css" />
+<div class="clear"></div>
+
+<div class="wrap">
+  <div class="row">
+  <div style="width:560px;height:275px;margin:20px auto">
+  <?php if($this->flag){?>
+  <table class="formlyWrapper-Base" width="559" cellspacing="0" cellpadding="0" border="0" align="center" style="BORDER-BOTTOM: #c4c4c4 1px solid; BORDER-LEFT: #c4c4c4 1px solid; BORDER-TOP: #c4c4c4 1px solid; BORDER-RIGHT: #c4c4c4 1px solid">
+  <tbody>
+  <tr>
+    <td width="559" height="272">
+     <table width="515" cellspacing="0" cellpadding="0" border="0" align="center" id="TR3" style="margin:auto">
+	  <tbody>
+        <tr>
+          <td height="35" class="oraword" style="BORDER-BOTTOM: #c4c4c4 1px solid">重置密码：</td></tr>
+		<tr>
+          <td valign="bottom" height="65" align="center">重置密码：<input type="password" id="password" name="password"></td></tr>
+		<tr>
+          <td valign="bottom" height="35" align="center">确认密码：<input type="password" id="repassword" name="repassword"></td></tr>
+        <tr>
+          <td height="55" align="center"><label><input type="button" value="下一步" class="order_cmtbutton" id="btnSend"> </label></td>
+        </tr>
+			
+        <tr>
+          <td height="35" align="center">
+		  <a href="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$this->scriptUrl.'login';?>" class="ct">重新登陆</a> 或 <a href="<?php echo 'http://'.$_SERVER['HTTP_HOST'];?>" class="ct">返回首页</a>
+		  </td>
+		</tr>
+	  </tbody>
+    </table>
+	  
+	<!--密码重置成功开始-->
+	  <table width="515" cellspacing="0" cellpadding="0" border="0" align="center" id="TR1" style="DISPLAY:none;margin:auto">
+		  <tbody>
+			  <tr>
+				<td height="55" class="oraword" style="BORDER-BOTTOM: #c4c4c4 1px solid">提示信息</td></tr>
+			  <tr>
+				<td height="155" align="center"><span class="orabold">重置密码成功</span></td></tr>
+			  <tr>
+				<td height="35" align="center">
+				<a href="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$this->scriptUrl.'login';?>" class="ct">重新登陆</a> 或 <a href="<?php echo 'http://'.$_SERVER['HTTP_HOST'];?>" class="ct">返回首页</a>
+				</td>
+			  </tr>
+		  </tbody>
+	  </table>
+	<!--密码重置成功结束-->
+
+	<!--密码发送失败开始-->
+	<table width="515" cellspacing="0" cellpadding="0" border="0" align="center" id="TR2" style="DISPLAY:none;margin:auto">
+	  <tbody>
+		  <tr>
+			<td height="55" class="oraword" style="BORDER-BOTTOM: #c4c4c4 1px solid">错误</td></tr>
+		  <tr>
+			<td height="155" align="center"><span class="orabold">提示信息</span><br><br></td></tr>
+		  <tr>
+			<td height="35" align="center">
+			    <a href="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$this->scriptUrl.'login';?>" class="ct">重新登陆</a> 或 <a href="<?php echo 'http://'.$_SERVER['HTTP_HOST'];?>" class="ct">返回首页</a>
+			</td>
+		  </tr>
+	  </tbody>
+	</table>
+	<!--密码发送失败结束-->
+
+</td></tr></tbody></table>
+  <?php }else{?>
+  <P  align="center"> 温馨提示：此链接已经失效，忘记密码？<a href="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$this->scriptUrl.'resetpwd';?>">请点击这里</a></P>
+  <?php }?>
+  </div>
+  </div>
+</div>
+
+<div class="clear"></div>							
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#password").focus();
+	$("#btnSend").click(sendPasswd);
+});
+
+function sendPasswd(){
+	var password   = $("#password").val();
+	var repassword = $("#repassword").val();
+	var email   = '<?php echo urldecode($_GET['email'])?>';
+	if(password == "") {
+		alert("请输入密码");
+	    $("#password").focus();
+		return false;
+	}
+	if(password.length<6)
+	{
+	    alert("密码至少为6位字符，请重新输入");
+		return false;
+	} 
+	if(password==repassword)
+	{
+	    var exist = false;
+		$.ajax({
+			type: "POST",
+			dataType : "text",
+			async : false,
+			url: "<?php echo 'http://'.$_SERVER['HTTP_HOST'].$this->scriptUrl?>resetpwd/do",
+			data: {
+				"password" : password,
+				"email" : email
+			},
+			success: function(res){
+			$("#TR3").hide();
+			$("#TR1").show();
+			$("#TR2").hide();
+			},
+			error : function(res,msg,err) {
+			alert(msg);
+			}
+		});
+		return exist;
+	}
+	else
+	{
+	    alert("两次密码输入不正确，请重新输入");
+	}
+}
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

@@ -1,0 +1,68 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="con-left">
+        <div class="my-news">
+          <div class="news">我的饭店网</div>
+          <ul>
+          <?php include_once dirname(__FILE__).'/../include/left_nav.phtml';?>
+          </ul>
+        </div>
+      </div>
+      <div class="con-right">
+        <div class="my-content">
+        <h1>我收藏的美味</h1>
+        <form method='post' action='<?php echo $this->scriptUrl;?>profile/do' enctype='multipart/form-data'>
+			<ol id="mypan">
+				<li id="con_one_1" style="line-height:180%">
+
+						<?php if (count($this->rows)>0) { ?>
+						<?php $seq = 0;?>
+						<?php foreach ($this->rows as $row) { ?>
+						<div class='favorited_rows favorited_items<?php echo fmod($seq++,2);?>'><a href='javascript:void(0);' onclick="DelFavoritedItem('<?php echo $row['ItemGuid'];?>');"><span class="del">x</span></a>
+						<a href='<?php echo $this->baseUrl;?>vendor/<?php echo $row['VendorName'];?>'><?php echo $row['VendorName'];?></a> - 
+						
+						<a href='<?php echo $this->baseUrl;?>vendor/<?php echo $row['VendorName'];?>/keyword/<?php echo $row['ItemName'];?>' target='_blank'><?php echo $row['ItemName']; ?></a>
+						
+						<span style='float:right;'><?php echo $this->Dt($row['CreateTime'], 'date');?></span>
+						<br />
+						</div>
+						<?php } ?>
+						<?php } else {  ?>
+						<h3 class='error'>暂无收藏</h3>
+						<?php } ?>		
+						
+						<ul>
+							<li class='page_links'><?php echo $this->page_links;?></li>
+						</ul>	
+				</li>
+			</ol>
+		</form> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<script type='text/javascript'>
+function DelFavoritedItem(ItemGuid)
+{
+	if (confirm('确定要删除该收藏？')) {
+		Fandian_SimpleAjax({
+			'url': '<?php echo $this->scriptUrl;?>favorites/del_item?ItemGuid='+ItemGuid,
+			'callback': function(response){
+				if (parseInt(response.success)==1) {
+					Fandian_AjaxLoading();
+					window.location.reload();
+				}
+			}
+		});
+	}
+}
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

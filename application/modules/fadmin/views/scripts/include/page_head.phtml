@@ -1,0 +1,30 @@
+<?php Msd_Output::prepareHtml();?>
+<?php echo '<'.'?xml version="1.0" encoding="utf-8"?'.'>'."\n";?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>网站后台管理<?php echo APPLICATION_ENV=='production' ? '' : ' —— '.APPLICATION_ENV;?></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=7" />
+	<?php echo $this->headLink();?>
+	<link type="text/css" rel="stylesheet" href="<?php echo $this->baseUrl;?>css/jquery-ui.css" media="all" />
+	<link rel="stylesheet" href="<?php echo $this->baseUrl;?>css/jquery.tooltip.css" type="text/css" />
+	<link type="text/css" rel="stylesheet" href="<?php echo $this->baseUrl;?>css/all.css?<?php echo FANDIAN_APP_VER;?>" media="all"/>
+	<script type='text/javascript'>
+	var BASE_URL = '<?php echo $this->baseUrl;?>';
+	var FANDIAN_STATIC_URL = '<?php echo Msd_Config::appConfig()->static_url;?>';
+	var FANDIAN_ATTACHMENT_ARTICLE_URL = '<?php echo $this->CityConfig->attachment->web_url->article;?>';
+	var FANDIAN_ATTACHMENT_AVATAR_URL = '<?php echo $this->CityConfig->attachment->web_url->avatar;?>';
+	var FANDIAN_ATTACHMENT_VENDOR_URL = '<?php echo $this->CityConfig->attachment->web_url->vendor;?>';
+	var FANDIAN_ATTACHMENT_ITEM_URL = '<?php echo $this->CityConfig->attachment->web_url->item;?>';
+	var FANDIAN_ATTACHMENT_VENDOR_BIG_URL = '<?php echo $this->CityConfig->attachment->web_url->vendor_big;?>';
+	var FANDIAN_ATTACHMENT_ITEM_BIG_URL = '<?php echo $this->CityConfig->attachment->web_url->item_big;?>';
+	</script>
+	<script type='text/javascript' src='<?php echo $this->baseUrl;?>js/jquery/jquery.min.js'></script>
+	<script type='text/javascript' src='<?php echo $this->baseUrl;?>js/jquery/jquery-ui.min.js'></script>
+	<script type='text/javascript' src='<?php echo $this->baseUrl;?>js/p.js?<?php echo FANDIAN_APP_VER;?>'></script>
+	<script type='text/javascript' src='<?php echo $this->baseUrl;?>js/modules/fadmin.js?<?php echo FANDIAN_APP_VER;?>'></script>
+</head>
+
+<body class='<?php echo $this->page_name;?>'>
+	<div class='bwrap'>

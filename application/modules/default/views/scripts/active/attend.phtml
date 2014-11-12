@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>饭店网-我要上封面</title>
+<script src="<?php echo $this->baseUrl;?>common/js/jquery.min.js"></script>
+<script src="<?php echo $this->baseUrl;?>common/js/jquery.ajaxupload.js"></script>
+<style type="text/css">
+
+th { 
+font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+color: #4f6b72; 
+border-right: 1px solid #C1DAD7; 
+border-bottom: 1px solid #C1DAD7; 
+border-top: 1px solid #C1DAD7; 
+letter-spacing: 2px; 
+text-transform: uppercase; 
+text-align: left; 
+padding: 6px 6px 6px 12px; 
+background: #CAE8EA  no-repeat; 
+} 
+
+td { 
+
+background: #fff; 
+font-size:12px; 
+padding: 6px 6px 6px 12px; 
+color: #4f6b72; 
+} 
+.require{
+	color:red
+}
+.fancybox {
+    background: none repeat scroll 0 0 #FF4400;
+    border: 0 none;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px 10px;
+}
+</style>
+
+<form action="" method="post">
+<table>
+<tr><td colspan="2">注意：<span class="require">*</span>号为必填项</td></tr>
+<tr><th>姓名<span class="require">*</span></th><td><input type="text" name="Realname" id="realname" value="" /></td><th>性别</th><td><input type="radio" name="Sex" value=1 checked="checked"/>男<input type="radio" name="Sex" value=0 />女</td></tr>
+<tr></tr>
+<tr><th>年龄</th><td><input type="text" name="Age" id="age" value="" /></td></tr>
+<tr><th>头像<span class="require">*</span></th><td colspan="3"><span id='head_photo'>上传头像</span>&nbsp;&nbsp;<span id='head_photo_url' href=''>点击浏览</span><input type="hidden" name="Photolink" id="photolink" value="" />
+<input type="hidden" name="Active" id="active" value="<?php echo $_GET['from']?>" />
+</td></tr>
+
+<tr><th>所在城市</th><td><input type="text" name="City" id="city" value="" /></td><th>所在行政区</th><td><input type="text" name="District" id="district" value="" /></td></tr>
+<tr></tr>
+<tr><th>手机号码<span class="require">*</span></th><td><input type="text" name="Mobilephone" id="mobilephone" value="" /></td><th>QQ号</th><td><input type="text" name="Qq" id="qq" value="" /></td></tr>
+<tr></tr>
+<tr><th>常用邮箱<span class="require">*</span></th><td colspan="3"><input type="text" name="Email" id="email" value="" /></td></tr>
+<tr><th>个人爱好</th><td colspan="3"><textarea style="height:40px;width:400px" name="Favorite"></textarea></td></tr>
+<tr><th>拉票宣言<span class="require">*</span></th><td colspan="3"><textarea style="height:40px;width:400px" name="Enounce"></textarea></td></tr>
+<tr><td></td><td><input type="submit" onclick="this.disabled=true;" value="确定报名" class="fancybox"/></td></tr>
+</table>
+</form>
+
+<script type='text/javascript'>
+var uploader = null;
+$(function(){
+	uploader = new AjaxUpload('#head_photo', {
+		action: '<?php echo $this->baseUrl;?>files/upload/active',
+		name: 'myfile',
+		autoSubmit: true,
+		responseType: false,
+		onSubmit: function(file,ext){
+		   //设置允许上传的文件格式
+		   if (!(ext && /^(jpg|png|jpeg|gif)$/.test(ext))){
+			    alert('未允许上传的文件格式!');
+			    // cancel upload
+			    return false;
+		    }
+		},
+		onComplete: function(file, msg){
+			if(msg!=0)
+			{
+			    var link='http://x.fandian.com/images/head_photo/'+msg;
+				alert("上传成功");
+				$("#photolink").val(link)
+				$("#head_photo_url").attr('href',link);
+			}else{
+				alert("上传失败，联系qq：312181918");
+			}
+		}
+	});	
+
+	$('#head_photo_url').click(function(){
+		window.open($(this).attr('href'));
+	});		
+});
+</script>
+</body>
+</html>

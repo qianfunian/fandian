@@ -1,0 +1,18 @@
+<?php Msd_Output::prepareHtml();?>
+<script type='text/javascript'>
+var op = window.top;
+var has_error = <?php echo count($this->error);?>;
+var error = <?php echo json_encode($this->error);?>;
+
+if (has_error) {
+	alert('<?php echo implode("\n", $this->error);?>');
+	
+	op.Fandian_AjaxCompleted();
+	op.modal.open();
+} else {
+	alert('留言成功！');
+	op.location = 'http://<?php echo $_SERVER['HTTP_HOST']?>/feedback';
+}
+
+</script>
+<?php Msd_Output::doOutput();?>

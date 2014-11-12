@@ -1,0 +1,35 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<?php //Msd_Debug::dump($_SERVER);?>
+<div class="clear"></div>
+	<div class="wrap">
+	    <div class="clear"></div>
+	    <div class="row">
+	    <div class="twelvecol" id="wrapper">
+	  
+		<div id='infobox' style='padding:10px;font-size:14px;line-height:30px; margin-bottom:10px'>
+		<P>抱歉，您的餐车中已有<font color="red"><?php echo $this->pvname;?></font>餐品。您可以：</P>
+		
+		<?php
+		$request_url = substr($_SERVER['REQUEST_URI'], 1);
+		if(strpos($request_url,'?'))
+		{
+			$request_url .= '&empty=1';
+		}else
+		{
+			$request_url .= '?empty=1';
+		}
+		
+		?> 
+		<p>
+		<a href="<?php echo $this->baseUrl.'vendor/'.$this->pvname;?>"><b>返回<font color="red"><?php echo $this->pvname;?></font>餐店</b></a>
+		或
+		<a href="<?php echo $this->baseUrl.$request_url;?>"><B><font color="red">清空餐车继续</font></B></a> 
+		</p>
+		</div>
+	</div>
+	</div>
+	</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

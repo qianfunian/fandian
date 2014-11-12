@@ -1,0 +1,189 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>编辑文章</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form id='modify_form' method='post' action='<?php echo $this->scriptUrl;?>vendor/doedit' target='_self' enctype='multipart/form-data'>
+<table class='edit_table' cellspacing='1'>
+	<tbody>
+		<tr>
+			<td width='15%' class='center left'>
+				商家名
+			</td>
+			<td class='text right' width='35%'>
+				<?php echo $this->basic['VendorName'];?>
+			</td>
+			<td width='15%' class='center left'>
+				推荐商家
+			</td>
+			<td class='text right'>
+				<?php echo $this->Checkbox(array(
+					'name' => 'IsRec',
+					'user_value' => $this->extend['IsRec'],
+					'value' => '1',
+					'label' => '设为推荐商家'	
+					));?>
+					
+				<?php echo $this->Checkbox(array(
+					'name' => 'IsIdxRec',
+					'user_value' => $this->extend['IsIdxRec'],
+					'value' => '1',
+					'label' => '设为首页重点推荐商家'	
+					));?>					
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				排序值
+			</td>
+			<td class='text right'>
+				<input type='text' name='OrderNo' id='OrderNo' size='4' value='<?php echo (int)$this->extend['OrderNo'];?>' />
+			</td>
+			<td width='15%' class='center left'>
+				商圈
+			</td>
+			<td class='text right'>
+				<?php $areas = array(
+						'' => '* 请选择 *'
+						);?>
+				<?php foreach ($this->bizAreas as $aid=>$aname) { ?>
+				<?php $areas[$aname] = $aname;?>
+				<?php } ?>
+				<?php echo $this->Select($areas, 'BizArea', $this->extend['BizArea']);?>
+			</td>
+			
+		</tr>
+
+		<tr>
+			<td width='15%' class='center left'>
+				LOGO（小）<br />
+				83x54
+			</td>
+			<td class='text right'>
+				<span id='vendor_logo_small'>上传LOGO</span>
+				<span id='vendor_logo_url' href='<?php echo $this->vendor_logo_url;?>'>点击浏览</span>
+			</td>
+
+			<td width='15%' class='center left'>
+				广告（大）<br />
+				590x150
+			</td>
+			<td class='text right'>
+				<span id='vendor_logo_big'>上传LOGO</span>
+				<span id='vendor_logo_url_big' href='<?php echo $this->vendor_logo_big_url;?>'>点击浏览</span>
+			</td>
+		</tr>
+		
+		<tr>
+			<td width='15%' class='center left'>
+				浏览量
+			</td>
+			<td class='text right'>
+				<input type='text' name='Views' id='Views' size='4' value='<?php echo (int)$this->extend['Views'];?>' />
+			</td>
+			<td width='15%' class='center left'>
+				收藏量
+			</td>
+			<td class='text right'>
+				<input type='text' name='Favorites' id='Favorites' size='4' value='<?php echo (int)$this->extend['Favorites'];?>' />
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				人均消费
+			</td>
+			<td class='text right'>
+				<input type='text' name='AverageCost' id='AverageCost' size='4' value='<?php echo (int)$this->extend['AverageCost'];?>' /> ￥
+			</td>
+			<td width='15%' class='center left'>
+				热度值
+			</td>
+			<td class='text right'>
+				<input type='text' name='HotRate' id='HotRate' size='4' value='<?php echo (int)$this->extend['HotRate'];?>' />
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				商家介绍
+			</td>
+			<td colspan='3' class='text right'>
+				<textarea name='Description' id='Description'  class='p_kindeditor'><?php echo htmlspecialchars($this->basic['Description']);?></textarea>
+			</td>
+		</tr>					
+		<tr>
+			<td colspan='4' class='center bottom'>
+				<input type='submit' id='submit' value='确定' />
+				<input type='button' id='back' value='返回' onclick="javascript:history.back()" />
+				<input type='hidden' name='VendorGuid' value='<?php echo $this->basic['VendorGuid'];?>' id='VendorGuid' />	
+			</td>
+		</tr>
+	</tbody>
+</table>
+</form>
+</div>
+<script type='text/javascript'>
+var editor = 'Description';
+
+$(function(){
+
+	KindEditor.ready(function(K) {
+		editor = K.create('textarea[name="Description"]', {
+			uploadJson : '<?php echo $this->baseUrl;?>fadmin/kind-editor/upload',
+			allowFileManager : false,
+			items : [
+			         'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'code', 'cut', 'copy', 'paste',
+			         'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+			         'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+			         'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+			         'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+			         'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 
+			         'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+			         'anchor', 'link', 'unlink', '|', 'about'
+			        ]
+		});
+	});
+
+	uploader = new AjaxUpload('#vendor_logo_big', {
+		action: '<?php echo $this->baseUrl;?>files/upload/vendorbig',
+		name: 'myfile2',
+		data: {
+			'VendorGuid': '<?php echo $this->basic['VendorGuid'];?>'
+		},
+		autoSubmit: true,
+		onSubmit: function(file,ext){
+		},
+		onComplete: function(file, upload_response){
+			tmp = eval(upload_response);
+			Src = tmp[0];
+			$('#vendor_logo_url_big').attr('href', Src);
+			alert('上传成功');
+		}
+	});	
+
+	uploader2 = new AjaxUpload('#vendor_logo_small', {
+		action: '<?php echo $this->baseUrl;?>files/upload/vendor',
+		name: 'myfile',
+		data: {
+			'VendorGuid': '<?php echo $this->basic['VendorGuid'];?>'
+		},
+		autoSubmit: true,
+		onSubmit: function(file,ext){
+		},
+		onComplete: function(file, upload_response){
+			tmp = eval(upload_response);
+			Src = tmp[0];
+			$('#vendor_logo_url').attr('href', Src);
+			alert('上传成功');
+		}
+	});		
+
+	$('#vendor_logo_url, #vendor_logo_url_big').click(function(){
+		window.open($(this).attr('href'));
+	});		
+});
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

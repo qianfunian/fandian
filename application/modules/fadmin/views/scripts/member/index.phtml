@@ -1,0 +1,101 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览网站用户</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'Username' => '用户名',
+			'Realname' => '姓名',
+			'Email' => 'Email'
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+
+	&nbsp;
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'u.Username' => '用户名',
+			'c.CustName' => '姓名',
+			'p.PhoneNumber' => '手机号码',
+			'c.Mail' => 'Email',
+			'u.LastLogin' => '最后登录',
+			'u.RegTime' => '注册时间',
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<form method='post' action='<?php echo $this->scriptUrl;?>attachment/actions' id='form_attach_list'>
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='5%'>序号</th>
+		<th width='8%'>用户名</th>
+		<th width='8%'>姓名</th>
+		<th width='12%'>Email</th>
+		<th width='12%'>注册时间</th>
+		<th width='12%'>上次登录</th>
+		<th width='8%'>头像</th>
+		<th></th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td>
+		<?php echo $row['Username'];?>
+	</td>
+	<td><?php echo $row['CustName'];?></td>
+	<td><?php echo $row['Mail'];?></a></td>
+	<td><?php echo $this->Dt($row['RegTime']);?></a></td>
+	<td><?php echo $this->Dt($row['LastLogin']);?></td>
+	<td>
+		<a href='<?php echo $this->baseUrl;?>files/avatar/<?php echo $row['Avatar'];?>' target='_blank'><img src='<?php echo $this->baseUrl;?>files/avatar/<?php echo $row['Avatar'];?>' width='32' /></a>
+	</td>
+	<td>
+		<a href='<?php echo $this->scriptUrl;?>member/edit?CustGuid=<?php echo $row['CustGuid'];?>'>修改</a>
+	</td>
+</tr>
+<?php } ?>
+
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+</form>
+</div>
+<script type='text/javascript'>
+$(function(){
+	$('#btnDel').click(function(){
+		return confirm('确定？');
+	});
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

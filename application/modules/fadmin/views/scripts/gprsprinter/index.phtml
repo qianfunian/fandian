@@ -1,0 +1,81 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览GPRS打印机</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'v.VendorName' => '商家名',
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+	&nbsp;
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'g.LastActive' => '最后心跳',
+			'g.AddTime' => '录入时间',
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='5%'>序号</th>
+		<th width='20%'>商家</th>
+		<th width='10%'>SN1</th>
+		<th width='10%'>SN2</th>
+		<th width='10%'>Key</th>
+		<th width='10%'>主控手机</th>
+		<th width='15%'>最后心跳</th>
+		<th><a href='<?php echo $this->scriptUr;?>gprsprinter/edit'>增加打印机</a></th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td class='left'>
+	<?php echo $row['VendorName'];?></td>
+	<td><?php echo $row['Sn1'];?></td>
+	<td><?php echo $row['Sn2'];?></td>
+	<td><?php echo $row['Key'];?></td>
+	<td><?php echo $row['Cell'];?></td>
+	<td><?php echo $row['LastActive'] ? $this->Dt($row['LastActive'], 'datetime') : '--';?></td>
+	<td><a href='<?php echo $this->scriptUrl;?>gprsprinter/edit?VendorGuid=<?php echo $row['VendorGuid'];?>'>修改</a> <a href='<?php echo $this->scriptUrl;?>gprsprinter/del?VendorGuid=<?php echo $row['VendorGuid'];?>' rel='delete'>删除</a></td>
+</tr>
+<?php } ?>
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+
+</div>
+
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

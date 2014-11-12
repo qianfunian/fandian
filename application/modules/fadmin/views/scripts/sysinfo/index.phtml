@@ -1,0 +1,112 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>系统信息</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form method='post' action='<?php echo $this->scriptUrl;?>sysinfo/do' id='sysinfo_form'>
+<table cellspacing='1' class='edit_table'>
+<tbody>
+	<tr>
+		<td colspan='2' class='center left'>
+			基本信息
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>静态文件路径:</td>
+		<td class='right'>
+			 <input type="text" name="static_url" id="static_url" value="<?php echo $this->data['static_url'];?>" size='80' />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>图片文件路径:</td>
+		<td class='right'>
+	         <input type="text" name="image_url" id="image_url"value="<?php echo $this->data['image_url'];?>" size='80' />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>CSS文件路径:</td>
+		<td class='right'>
+			 <input type="text" name="css_url" id="css_url"value="<?php echo $this->data['css_url'];?>" size='80' />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>Javascript文件路径:</td>
+		<td class='right'>
+			<input type="text" name="js_url" id="js_url"value="<?php echo $this->data['js_url'];?>" size='80' />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>Design文件路径:</td>
+		<td class='right'>
+			<input type="text" name="design_url" id="design_url"value="<?php echo $this->data['design_url'];?>" size='80' />
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2' class='center left'>
+		发邮件相关设置
+		</td>
+	</tr>
+	
+	<tr>
+		<td class='center left' width='15%'>SMTP主机:</td>
+		<td class='right'>
+			<input type="text" name="smtp_host" id="smtp_host"value="<?php echo $this->data['smtp_host'];?>"  />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>SMTP用户名:</td>
+		<td class='right'>
+			 <input type="text" name="smtp_user" id="smtp_user"value="<?php echo $this->data['smtp_user'];?>"  />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>SMTP密码:</td>
+		<td class='right'>
+			<input type="text" name="smtp_pwd" id="smtp_pwd"value="<?php echo $this->data['smtp_pwd'];?>"  />
+		</td>
+	</tr>
+	<tr>
+		<td colspan='2' class='center left'>
+		速递手机客户端
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>Symbian版本号</td>
+		<td class='right'>
+			<input type="text" size='40' name="symbian_ver" id="symbian_ver"value="<?php echo $this->data['symbian_ver'];?>"  />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>Symbian更新地址:</td>
+		<td class='right'>
+			 <input type="text" size='40' name="symbian_url" id="symbian_url"value="<?php echo $this->data['symbian_url'];?>"  />
+		</td>
+	</tr>	
+	<tr>
+		<td class='center left' width='15%'>Android版本号</td>
+		<td class='right'>
+			<input type="text" size='40' name="android_ver" id="android_ver"value="<?php echo $this->data['android_ver'];?>"  />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>Android更新地址:</td>
+		<td class='right'>
+			 <input type="text" size='40' name="android_url" id="android_url"value="<?php echo $this->data['android_url'];?>"  />
+		</td>
+	</tr>
+	
+	<tr>
+		<td class='center left' colspan='2'>
+			<input type='submit' name='go' id='go' value=' 提 交 (s) ' accesskey='s' />
+		</td>
+	</tr>	
+</tbody>
+</table>
+</form>
+
+</div>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

@@ -1,0 +1,76 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览网站用户</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	礼品卡号：<input type="text" name="giftcode" id="giftcode" value="" />
+	<input type="button" name="search" id="search" value="搜索" />
+	<a href="<?php echo $this->scriptUrl?>gift/add?m=0">添加礼品卡</a>
+	&nbsp;
+	<a href="<?php echo $this->scriptUrl?>gift/add?m=1">导入礼品卡（仅Excel文件）</a>
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<form method='post' action='<?php echo $this->scriptUrl;?>attachment/actions' id='form_attach_list'>
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th>礼品卡号</th>
+		<th>礼品卡面值</th>
+		<th>使用时间</th>
+		<th>添加人</th>
+		<th>添加时间</th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td><?php echo $row['GiftId']?></td>
+	<td><?php echo $row['Value']?></td>
+	<td><?php echo $row['UsedTime']?$this->dt($row['UsedTime']):'未使用';?></td>
+	<td><?php echo $row['AddUser']?></td>
+	<td><?php echo $this->dt($row['AddTime'])?></td>
+</tr>
+<?php } ?>
+
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+</form>
+</div>
+<script type='text/javascript'>
+$(function(){
+	$('#btnDel').click(function(){
+		return confirm('确定？');
+	});
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

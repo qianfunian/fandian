@@ -1,0 +1,180 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>编辑积分兑换</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form method='post' action='<?php echo $this->scriptUrl;?>credit/doedit' target='_self'>	
+<table class='edit_table' cellspacing='1'>
+	<tbody>
+		<tr>
+			<td width='15%' class='center left'>
+				标题
+			</td>
+			<td class='text right'>
+				<input type='text' size='70' name='Title' id='Title' value='<?php echo $this->data['Title'];?>' /> <span class='error'><?php echo $this->error['Title'];?></span>
+			</td>
+			<td width='15%' class='center left'>
+				分类
+			</td>
+			<td class='text right'>
+				<?php echo $this->Select(Msd_Waimaibao_Credit::Categories(), 'Category', $this->data['ext']['Category']);?>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				所需积分
+			</td>
+			<td width='35%' class='text right'>
+				<input type='text' size='4' maxlength='4' name='Credit' id='Credit' value='<?php echo $this->data['ext']['Credit'];?>' /><span class='error'><?php echo $this->error['Credit'];?></span>
+			</td>
+			<td width='15%' class='center left'>
+				排序
+			</td>
+			<td width='35%' class='text right'>
+				<input type='text' size='4' maxlength='4' name='OrderNo' id='OrderNo' value='<?php echo $this->data['OrderNo'];?>' /><span class='error'><?php echo $this->error['OrderNo'];?></span>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				余量
+			</td>
+			<td width='35%' class='text right'>
+				<input type='text' size='4' maxlength='4' name='Remains' id='Remains' value='<?php echo $this->data['ext']['Remains'];?>' /><span class='error'><?php echo $this->error['Credit'];?></span>
+			</td>
+			<td width='15%' class='center left'>
+				可兑换数量
+			</td>
+			<td width='35%' class='text right'>
+				<input type='text' size='4' maxlength='4' name='Total' id='Total' value='<?php echo $this->data['ext']['Total'];?>' /><span class='error'><?php echo $this->error['OrderNo'];?></span>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				文章内容
+			</td>
+			<td colspan='3' class='text right'>
+				<textarea name='Detail' id='Detail'  class='p_kindeditor'><?php echo htmlspecialchars($this->data['Detail']);?></textarea>
+			</td>
+		</tr>		
+		<tr>
+			<td width='15%' class='center left'>
+				附件
+			</td>
+			<td colspan='3' class='text right'>
+				<ol class='attach_list' id='attach_list'></ol>
+				<ul class='attach_list'>
+				<li><span id='upload_new'>上传新附件</span><span id='upload_loading'></span></li>
+				<li class='upload_error hidden'></li>
+				</ul>
+				<input type='hidden' name='attach_list_orders' id='attach_list_orders' value='' />				
+				<input type='hidden' name='attach_hash' id='attach_hash' value='<?php echo trim($this->data['AttachHash']);?>' />
+			</td>
+		</tr>		
+		<tr>
+			<td width='15%' class='center left'>
+				设置
+			</td>
+			<td class='text right'>
+				<?php echo $this->Checkbox(array(
+						'name' => 'PubFlag',
+						'value' => '1',
+						'user_value' => $this->data['PubFlag'],
+						'label' => '发布到前台'
+						));?>
+			</td>
+			<td width='15%' class='center left'>
+				发布时间
+			</td>
+			<td class='text right'>
+				<input type='text' size='20' name='PubTime' id='PubTime' value='<?php echo $this->Dt($this->data['PubTime'], 'date');?>' /> 
+			</td>
+		</tr>			
+		<tr>
+			<td colspan='4' class='center bottom'>
+				<input type='submit' id='submit' value='确定' />
+				<input type='button' id='back' value='返回' onclick="javascript:history.back()" />
+				<input type='hidden' name='ArticleId' value='<?php echo $this->data['ArticleId'];?>' id='ArticleId' />		
+				<input type='hidden' name='FirstAttach' value='<?php echo $this->data['FirstAttach'];?>' id='FirstAttach' />	
+			</td>
+		</tr>
+	</tbody>
+</table>
+</form>
+</div>
+<script type='text/javascript'>
+var editor = 'Detail';
+var attachs = <?php echo json_encode($this->files);?>;
+
+$(function(){
+
+	create_editor({
+		id: editor
+	});
+
+	KE.create(editor);
+
+	$('#modify_form').submit(function(){
+		KE.sync(editor);
+		return true;
+	});
+
+	var uploader = new AjaxUpload('#upload_new', {
+		action: '<?php echo $this->baseUrl;?>files/upload',
+		name: 'myfile',
+		data: {
+			hash: $('#attach_hash').val()
+		},
+		autoSubmit: true,
+		onSubmit: function(file,ext){
+			$('#upload_loading').append('<img src="'+BASE_URL+'images/loading.gif" width="24" />');
+			$('li.upload_error').addClass('hidden');
+		},
+		onComplete: function(file, upload_response){
+			var fresult = {
+					Error: '1',
+					Err: '',
+					FileId: ''
+				};
+			
+			$('#upload_loading').empty();
+			
+			try {
+				tmp = eval(upload_response);
+				
+				fresult.FileId = tmp[4];
+				fresult.Name = tmp[0];
+				fresult.Ext = tmp[5];
+				fresult.Size = tmp[3];
+				fresult.Error = tmp[2];
+				fresult.Err = tmp[6];
+			} catch (rte) {
+				fresult.Err = rte.message;
+			}
+
+			if (fresult.Err) {
+				$('li.upload_error').text('上传失败: '+fresult.Err).removeClass('hidden');
+			} else {
+				append_attach_row(fresult, 'attach_list');
+			}
+		}
+	});
+
+	for(i in attachs) {
+		append_attach_row(attachs[i], 'attach_list');
+	}
+	
+	cal_attach_list_orders('attach_list');
+
+	$('#PubTime').datepicker({
+		'dateFormat': 'yy-mm-dd',
+		'defaultDate': '<?php echo $this->Dt($this->data['PubTime'], 'date');?>',
+		'changeMonth': true,
+		'changeYear': true
+	});
+});
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

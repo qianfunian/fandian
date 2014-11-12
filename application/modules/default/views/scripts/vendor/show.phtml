@@ -1,0 +1,364 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<script src="<?php echo $this->baseUrl;?>common/js/ScrollPic.js" type="text/javascript"></script>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="clear"></div>
+  <div class="row">
+    <div class="twelvecol" id="wrapper">
+      <div class="step-left">
+        <div class="my-step-left">
+          <div class="step-fenge">
+            <div class="setp-banner">
+              <ul class="step-shop-left">
+                <li class="step-title">
+                <span>
+                <?php echo $this->Fvendorname($this->basic['VendorName']);?>
+                </span></li>
+                <li>主营：<?php echo $this->detail['groups'][Msd_Config::appConfig()->db->n->ctg_std_name->vendor];?></li>
+                <li>地址：<?php echo $this->detail['address']['Address'];?></li>
+              </ul>
+              <ul class="step-shop-right">
+                <li class="<?php if (!$this->vendor_in_service) { ?>step-notice-close<?php } else { ?>step-notice-open<?php }?>" style="padding-right:100px;"><B>外卖公告</B></li>
+                <li style='padding:0px'>营业时间：<font color="#FF4400"><B><?php echo $this->ServiceTime;?></b></B></font></li>
+                <li style='padding:0px'>人均消费：￥<?php echo intval($this->extend['AverageCost']);?></li>
+                <li style='padding:0px'>浏览量：<?php echo intval($this->extend['Views'])+1;?></li>
+                <li style='padding:0px'>收藏人气：<a id="vendor_favorites_count"><?php echo (int)$this->extend['Favorites'];?></a>&nbsp;
+                <?php if ($this->isFavorited) { ?>
+				<a href="javascript:void(0);" onclick="SwitchFavoriteStatus(this);" id='<?php echo $this->basic['VendorGuid'];?>'>取消收藏</a>
+				<?php } else { ?>
+				<a href="javascript:void(0);" onclick="SwitchFavoriteStatus(this);" id='<?php echo $this->basic['VendorGuid'];?>'>收藏</a>
+				<?php } ?>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="step-sign">
+            <p class="site-title">招牌菜</p>
+            <div id="special-food">
+            <?php for ($i=0;$i<count($this->sign);$i++) {$item = $this->sign[$i];?>
+            <div class="box">
+            <form method="post" action="" class="jcarts">
+				<input type="hidden" name="my-item-id" value="<?php echo $item['ItemGuid']?>" />
+				<input type="hidden" name="my-item-name" value="<?php echo $item['ItemName']?>" />
+				<input type="hidden" name="my-item-price" value="<?php echo $item['UnitPrice']?>" />
+				<input type="hidden" name="my-item-qty" value="<?php echo $item['MinOrderQty']?$item['MinOrderQty']:1?>" />
+				<input type="hidden" name="my-vendor-guid" value="<?php echo $item['VendorGuid']?>" />
+				<input type="hidden" name="my-vendor-name" value="<?php echo $item['VendorName']?>" />
+				<input type="hidden" name="my-iteminbox-qty" value="<?php echo $item['ItemQty']?>" />
+				<input type="hidden" name="my-box-qty" value="<?php echo $item['BoxQty']?>" />
+				<input type="hidden" name="my-box-unitprice" value="<?php echo $item['BoxUnitPrice']?>" />	 
+				<input type="hidden" name="my-unitname" value="<?php echo $item['UnitName']?>" />
+	            <img width="135px" height="100px" src='<?php echo $this->Itemurl($item, $this->staticUrl.'design/product/nopic.jpg?'.FANDIAN_APP_VER);?>' />
+	            <div style="width:100%"><?php echo $item['ItemName'];?></div>
+	            <div style="width:100%">
+	            <?php echo $item['UnitPrice']==0?'时价':'￥'.number_format($item['UnitPrice'],2).'/'.$item['UnitName'];?>                                                                         
+	            <input id="<?php echo $item['ItemGuid']?>" type="submit" class="addbutton" name="my-add-button" value="预订" />
+	            </div>    
+	            </form>   
+            </div>
+            <?php }?>
+            </div>
+          </div>
+          <div class="clear"></div>
+          <div class="tabs" id="tabs">
+	          <ul>
+		          <li id='tabs1' class='tabs_active' onclick="$('#tabs2').removeClass('tabs_active');$(this).attr('class','tabs_active')"><a href="javascript:void(0)" onclick="$('#vendor-comment').hide();$('#catab').show();$('.step-shop-list').show();">在线预订</a></li>
+		          <li id='tabs2' onclick="$('#tabs1').removeClass('tabs_active');$(this).attr('class','tabs_active')"><a href="javascript:void(0)" onclick="$('#catab').hide();$('.step-shop-list').hide();$('#vendor-comment').show()">商家简介</a></li>
+	          </ul>
+		  </div>
+		  
+		  <div id="vendor-comment">
+		      <ul class="feedback_loop">
+		        <li class="comment">
+			        <div class="feedback_content">
+			        <?php echo $this->detail['basic']['Description'];?>
+			        </div>
+		        </li>
+			  </ul>
+		  </div>
+          <div class="step-tab" id="catab">
+          <p class="site-title">菜品分类</p>
+            <ul>
+              <?php
+              $offset = ($this->search_gotted && strlen($this->keyword)) ? 1 : 0;
+              $i=1;
+              if ($offset) {
+              ?>
+              <li><span curindex='<?php echo $i;?>' class="ctgmenu<?php if($i++==1){?> ctgactive<?php }?>"><?php echo $this->keyword;?></span></li>
+              <?php }?>
+              
+              <?php foreach ($this->detail['item_category'] as $data) { ?>
+              <li><span curindex='<?php echo $i;?>' class="ctgmenu<?php if($i==1){?> ctgactive<?php }?>"><?php echo $data['CtgName'];?></span></li>
+              <?php $i++;} ?>
+              <li><span id="market">迷你超市</span></li>
+            </ul>
+            
+            <div class="step-shop-search">
+              <input id="search-item-box" type="text" class="step-searchbox" value="请输入菜品名称">
+            </div>
+          </div>
+          <div class="clear"></div>
+          
+          <ul class="step-shop-list" style="min-height:400px">
+            <li>
+              <ul>
+              <?php $j=1;if ($offset) {?>
+              <li class="li-first" id="list<?php echo $j;?>" style="<?php if ($j++==1) { ?> display: block<?php } else { ?>display: none;<?php } ?>"> 
+              <?php foreach ($this->detail['item_category'] as $data) {
+						foreach ($data['items'] as $item) {
+						    if (preg_match('/'.$this->keyword.'/', $item['ItemName'])) {
+								if ((!$this->start_price && !$this->end_price) || (($this->start_price || $this->end_price) && $item['UnitPrice']>=$this->start_price && $item['UnitPrice']<=$this->end_price)) {
+			  ?>
+			        <div class="step-shop-menu" itemname="<?php echo $item['ItemName']?>">
+	                <form method="post" action="" class="jcarts">
+					<input type="hidden" name="my-item-id" value="<?php echo $item['ItemGuid']?>" />
+					<input type="hidden" name="my-item-name" value="<?php echo $item['ItemName']?>" />
+					<input type="hidden" name="my-item-price" value="<?php echo $item['UnitPrice']?>" />
+					<input type="hidden" name="my-item-qty" value="<?php echo $item['MinOrderQty']?$item['MinOrderQty']:1?>" />
+					<input type="hidden" name="my-vendor-guid" value="<?php echo $item['VendorGuid']?>" />
+					<input type="hidden" name="my-vendor-name" value="<?php echo $item['VendorName']?>" />
+					<input type="hidden" name="my-iteminbox-qty" value="<?php echo $item['ItemQty']?>" />
+					<input type="hidden" name="my-box-qty" value="<?php echo $item['BoxQty']?>" />
+					<input type="hidden" name="my-box-unitprice" value="<?php echo $item['BoxUnitPrice']?>" />	
+					<input type="hidden" name="my-unitname" value="<?php echo $item['UnitName']?>" />
+	                <div class="s-left"><span><?php echo $item['ItemName']?></span>
+	                <?php if($item['HasLogo']){?>
+                    <a href="javascript:void(0)" class="screenshot" rel="<?php echo $this->Itemurl($item, $this->staticUrl.'design/product/nopic.jpg');?>"> <span class="youtu">图片</span></a> 
+                    <?php }?>
+                    </div>
+	                <div class="s-right">
+	                <span><?php echo $item['UnitPrice']==0?'时价':'￥'.number_format($item['UnitPrice'],2).'/'.$item['UnitName'];?></span>          
+	                <input type="submit" name="my-add-button" class="addbutton" value="预订" />
+	                </div>
+	                </form>
+	                </div>		
+			  <?php 
+								}
+							}
+						}
+					} 
+						?>				
+              </li>
+              <?php }?>
+              <?php foreach ($this->detail['item_category'] as $data) { ?>
+               <li class="li-first" id="list<?php echo $j;?>" style="<?php if ($j==1) { ?> display: block<?php } else { ?>display: none;<?php } ?>"> 
+	                <?php foreach($data[items] as $i=>$item){?>
+	                <div class="step-shop-menu" itemname="<?php echo $item['ItemName']?>">
+	                <form method="post" action="" class="jcarts">
+					<input type="hidden" name="my-item-id" value="<?php echo $item['ItemGuid']?>" />
+					<input type="hidden" name="my-item-name" value="<?php echo $item['ItemName']?>" />
+					<input type="hidden" name="my-item-price" value="<?php echo $item['UnitPrice']?>" />
+					<input type="hidden" name="my-item-qty" value="<?php echo $item['MinOrderQty']?$item['MinOrderQty']:1?>" />
+					<input type="hidden" name="my-vendor-guid" value="<?php echo $item['VendorGuid']?>" />
+					<input type="hidden" name="my-vendor-name" value="<?php echo $item['VendorName']?>" />
+					<input type="hidden" name="my-iteminbox-qty" value="<?php echo $item['ItemQty']?>" />
+					<input type="hidden" name="my-box-qty" value="<?php echo $item['BoxQty']?>" />
+					<input type="hidden" name="my-box-unitprice" value="<?php echo $item['BoxUnitPrice']?>" />	
+					<input type="hidden" name="my-unitname" value="<?php echo $item['UnitName']?>" />
+	                <div class="s-left"><span><?php echo $item['ItemName']?></span>
+	                <?php if($item['HasLogo']){?>
+                    <a href="javascript:void(0)" class="screenshot" rel="<?php echo $this->Itemurl($item, $this->staticUrl.'design/product/nopic.jpg');?>"> <span class="youtu">图片</span></a> 
+                    <?php }?>
+                    </div>
+	                <div class="s-right">
+	                <span><?php echo $item['UnitPrice']==0?'时价':'￥'.number_format($item['UnitPrice'],2).'/'.$item['UnitName'];?></span>          
+	                <input id="<?php echo $item['ItemGuid']?>" type="submit" class="addbutton" name="my-add-button" value="预订" />
+	                </div>
+	                </form>
+	               
+	                <?php if(!empty($item['Description'])){echo '<br>注:'.$item['Description'];}?>
+	                </div>
+	                <?php } $j++;?>
+                </li>
+              <?php  }?>
+              
+               <li class="li-first" id="supermarket" style="display: none;"> 
+                    <?php foreach ($this->miniMarket['items'] as $i=>$item) { ?>
+                    <div class="step-shop-menu" itemname="<?php echo $item['ItemName']?>">
+	                <form method="post" action="" class="jcarts">
+					<input type="hidden" name="my-item-id" value="<?php echo $item['ItemGuid']?>" />
+					<input type="hidden" name="my-item-name" value="<?php echo $item['ItemName']?>" />
+					<input type="hidden" name="my-item-price" value="<?php echo $item['UnitPrice']?>" />
+					<input type="hidden" name="my-item-qty" value="<?php echo $item['MinOrderQty']?$item['MinOrderQty']:1?>" />
+					<input type="hidden" name="my-vendor-guid" value="<?php echo $item['VendorGuid']?>" />
+					<input type="hidden" name="my-vendor-name" value="<?php echo $item['VendorName']?>" />
+					<input type="hidden" name="my-iteminbox-qty" value="<?php echo $item['ItemQty']?>" />
+					<input type="hidden" name="my-box-qty" value="<?php echo $item['BoxQty']?>" />
+					<input type="hidden" name="my-box-unitprice" value="<?php echo $item['BoxUnitPrice']?>" />	
+					<input type="hidden" name="my-unitname" value="<?php echo $item['UnitName']?>" />
+	                <div class="s-left"><span><?php echo $item['ItemName']?></span>
+	                <?php if($item['HasLogo']){?>
+                    <a href="javascript:void(0)" class="screenshot" rel="<?php echo $this->Itemurl($item, $this->staticUrl.'design/product/nopic.jpg');?>"> <span class="youtu">图片</span></a> 
+                    <?php }?>
+	                </div>
+	                <div class="s-right">
+	                <span>￥<?php echo number_format($item['UnitPrice'],2).'/'.$item['UnitName'];?></span>
+	                <input id="<?php echo $item['ItemGuid']?>" type="submit" class="addbutton" name="my-add-button" value="预订" />
+	                </div>
+	                </form>
+	                </div>
+                    <?php } ?>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="step-right">
+        <div class="my-step-right"  id="sidebar" >
+          <?php echo $this->cart;?>
+          <div class="my-info">
+            <p class="site-title">配送信息</p>
+            <form id="configCart" action="<?php echo $this->baseUrl;?>submit/confirm" method="post">
+            <table width="100%" class="menu-express">
+              <tr>
+                <td width="55px">收餐人</td>
+                <td>
+                  <input type='text' name='OrderContactor' id='OrderContactor' value='<?php echo addslashes(trim($_COOKIE['contactor']));?>' />
+                  <br><span id='oc' class="msg"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>手机号码</td>
+                <td>
+                  <input type='text' name='OrderPhone' id='OrderPhone' value='<?php echo addslashes(trim($_COOKIE['phone']));?>' />
+                  <br><span id='op' class="msg"></span>
+                </td>
+              </tr>
+              <tr style="<?php if($this->lsas==''){?>display:none<?php }?>" id="trls">
+                <td>历史地址</td>
+                <td>
+                <select id="lsadds" name="lsadds" style="width:200px">
+                <?php echo $this->lsas;?>
+                </select></td>
+              </tr>
+              <tr>
+                <td>送餐地址</td>
+                <td>
+                  <input type='text' name='OrderAddress' id='OrderAddress' autocomplete="off" value='<?php echo addslashes($_COOKIE['coord_name'])?:addslashes($_COOKIE['order_address']);?>' />
+                  <br><span id='oa' class="msg"></span>
+                  <input type='hidden' name='OrderCoordGuid' id='OrderCoordGuid' value='<?php echo addslashes($_COOKIE['coord_guid']);?>' />
+                </td>
+              </tr>
+              <tr>
+                <td>门牌号</td>
+                <td>
+                <input type='text' name='OrderDoor' id='OrderDoor' value='<?php echo addslashes(trim($_COOKIE['order_door']));?>' />
+                </td>
+              </tr>
+              <tr>
+              <td>备注</td>
+              <td><textarea type="text" name="OrderRemark" id="OrderRemark"><?php echo addslashes(trim($_COOKIE['remark']));?></textarea></td>
+              </tr>
+              <?php //if ($this->CityConfig->onlinepay_enabled) { 
+						if(1){?>
+              <tr>
+                <td>支付方式</td>
+                <td>
+                <input type="radio" name="OrderPaymethod" value="0" checked = "checked" />到付
+                <input type="radio" name="OrderPaymethod" value="1" /><b>网银支付</b>
+                </td>
+              </tr>
+              <?php } ?>
+              <tr>
+                <td valign="top">送餐时间</td>
+                <td>
+                <input type="radio" name="OrderExpressTime" value="0" <?php if ($this->vendor_in_service) {?>checked="checked"<?php } ?> />尽快
+                <input type="radio" name="OrderExpressTime" value="1" <?php if (!$this->vendor_in_service) {?>checked="checked"<?php }?> />预订
+                <div id='OrderExpressTimePreSettings' style="display:<?php if (!$this->vendor_in_service) {?>block<?php }else{?>none<?php }?>">
+				<select name="day" id="order_pre_day" onchange="CheckPreTime()">
+				<option value="0">今天</option>
+				<option value="1">明天</option>
+				<option value="2">后天</option>
+				</select>
+				<select name="hour" id="order_pre_hour" onchange="CheckPreTime()">
+				<?php for ($i=10;$i<=21;$i++){?>
+				<option value="<?php echo $i;?>" <?php if($i==(int)date('H')){?>selected="selected"<?php }?>><?php echo $i;?></option>
+				<?php }?>
+				</select>点
+				<select name="minutes" id="order_pre_minute" onchange="CheckPreTime()">
+				<?php for ($i=0;$i<=5;$i++){?>
+				<option value="<?php echo 10*$i;?>" <?php if($i==5){?>selected="selected"<?php }?>><?php echo $i==0?"00":10*$i;?></option>
+				<?php }?>
+				</select>分
+				</div>
+				</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                <input style="margin:0px" class="fancybox" type="button" id='ConfigOrder' name='ConfigOrder' value='确定订单' />
+                <!-- <input type="hidden" id="loginboxbtn" name="loginboxbtn" /> -->
+                <input style="margin:0px" class="fancybox" type='button' id='ClearOrder' name='ClearOrder' value='清空' /></td>
+              </tr>
+            </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<span id="info" class='info'></span>
+<script type="text/javascript" src="<?php echo $this->baseUrl?>jcart/jcart-javascript.php"></script>		
+
+<script type="text/javascript">
+var SEARCH_ITEM_VALUE=null;
+var IS_TABTOP=true;
+var VENDOR_IS_FAVORITED = <?php echo $this->isFavorited ? 'true' : 'false';?>;
+var VENDOR_IN_SERVICE=<?php echo $this->vendor_in_service;?>;
+var VENDOR_GUID = '<?php echo $this->basic['VendorGuid'];?>';
+var FANDIAN_UID = '<?php echo $this->uid;?>';
+var LAST_NAME = '<?php echo addslashes(trim($_COOKIE['contactor']));?>';
+var LAST_PHONE = '<?php echo addslashes(trim($_COOKIE['phone']));?>';
+var LAST_ADDR = '<?php echo addslashes(trim($_COOKIE['address']));?>';
+var LAST_REMARK = '<?php echo addslashes(trim($_COOKIE['address']));?>';
+var VENDOR_SERVICE_TIME = <?php echo json_encode($this->st);?>;
+var SERVICE_SERVICE_TIME = {
+	'name': '<?php echo $this->ServiceName;?>',
+	'start': '<?php echo date('Y-m-d H:i:s', $this->ourServices[$this->ServiceName]['start']);?>',
+	'end': '<?php echo date('Y-m-d H:i:s', $this->ourServices[$this->ServiceName]['end']);?>',
+	'sh': '<?php echo date('H', $this->ourServices[$this->ServiceName]['start']);?>',	
+	'sm': '<?php echo date('i', $this->ourServices[$this->ServiceName]['start']);?>',
+	'eh': '<?php echo date('H', $this->ourServices[$this->ServiceName]['end']);?>',
+	'em': '<?php echo date('i', $this->ourServices[$this->ServiceName]['end']);?>',
+	'st': <?php echo $this->ourServices[$this->ServiceName]['start'];?>000,
+	'et': <?php echo $this->ourServices[$this->ServiceName]['end'];?>000
+		
+	};
+	
+var sidebar_top = $('#sidebar').offset().top;
+var catab_top = $('#catab').offset().top;
+var clientheight = document.documentElement.clientHeight;
+var JS_ONE_DAY = 3600*24*1000;
+var PRE_YEAR;
+var PRE_MONTH;
+var PRE_DAY;
+var scrollPic = new ScrollPic();
+scrollPic.scrollContId   = "special-food"; //内容容器ID
+scrollPic.frameWidth     = 648;//显示框宽度
+scrollPic.pageWidth      = 160; //翻页宽度
+
+scrollPic.speed          = 10; //移动速度(单位毫秒，越小越快)
+scrollPic.space          = 10; //每次移动像素(单位px，越大越快)
+scrollPic.autoPlay       = true; //自动播放
+scrollPic.autoPlayTime   = 3; //自动播放间隔时间(秒)
+
+scrollPic.initialize(); //初始化
+$(document).ready(function(){
+	window.onscroll=scall;
+	
+	<?php 
+	$pattern = "/[;'()]+/";
+	if(!preg_match($pattern,$_GET['add'])){?>
+	$('#<?php echo htmlspecialchars($_GET['add'])?>').click();
+	<?php }?>
+	screenshotPreview();
+});
+
+</script>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

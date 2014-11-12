@@ -1,0 +1,136 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览商家</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'VendorName' => '商家名',
+			'RegionName' => '区域名',
+			'Address' => '地址',
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+	&nbsp;
+	所属区域：
+	<?php echo $this->Select(
+			Msd_Functions::ArrayMerge(array(
+					'' => '* 请选择 *'
+					), $this->regions)
+			, 'Region', $this->request['Region']);?>
+	&nbsp;
+	所属分类：
+	<?php echo $this->Select(
+			Msd_Functions::ArrayMerge(array(
+					'' => '* 请选择 *'
+					), $this->categories)
+			, 'CategoryName', $this->request['CategoryName']);?>
+	&nbsp;
+	所在商圈：
+	<?php echo $this->Select(
+			Msd_Functions::ArrayMerge(array(
+				'' => '* 请选择 *'
+				), $this->bizAreas)
+			, 'BizArea', $this->request['BizArea']	
+		);?>
+	&nbsp;
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'VendorId' => '商家ID',
+			'VendorName' => '商家名',
+			'AddTime' => '添加时间',
+			'HotRate' => '热度值',
+			'IsRec' => '推荐商家',
+			'IsIdxRec' => '首页推荐商家'
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<form method='post' action='<?php echo $this->scriptUrl;?>attachment/actions' id='form_attach_list'>
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='5%'>序号</th>
+		<th width='8%'>商家ID</th>
+		<th width='12%'>商家名</th>
+		<th width='12%'>分类</th>
+		<th width='8%'>服务状态</th>
+		<th width='10%'>所属区域</th>
+		<th width='15%'>地址</th>
+		<th width='8%'>浏览/收藏</th>
+		<th width='8%'>Logo</th>
+		<th></th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td>
+		<?php echo $row['VendorId'];?>
+	</td>
+	<td class='left'><?php echo $row['VendorName'];?>
+	<?php if ($row['IsRec']) { ?>
+	[<span style='color:red;'>推荐</span>]
+	<?php } ?>
+	<?php if ($row['IsIdxRec']) { ?>
+	[<span style='color:red;font-weight: bold;'>首页推荐</span>]
+	<?php } ?>	
+	</td>
+	<td><?php echo $row['CtgGroupName'];?></td>
+	<td><?php echo $row['ServiceStatus'];?></td>
+	<td><?php echo $row['RegionName'];?></td>
+	<td class='left'><?php echo $row['Address'];?></td>
+	<td><?php echo (int)$row['Views'];?>/<?php echo (int)$row['Favorites'];?></td>
+	<td>
+		<img src='<?php echo Msd_Waimaibao_Vendor::imageUrl(array(
+			'VendorGuid' => $row['VendorGuid']	
+			));?>' width='80' />
+	</td>
+	<td>
+		<a href='<?php echo $this->scriptUrl;?>items?VendorGuid=<?php echo $row['VendorGuid'];?>' target='_blank'>菜品</a>
+		<a href='<?php echo $this->scriptUrl;?>vendor/edit?VendorGuid=<?php echo $row['VendorGuid'];?>'>修改</a>
+	</td>
+</tr>
+<?php } ?>
+
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+</form>
+</div>
+<script type='text/javascript'>
+$(function(){
+	$('#btnDel').click(function(){
+		return confirm('确定？');
+	});
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

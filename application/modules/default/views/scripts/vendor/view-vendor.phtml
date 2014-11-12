@@ -1,0 +1,44 @@
+<style type="text/css">
+#order-table {
+    width: 100%;
+}
+th {
+    background: none no-repeat scroll 0 0 #CAE8EA;
+    border-bottom: 1px solid #C1DAD7;
+    border-right: 1px solid #C1DAD7;
+    border-top: 1px solid #C1DAD7;
+    color: #4F6B72;
+    font: bold 12px "Trebuchet MS",Verdana,Arial,Helvetica,sans-serif;
+    letter-spacing: 2px;
+    padding: 6px 6px 6px 12px;
+    text-align: left;
+    text-transform: uppercase;
+}
+td {
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-bottom: 1px solid #C1DAD7;
+    border-right: 1px solid #C1DAD7;
+    color: #4F6B72;
+    font-size: 12px;
+    padding: 6px 6px 6px 12px;
+}
+</style>
+<table id="order-table">
+<tbody>
+<tr>
+<th width="15%" align="left">商家LOGO</th>
+<th width="20%">商家名称</th>
+<th width="12%">操作</th>
+</tr>
+<?php foreach($this->viewedVendors as $row){?>				
+<tr class="interlace">
+<td>
+<a href='<?php echo $this->scriptUrl;?>vendor/<?php echo $row['VendorName'];?>/service/<?php echo $this->ServiceName;?>'>
+<img height=54px width=83px style="margin:10px auto" alt='<?php echo $row['VendorName'];?>' src='<?php echo Msd_Waimaibao_Vendor::imageUrl(array('VendorGuid' => $row['VendorGuid']));?>' />
+</a>
+</td>
+<td><?php echo $this->Fvendorname($row['VendorName'])?></td>
+<td><a href='<?php echo $this->scriptUrl;?>vendor/<?php echo $row['VendorName'];?>/service/<?php echo $this->ServiceName;?>'>查看菜单</a></td>
+</tr>
+<?php }?>
+</tbody></table>

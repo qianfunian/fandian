@@ -1,0 +1,147 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div id='main'>
+<div class="feedback_title"><h2>天气预报</h2></div>
+
+<table class='weather'>
+	<tbody>
+		<tr>
+			<td colspan='2' width='50%'>
+				<div class="weathertitle">未来24小时天气</div>
+			</td>
+			<td colspan='2'>
+				<div class="weathertitle">未来48小时天气</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2'>
+				<img src='<?php echo $this->baseUrl;?>images/weather/b_<?php echo $this->weather['Img1'];?>' />
+				 - 
+				 <img src='<?php echo $this->baseUrl;?>images/weather/b_<?php echo $this->weather['Img2'];?>' />
+			</td>
+			<td colspan='2'>
+				<img src='<?php echo $this->baseUrl;?>images/weather/b_<?php echo $this->tommorrow['Img1'];?>' />
+				 - 
+				 <img src='<?php echo $this->baseUrl;?>images/weather/b_<?php echo $this->tommorrow['Img2'];?>' />
+			</td>
+		</tr>
+		<tr>
+			<td colspan='2'>
+				<div class="weathertbady">
+				<?php echo $this->weather['String'];?>
+				</div>
+			</td>
+			<td colspan='2'>
+				<div class="weathertbady">
+				<?php echo $this->tommorrow['String'];?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class='pright' width='15%'>
+				<div class="weathertbady">
+				气温：
+				</div>
+			</td>
+			<td class='pleft'>
+				<div class="weathertbady">
+				<?php echo $this->weather['Temperature'];?>
+				</div>
+			</td>
+			<td class='pright' width='15%'>
+				<div class="weathertbady">
+				气温：
+				</div>
+			</td>
+			<td class='pleft'>
+				<div class="weathertbady">
+				<?php echo $this->tommorrow['Temperature'];?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td class='pright' width='15%'>
+				<div class="weathertbady">
+				风向：
+				</div>
+			</td>
+			<td class='pleft'>
+				<div class="weathertbady">
+				<?php echo $this->weather['Cloud'];?>
+				</div>
+			</td>
+			<td class='pright' width='15%'>
+				<div class="weathertbady">
+				风向：
+				</div>
+			</td>
+			<td class='pleft'>
+				<div class="weathertbady">
+				<?php echo $this->tommorrow['Cloud'];?>
+				</div>
+			</td>
+		</tr>
+		<?php if ($this->weather['Detail'] || $this->tommorrow['Detail']) { ?>
+		<tr>
+			<td colspan='2'>
+				<div class="weathertbady">
+				<?php echo $this->weather['Detail'] ? $this->weather['Detail'] : '--';?>
+				</div>
+			</td>
+			<td colspan='2'>
+				<!--<div class="weathertbady">
+				<?php echo $this->tommorrow['Detail'] ? $this->tommorrow['Detail'] : '--';?>
+				</div>-->
+			</td>
+		</tr>
+		<?php } ?>
+		<?php if ($this->weather['Air'] || $this->tommorrow['Air']) { ?>
+		<tr>
+			<td colspan='2'>
+				<div class="weathertbady">
+				<?php echo $this->weather['Air'];?>
+				</div>
+			</td>
+			<td colspan='2'>
+				<div class="weathertbady">
+				<?php echo $this->tommorrow['Air'];?>
+				</div>
+			</td>
+		</tr>
+		<?php } ?>
+		<?php if ($this->weather['Description'] || $this->tommorrow['Description']) { ?>
+		<!--<tr>
+			<td colspan='2'>
+				生活贴士：
+			</td>
+			<td colspan='2'>
+				生活贴士：
+			</td>
+		</tr>-->
+		<tr>
+			<td colspan='2'>
+				<div class="weathertbady">
+				<?php echo $this->Wd($this->weather['Description']);?>
+				</div>
+			</td>
+			<td colspan='2'>
+			<!--	<div class="weathertbady">
+				<?php echo $this->Wd($this->tommorrow['Description']);?>
+				</div>-->
+			</td>
+		</tr>
+		<?php } ?>
+		
+		<tr>
+			<td colspan='4'>
+				<input class='b_input' type='button' value=' 返 回 订 餐  ' onclick="window.location='<?php echo $this->baseUrl;?>step';" />
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+</div>
+
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

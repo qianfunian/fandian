@@ -1,0 +1,81 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览Api</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'ApiKey' => 'Api Key',
+			'Owner' => '所有人',
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+	&nbsp;
+
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'ApiKey' => 'Api Key',
+			'Owner' => '所有人',
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='5%'>序号</th>
+		<th width='15%'>Api Key</th>
+		<th >所有人</th>
+		<th width='15%'>新增时间</th>
+		<th width='15%'>每小时限额</th>
+		<th width='15%'>每天限额</th>
+		<th><a href='<?php echo $this->scriptUr;?>api/edit'>增加Api</a></th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td>
+	<?php echo $row['ApiKey'];?></td>
+	<td><?php echo $row['Owner'];?></td>
+	<td><?php echo $this->Dt($row['AddTime']);?></td>
+	<td><?php echo $row['VisitsPerHour'];?></td>
+	<td><?php echo $row['VisitsPerDay'];?></td>
+	<td><a href='<?php echo $this->scriptUrl;?>api/edit?Id=<?php echo $row['Id'];?>'>修改</a> <a href='<?php echo $this->scriptUrl;?>api/del?Id=<?php echo $row['Id'];?>' rel='delete'>删除</a></td>
+</tr>
+<?php } ?>
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+
+</div>
+
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

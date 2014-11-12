@@ -1,0 +1,58 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="my-login">
+        <div class="feedback_container formlyWrapper-Base">  
+            <table class="formbase feedback">
+              <tr>
+                <td align="left">
+                <textarea  id='content' name="content"></textarea>
+                </td>
+              </tr>
+              <tr>
+              <td>
+                  <ul>
+		              <li>验证码：</li>
+		              <li><img align="absmiddle" alt="换一个验证码" id='captcha' class='captcha' src='<?php echo $this->baseUrl;?>service/image/captcha' /></li> 
+			          <li><input style="width:50px" type='text' name='scode' id='scode' maxlength='4' value='' /></li>
+			          <li>手机号：</li>
+			          <li><input type="text" style="width:80px" maxlength="11" name="phone" id="phone" value="<?php echo $this->phone?>" /></li>
+			          <li><img align="absmiddle" src="<?php echo $this->baseUrl?>common/images/sloading.gif" style="display:none" id="sloading"><input type='button' id='submit-feedback' value='提交留言' /></li>
+			          <li id="info" style="color:red;font-size:13px;font-weight:bolder"></li>
+		          </ul>
+		      </td>
+	          </tr>
+            </table>
+        </div>
+        <?php if (count($this->rows)>0) {foreach ($this->rows as $row) {?>
+        <ul class="feedback_loop">
+        <li class="feedback_message">
+	        <div class='feedback_content'>
+	        <div> <?php echo nl2br(strip_tags($row['Content']));?></div>
+	        <div class='feedback_un'><?php echo $row['CustGuid']? $row['Username']:'网站游客';?></div>
+	        <div class='feedback_ut'><?php echo $this->Dt($row['CreateTime']);?></div>
+	        </div>
+        </li>
+        <li class="feedback_reply">
+           
+            <?php if ($row['DisplayFlag'] && strlen(trim(strip_tags($row['ReplyContent'])))) { ?>
+            <p><?php echo $this->Dt($row['ReplyTime'])?><b>客服MM回复：</b></p>
+            <span><?php echo $row['ReplyContent'];?></span>
+            <?php } ?>
+        </li>
+        </ul>
+        <?php }}?>
+        <div class='page_linksbig'> <?php echo $this->page_links;?> </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

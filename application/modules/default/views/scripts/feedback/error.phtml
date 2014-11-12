@@ -1,0 +1,13 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<script type='text/javascript'>
+var _error = <?php json_encode($this->error);?>;
+if (error.length>0) {
+	tmp = [];
+	for (i in _error) {
+		tmp.push(_error[i]);
+	}
+
+	alert(tmp.join("\n"));
+}
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

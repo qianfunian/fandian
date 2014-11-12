@@ -1,0 +1,91 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览积分兑换记录</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'Title' => '标题',
+			'Detail' => '内容',
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+	&nbsp;
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'l.Contactor' => '联系人',
+			'l.CellPhone' => '手机号码',
+			'l.Address' => '联系地址',
+			'l.ActRemark' => '处理备注',
+			'l.CreateTime' => '兑换时间',
+			'a.Title' => '标题',
+			'a.CreateTime' => '录入时间',
+			'a.OrderNo' => '排序值',
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='5%'>序号</th>
+		<th width='15%'>标题</th>
+		<th width='10%'>兑换时间</th>
+		<th width='10%'>姓名</th>
+		<th width='10%'>手机</th>
+		<th width='15%'>地址</th>
+		<th width='15%'>用户备注</th>
+		<th width='7%'>是否已处理</th>
+		<th></th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td class='left'>
+	<?php echo $this->Attachicon($row);?>
+	<?php echo $row['Title'];?></td>
+	<td><?php echo $this->Dt($row['PubTime'], 'date');?></td>
+	<td><?php echo $row['Contactor'];?></td>
+	<td><?php echo $row['CellPhone'];?></td>
+	<td><?php echo $row['Address'];?></td>
+	<td><?php echo $row['Remark'];?></td>
+	<td><?php echo $row['ActFlag'] ? '是' : '否';?></td>
+	<td><a href='<?php echo $this->scriptUrl;?>creditlogs/edit?ArticleId=<?php echo $row['ArticleId'];?>'>修改</a> <a href='<?php echo $this->scriptUrl;?>creditlogs/del?ArticleId=<?php echo $row['ArticleId'];?>' rel='delete'>删除</a></td>
+</tr>
+<?php } ?>
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+
+</div>
+
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

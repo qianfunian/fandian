@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>饭店网-我要上封面</title>
+<base href="<?php echo $cbase=!preg_match('/^http/i', $this->Basehref()) ? 'http://'.$_SERVER['HTTP_HOST'].'/' : $this->Basehref();?>" /> 
+<link rel="stylesheet" href="<?php echo $this->baseUrl;?>common/css/colorbox.css?<?php echo FANDIAN_APP_VER;?>" />
+<script src="<?php echo $this->baseUrl;?>common/js/jquery.min.js"></script>
+<script src="<?php echo $this->baseUrl;?>common/js/jquery.colorbox-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=&amp;style=10&amp;bgcolor=Orange"></script>
+</head>
+<style type="text/css">
+body{
+	background:url('./common/images/activebg.jpg');
+	margin:0px;
+}
+#wrap{
+	margin:0 auto;
+	width:960px;
+}
+#header{
+	width:960px;
+	height:367px;
+	float:left;
+	background:url('./common/images/header.jpg');
+}
+#main{
+	width:100%;
+	height:1072px;
+	float:left;
+	margin-top:20px
+}
+#leftmain{
+	width:180px;
+	height:100%;
+	float:left
+}
+.leftblock
+{
+width:175px; min-height:100px;border:1px solid white;float:left;margin-bottom:20px;background-color:#000
+}
+.leftcontent
+{
+width:155px;margin:10px auto;
+}
+#daojishi{
+	background:url('./common/images/active_left_bg.jpg');height:285px;
+}
+#rightmain{
+	width:764px;height:200px;float:right;
+}
+#erweima{
+	background:url('./common/images/erweima.jpg');height:330px;
+}
+.sort { 
+    height: 29px;
+    line-height: 29px;
+    margin-bottom: 9px;
+    float:left
+}
+.sort a.active {
+    color: #FBD005;
+}
+ .sort a.first {
+    margin: 0;
+}
+
+.sort a {
+    color: #B5B5B5;
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 1px;
+    text-align: center;
+    width: 80px;
+    border:1px solid #CCC
+}
+a {
+    text-decoration: none;
+}
+a:hover
+{
+	text-decoration:underline;
+}
+#rightwrap{
+	min-height:100px;width:100%;border:1px solid #FFF;float:left;margin-top:10px;background-color:#000;*padding-bottom:10px
+}
+#rightcontent{width:744px;border-top:1px solid #999;border-left:1px solid #999;margin:10px;float:left;background-color:#FFF}
+.rightblock{
+	border-bottom:1px solid #999;border-right:1px solid #999;float:left;width:247px;padding-bottom:5px
+}
+.rightblock p{
+	margin:0px; padding:0px;margin:0px 5px;color:#A7A6A6;line-height:16px;padding:1px 0px;font-size:12px;height:32px
+}
+.leftbutton{
+	float:left;height:29px;width:110px;background-color:#343434;margin-left:5px;text-align:center
+}
+.rightbutton{
+	float:right;background-color:#343434;margin-right:5px;text-align:center;padding:4px 10px
+}
+.leftbutton a i {
+    background: url("./common/images/icon-action.gif") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 14px;
+    margin-right: 5px;
+    vertical-align: text-top;
+    width: 14px;
+}
+.leftbutton a ,.rightbutton a{
+    color: #FFF;
+    display: block;
+    font: 13px/14px Arial;
+    padding: 8px 0;
+    text-align: center;
+}
+.rightbutton a i {
+	background: url("./common/images/icon-action.gif") no-repeat scroll 0 0 transparent;
+    cursor: pointer;
+    display: inline-block;
+    height: 14px;
+    margin-right: 5px;
+    vertical-align: text-top;
+    width: 14px;
+    background-position: left -16px;
+}
+</style>
+<body>
+<div id="wrap">
+<div id="header">
+</div>
+
+<div id="main">
+<div id="leftmain">
+<div class="leftblock">
+<div class="leftcontent" id="daojishi">
+<div style="position:relative;top:122px;left:55px;font-size:48px;width:50px;color:#FFF"><B><?php echo $this->day;?></B></div>
+<a class='iframe' href="<?php echo $this->baseUrl?>active/attend?from=0">
+<img border=0 src="./common/images/baoming.jpg" style="position:relative;top:165px;left:13px" />
+</a>
+</div>
+</div>
+
+<!-- 公告 start-->
+<div class="leftblock">
+<div class="leftcontent" style="background-color:#FF145F">
+<P style="color:#FFF;line-height:24px;padding:10px"><B>公告</B><br />
+<font style="font-size:12px">为了维护本次活动和参赛选手的公平、公正的权利，本次活动严禁使用非法手段进行投票。还请各位活动参赛者谅解和配合！</font>
+</P>
+</div>
+</div>
+<!-- 公告 end -->
+<div class="leftblock">
+<div class="leftcontent" id="erweima">
+
+</div>
+</div>
+
+</div>
+<div id="rightmain">
+<div class="sort">
+<a class="first <?php if($_GET['order']==''){?>active<?php }?>" href="<?php echo $this->baseUrl?>active">人气排行</a>
+<a class="<?php if($_GET['order']=='CreateTime'){?>active<?php }?>" href="<?php echo $this->baseUrl?>active?order=CreateTime">最新上传</a>
+</div>
+<div id="rightwrap">
+<div id="rightcontent">
+<?php if($this->rows){?>
+<?php foreach($this->rows as $row){?>
+<div class="rightblock">
+<a class="group" href="<?php echo $row['Photolink']?>" title="<?php echo $row['Enounce']?>">
+<img border=0 style="height:200px; width:237px;margin:5px" src="<?php echo str_replace('head_photo/', 'head_photo/mini', $row['Photolink'])?>?<?php echo FANDIAN_APP_VER;?>" />
+</a>
+<p><?php echo $this->Cutstr($row['Enounce'],35)?:'&nbsp;'?></p>
+<div class="leftbutton">
+<a title="喜欢" class="like" href="javascript:void(0)" id="<?php echo $row['ID']?>"><span><B><?php echo $row['ID']?>号</B></span><i></i><span id="poll<?php echo $row['ID']?>"><?php echo $row['Poll']?:0;?></span></a>
+</div>
+<div class="rightbutton">
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a>
+</div>
+<script type="text/javascript" charset="utf-8">
+    bShare.addEntry({
+        title:'饭店网-我要上封面', // 获取文章标题
+        url:"<?php echo $cbase?>active?id=<?php echo $row['ID']?>",
+        summary:"<?php echo preg_replace('/\r|\n/', '', $row['Enounce']);?>", // 从postBody中获取文章摘要
+        pic:"<?php echo $row['Photolink']?>"
+    });
+</script>
+</div>
+<?php }}else{?>
+<p style="padding:0px 20px">暂无用户</p>
+<?php }?>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+<script>
+	$(document).ready(function(){
+		$(".iframe").colorbox({iframe:true, width:"60%", height:"80%",title:"我要报名上封面"});
+		$(".group").colorbox({rel:false});
+		$(".like").click(function(){
+			var uid =$(this).attr('id');
+			$.post("<?php echo $this->baseUrl?>"+"active/poll",{id:uid},function(result)
+			{
+				if(result==1){
+					alert('投票成功,感谢您的参与！');
+					$('#poll'+uid).html(parseInt($('#poll'+uid).html())+1);
+				}else if(result == 2){
+					alert("活动已结束,感谢您的参与！");
+				}else{
+					alert('对不起，你已经投票过了，不能重复投票');
+				}
+			});
+		})
+	});
+</script>
+</body>
+</html>

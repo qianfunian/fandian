@@ -1,0 +1,73 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览生日卡相关商品</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	<table cellspacing='1' class='list_table'>
+		<thead>
+			<tr class='ths'>
+				<th width='5%'>序号</th>
+				<th width='15%'>商家名</th>
+				<th width='8%'>菜品ID</th>
+				<th width='40%'>菜品名</th>
+				<th width='5%'>单位</th>
+				<th width='5%'>单价</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody class='datalist'>
+		<?php if (count($this->rows)>0) { ?>
+		<?php 
+		foreach ($this->rows as $row) { 
+		?>
+		<tr class='c<?php echo fmod($row['_seq'], 2);?>' class='item_img_tr'>
+			<td width='50'><?php echo $row['_seq'];?></td>
+			<td class='left'>
+				<?php echo $row['VendorName'];?>
+			</td>
+			<td>
+				<?php echo $row['ItemId'];?>
+			</td>
+			<td class='left'>
+				<div id='item_img_div_<?php echo $row['ItemGuid'];?>' class='item_img_div' src='<?php echo $row['img_url'];?>'><?php echo $row['ItemName'];?>
+					<span src='<?php echo $row['img_url'];?>' class='has_img_s'  id='has_img_<?php echo $row['ItemGuid'];?>'><?php if ($row['img_url']!=Msd_Config::appConfig()->static_url.Msd_Config::appConfig()->attachment->web_url->item_default) { ?><img src='<?php echo $this->imageUrl;?>image_s.gif' /><?php } ?></span>
+					<span src='<?php echo $row['bimg_url'];?>' class='has_img_b'  id='has_bimg_<?php echo $row['ItemGuid'];?>'><?php if ($row['bimg_url']!=Msd_Config::appConfig()->static_url.Msd_Config::appConfig()->attachment->web_url->item_default) { ?><img src='<?php echo $this->imageUrl;?>image_b.gif' /><?php } ?></span>	
+				</div>
+				
+				<?php if ($row['Disabled']) { ?>
+				[<span style='color: red; font-weight: bold;'>已禁用</span>]
+				<?php } ?>
+			</td>
+			<td><?php echo $row['UnitName'];?></td>
+			<td><?php echo $row['UnitPrice'];?></td>
+			<td>
+				<a href='<?php echo $this->scriptUrl;?>new-year/edit?ItemGuid=<?php echo $row['ItemGuid'];?>'>修改</a>
+			</td>
+		</tr>
+		<?php } ?>
+		
+		<?php } else { ?>
+		<tr class='c1'>
+			<td colspan='10' class='center'>
+				<span class='error'>暂无数据</span>
+			</td>
+		</tr>
+		<?php } ?>
+		</tbody>
+		<tfoot>
+			<tr>
+				<td colspan='12'>
+					<div class='pager'><?php echo $this->page_links;?></div>
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+
+</div>
+
+</body>
+</html>
+<?php Msd_Output::doOutput();?>

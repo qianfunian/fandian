@@ -1,0 +1,122 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>首页信息</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form method='post' action='<?php echo $this->scriptUrl;?>homepage/do' id='homepage_form'>
+<table cellspacing='1' class='edit_table'>
+<tbody>
+	<tr>
+		<td colspan='3' class='center left'>
+			配送运力设定
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>当前运力：</td>
+		<td class='right' colspan='2'>
+			<?php echo $this->Expresstip($this->express_force['Force']);?>
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>设定新运力信息：</td>
+		<td class='right' colspan='2'>
+			<?php echo $this->Select(array(
+					'' => '不设定',
+					'1' => '当前运力紧张',
+					'2' => '当前暂停运营',
+					'0' => '当前运力正常',
+					), 'new_expressforce', $this->express_force['Force']);?>
+					
+			<?php echo $this->Checkbox(array(
+					'name' => 'enabled',
+					'value' => '1',
+					'user_value' => $this->close_announce['enabled'],
+					'label' => '是否激活停业弹窗'
+					));?>
+		</td>
+	</tr>
+
+	<tr>
+		<td class='center left' width='15%'>停业弹窗内容：<br />（支持超文本）</td>
+		<td class='right' colspan='2'>
+			<textarea name='content' id='content' rows='8' cols='80'><?php echo $this->close_announce['content'];?></textarea>
+		</td>
+	</tr>
+	<tr>
+		<td colspan='3' class='center left'>
+			顶部通栏
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%' colspan='2'>图片路径:</td>
+		<td class='right'>
+			 <input type="text" name="top_banner_url" id="top_banner_url" value="<?php echo $this->tb['url'];?>" size='80' />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%' colspan='2'>链接地址:</td>
+		<td class='right'>
+			 <input type="text" name="top_banner_link" id="top_banner_link" value="<?php echo $this->tb['link'];?>" size='80' />
+		</td>
+	</tr>		
+	<tr>
+		<td colspan='3' class='center left'>
+			首页卷帘
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%' colspan='2'>图片路径:</td>
+		<td class='right'>
+			 <input type="text" name="scroll_banner_url" id="scroll_banner_url" value="<?php echo $this->sb['url'];?>" size='80' />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%' colspan='2'>链接地址:</td>
+		<td class='right'>
+			 <input type="text" name="scroll_banner_link" id="scroll_banner_link" value="<?php echo $this->sb['link'];?>" size='80' />
+		</td>
+	</tr>		
+	<tr>
+		<td class='center left' width='15%' colspan='2'>收起时间:</td>
+		<td class='right'>
+			 <input type="text" name="scroll_banner_close" id="scroll_banner_close" value="<?php echo $this->sb['close'] ? $this->sb['close'] : 5;?>" size='80' />
+		</td>
+	</tr>				
+	<tr>
+		<td colspan='3' class='center left'>
+			Banner广告轮播
+		</td>
+	</tr>
+	<?php for ($i=0;$i<=14;$i++) { ?>
+	<tr>
+		<td rowspan='3' class='center left'><?php echo $i+1;?></td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>图片路径:</td>
+		<td class='right'>
+			 <input type="text" name="img_url_<?php echo $i;?>" id="img_url_<?php echo $i?>" value="<?php echo $this->data['img_url_'.$i];?>" size='80' />
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='15%'>链接地址:</td>
+		<td class='right'>
+			 <input type="text" name="link_url_<?php echo $i;?>" id="link_url_<?php echo $i?>" value="<?php echo $this->data['link_url_'.$i];?>" size='80' />
+		</td>
+	</tr>
+	<?php } ?>
+	
+	<tr>
+		<td class='center left' colspan='3'>
+			<input type='submit' name='go' id='go' value=' 提 交 (s) ' accesskey='s' />
+		</td>
+	</tr>
+</tbody>
+</table>
+</form>
+
+</div>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

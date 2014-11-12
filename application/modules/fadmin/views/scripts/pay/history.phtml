@@ -1,0 +1,111 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览网上支付历史</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+查询日期：
+	<input type='text' readonly='readonly' name='s_date' id='s_date' value='<?php echo $this->request['s_date'] ? $this->request['s_date'] : date('Y-m-d');?>' />
+	至
+	<input type='text' readonly='readonly' name='e_date' id='e_date' value='<?php echo $this->request['e_date'] ? $this->request['e_date'] : date('Y-m-d');?>' />
+	
+银行：<?php echo $this->Select(array(
+		'' => '* 请选择 *',
+		'1' => '招行',
+		'0' => '交行',
+		), 'bank', $this->request['bank']);?>
+		
+每页显示数量：
+	<?php echo $this->Select(array(
+		'20' => '* 默认 *',
+		'50' => '50',
+		'100' => '100',
+		'9999' => '全部'	
+		), 'limit', $this->request['limit']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<tr>
+			<th width='5%'>银行</th>
+			<th width='10%'>单号</th>
+			<th width='10%'>下单时间</th>
+			<th width='10%'>预定时间</th>
+			<th width='10%'>商家</th>
+			<th width='8%'>客户姓名</th>
+			<th width='8%'>订单状态</th>
+			<th>备注</th>
+			<th width='5%'>订单额</th>
+			<th width='5%'>支付额</th>
+			<th width='10%'>支付时间</th>
+		</tr>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php 
+$i = 0;
+$sum = 0;
+foreach ($this->rows as $r) { 
+			$sum += (float)$r['PayedMoney'];
+			$i++;
+?>
+		<tr class='c<?php echo fmod($i,2);?>'>
+			<td align='center'><?php echo $r['ElementName'];?></td>
+			<td align='center'><?php echo $r['OrderId'];?></td>
+			<td align='center'><?php echo $this->Dt($r['AddTime']);?></td>
+			<td align='center'><?php echo (int)$r['TimeDirection']==0 ? '-' : $this->Dt($r['ReqDateTime']);?></td>
+			<td><?php echo $r['VendorName'];?></td>
+			<td align='center'><?php echo $r['CustName'];?></td>
+			<td align='center'><?php echo $r['PublicName'];?></td>
+			<td><?php echo $r['Remark'];?></td>
+			<td align='center'><?php echo $r['TotalAmount'];?></td>
+			<td align='center'><?php echo $r['PayedMoney'];?></td>
+			<td align='center'><?php echo $this->Dt($r['PayTime']);?></td>
+		</tr>
+<?php } ?>
+                <tr class='c<?php echo fmod($i,2);?>'>
+                        <td align='center'></td>
+                        <td></td>
+                        <td align='center'></td>
+                        <td align='center'></td>
+                        <td></td>
+                        <td align='center'></td>
+                        <td align='center'></td>
+                        <td></td>
+                        <td align='center'>合计：</td>
+                        <td align='center'><?php echo $sum;?></td>
+                        <td align='center'></td>
+                </tr>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='12'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+
+</div>
+<script type='text/javascript'>
+$(function(){
+	$('#s_date, #e_date').datepicker({
+		'dateFormat': 'yy-mm-dd'
+	});
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

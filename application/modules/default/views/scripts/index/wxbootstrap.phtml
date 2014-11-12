@@ -1,0 +1,39 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<style type="text/css">
+#button_sq
+{
+    left: 200px;
+    position: relative;
+    top: 250px;
+	width: 235px;
+}
+
+#button_xq
+{
+    left: 600px;
+    position: relative;
+    top: 160px;
+    width: 235px;
+}
+</style>
+<div class="clear"></div>
+<div class="wrap">
+<div class="row">
+	<div style='height: 604px;background-image:url(<?php echo $this->baseUrl;?>images/wx/wx_map.jpg);'>
+	    <div id='button_sq' class='area_buttons'>
+		    <a class='need_tooltip' title='进入饭店网 苏州市区 分站' href='<?php echo $this->baseUrl;?>index/home'>
+		    <img class='pngfix' src='<?php echo $this->baseUrl;?>images/wx/sq.png' alt='市区'/>
+		    </a>
+	    </div>
+ 		<div id='button_xq' class='area_buttons'>
+	 		<a class='need_tooltip' title='进入饭店网 苏州园区 分站'  href='http://wxsip.fandian.com'>
+	 		<img class='pngfix'  src='<?php echo $this->baseUrl;?>images/wx/xq.png' alt='新区' />
+	 		</a>
+ 		</div>
+	</div>
+</div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

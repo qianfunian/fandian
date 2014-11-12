@@ -1,0 +1,49 @@
+<table width="100%" cellspacing="10" cellpadding="0" bgcolor="#f4f9fd">
+<tbody>
+<tr>
+	<td height="90">
+		<a target="_blank" href="http://wx.fandian.com"><img border="0" src="http://wx.fandian.com/css/images/logo.png"></a>
+	</td>
+</tr>
+<tr>
+	<td valign="top" height="50">
+		<b><font size="4" face="Arial,Helvetica, sans-serif" color="#555555">你好，<?php echo $this->request['UserName']?>，欢迎成为饭店网用户。</font></b><br>
+		<font size="3" face="Arial,Helvetica,sans-serif" color="#555555">请点击下面的链接对你的邮箱进行验证：</font>
+	</td>
+</tr>
+
+<tr>
+	<td valign="top" height="50">
+		<a target="_blank" href="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$this->scriptUrl.'register/active-email?email='.urlencode($this->request['Email']).'&verify='.urlencode($this->randomstring);?>"><font size="3" face="Arial, Helvetica,
+sans-serif" color="#339adf"></font><?php echo 'http://'.$_SERVER['HTTP_HOST'].$this->scriptUrl.'register/active-email?email='.urlencode($this->request['Email']).'&verify='.urlencode($this->randomstring);?></a><font></font><br>
+		<font size="3" face="Arial,Helvetica,sans-serif" color="#909090"></font>
+	</td>
+</tr>
+
+<tr>
+	<td valign="top" height="50">
+	<font size="3" face="Arial,Helvetica, sans-serif" color="#555555">
+		如果该链接无法点击，请将其复制粘贴到你的浏览器地址栏中访问。<br>
+		验证邮箱会增加帐号的安全性，也会享受更多的饭店网服务。
+	</font>
+	</td>
+</tr>
+<tr>
+	<td valign="top" height="40">
+	<font size="3" face="Arial,Helvetica, sans-serif" color="#555555">
+		祝使用愉快！<br>饭店网 <?php echo date('Y-m-d H:i:s');?><br>
+	</font>
+</td>
+</tr>
+
+<tr>
+<td valign="top" height="80">	
+	<font size="2" face="Arial,Helvetica, sans-serif" color="#909090">
+		如果你没有注册过饭店网，请忽略此邮件。<br>
+		这是饭店网的帐号服务邮件，请不要回复。<br>
+		如需了解饭店网或遇到注册问题，请访问我们的帮助中心
+(连接至<a target="_blank" href="http://wx.fandian.com/article/help"><font size="2" face="Arial, Helvetica,sans-serif" color="#339adf">http://wx.fandian.com/article/help</font></a>)
+	</font>
+	</td>
+</tr>
+</tbody></table>

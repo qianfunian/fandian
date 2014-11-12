@@ -1,0 +1,5 @@
+<?php Msd_Output::prepareHtml();?>
+<?php foreach ($this->coords as $row) { ?>
+<li id='<?php echo $row['CoordGuid'];?>' title='<?php echo addslashes($row['CoordName']);?>' rel='<?php echo $row['Longitude'].'|'.$row['Latitude'];?>'><a href="javascript:Fandian_ChooseCoord('<?php echo $row['CoordGuid'];?>', '<?php echo addslashes($row['CoordName']);?>', '<?php echo $row['Longitude'];?>', '<?php echo $row['Latitude'];?>');" title='<?php echo addslashes($row['CoordName']);?>'><?php echo Msd_Iconv::usubstr($row['CoordName'], 0, 12);?></a></li>
+<?php } ?>
+<?php Msd_Output::doOutput();?>

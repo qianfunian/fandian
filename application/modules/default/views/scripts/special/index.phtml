@@ -1,0 +1,183 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<link rel="stylesheet" href="<?php echo $this->baseUrl;?>common/css/jcart.css?<?php echo FANDIAN_APP_VER;?>" type="text/css" />
+
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol" id='wrapper'>
+      <div class="step-left">
+        <div class="my-step-left">
+          <div class="clear"></div>
+          <?php 
+          	for ($i=0;$i<count($this->special_items);$i+=2) {
+				$item = $this->special_items[$i];
+          ?>
+          <div class="all-BIZ" >
+            <div class="all-group-shop">
+              <div class="left">
+                <div class="group-pic">
+                <img height="160px" width="268px"  alt='<?php echo addslashes($item['ItemName']);?>' src='<?php echo $this->Itemspecialurl($item, $this->staticUrl.'design/product/nopic.jpg?'.FANDIAN_APP_VER);?>' /></div>
+                <div class="gropu-content"><span><?php echo $item['ItemName'];?></span><?php echo $item['Description'];?></div>
+                <div class="gropu-price"><span>￥<?php echo $item['UnitPrice'];?></span></div>
+                
+                <form method="post" action="" class="jcart">
+				<input type="hidden" name="my-item-id" value="<?php echo $item['ItemGuid']?>" />
+				<input type="hidden" name="my-item-name" value="<?php echo $item['ItemName']?>" />
+				<input type="hidden" name="my-item-price" value="<?php echo $item['UnitPrice']?>" />
+				<input type="hidden" name="my-item-qty" value="<?php echo $item['MinOrderQty']?$item['MinOrderQty']:1?>" />
+				<input type="hidden" name="my-vendor-guid" value="<?php echo $item['VendorGuid']?>" />
+				<input type="hidden" name="my-vendor-name" value="<?php echo $item['VendorName']?>" />
+				<input type="hidden" name="my-box-qty" value="<?php echo $item['BoxQty']?>" />
+				<input type="hidden" name="my-box-unitprice" value="<?php echo $item['BoxUnitPrice']?>" />		            
+                <div class="gropu-btn">
+                  <input type="submit" name="my-add-button" value="订购" class="sumit-btn" />
+                </div>
+                </form>
+              </div>
+              <?php 
+              	$item = $this->special_items[$i+1];
+              	if ($item) {
+              ?>
+              <div class="right">
+                <div class="group-pic">
+                <img width="268px" height="160px" alt='<?php echo addslashes($item['ItemName']);?>' src='<?php echo $this->Itemspecialurl($item, $this->staticUrl.'design/product/nopic.jpg?'.FANDIAN_APP_VER);?>' /></div>
+                <div class="gropu-content"><span><?php echo $item['ItemName'];?></span><?php echo $item['Description'];?></div>
+                <div class="gropu-price"><span>￥<?php echo $item['UnitPrice'];?></span></div>
+                <form method="post" action="" class="jcart">
+				<input type="hidden" name="my-item-id" value="<?php echo $item['ItemGuid']?>" />
+				<input type="hidden" name="my-item-name" value="<?php echo $item['ItemName']?>" />
+				<input type="hidden" name="my-item-price" value="<?php echo $item['UnitPrice']?>" />
+				<input type="hidden" name="my-item-qty" value="<?php echo $item['MinOrderQty']?$item['MinOrderQty']:1?>" />
+				<input type="hidden" name="my-vendor-guid" value="<?php echo $item['VendorGuid']?>" />
+				<input type="hidden" name="my-vendor-name" value="<?php echo $item['VendorName']?>" />
+				<input type="hidden" name="my-box-qty" value="<?php echo $item['BoxQty']?>" />
+				<input type="hidden" name="my-box-unitprice" value="<?php echo $item['BoxUnitPrice']?>" />	
+                <div class="gropu-btn">
+                  <input type="submit" name="my-add-button" value="订购" class="sumit-btn" />
+                </div>
+                </form>
+              </div>
+              <?php 
+              	}
+              ?>
+            </div>
+          </div>
+          <?php 
+		}	
+		?>
+        </div>
+      </div>
+      <div class="step-right">
+        <div class="my-step-right"  id="sidebar" >
+          <?php echo $this->cart;?>
+          <div class="my-info">
+            <p class="site-title">配送信息</p>
+            <form id="configCart" action="<?php echo $this->baseUrl;?>submit/confirm" method="post">
+            <table width="100%" class="menu-express">
+              <tr>
+                <td>姓名</td>
+                <td><input type='text' name='OrderContactor' id='OrderContactor' value='<?php echo addslashes(trim($_COOKIE['contactor']));?>' onblur="SaveOrderCommon('contactor', this.value);" /></td>
+              </tr>
+              <tr>
+                <td>电话</td>
+                <td><input type='text' name='OrderPhone' id='OrderPhone' value='<?php echo addslashes(trim($_COOKIE['phone']));?>' onblur="SaveOrderCommon('phone', this.value);" /></td>
+              </tr>
+              <tr>
+                <td>送餐地址</td>
+                <td>
+                <input type='text' name='OrderAddress' id='OrderAddress' value='<?php echo addslashes(trim($_COOKIE['address']));?>' onblur="SaveOrderCommon('address', this.value);" />
+                <input type='hidden' name='OrderCoordGuid' id='OrderCoordGuid' value='<?php echo addslashes($_COOKIE['coord_guid']);?>' />
+                </td>
+              </tr>
+              <tr>
+              <td>备注</td>
+              <td><input type="text" name="OrderRemark" id="OrderRemark" value='<?php echo addslashes(trim($_COOKIE['remark']));?>' onblur="SaveOrderCommon('remark', this.value);"/></td>
+              </tr>
+              <?php if ($this->CityConfig->onlinepay_enabled) { ?>
+              <tr>
+                <td>支付方式</td>
+                <td>
+                <input type="radio" name="OrderPaymethod" value="0" checked = "checked" />到付
+                <input type="radio" name="OrderPaymethod" value="1" />网上支付&nbsp;&nbsp;<img width="50px" src="<?php $this->baseUrl?>common/images/pay.jpg" />
+                </td>
+              </tr>
+              <?php } ?>
+              <tr>
+                <td valign="top">送餐时间</td>
+                <td>
+                <input type="radio" name="OrderExpressTime" value="1" checked="checked"  />预订
+                <div id='OrderExpressTimePreSettings'>
+				<select name="day" id="order_pre_day" >
+				<option value="0">今天</option>
+				<option value="1">明天</option>
+				<option value="2">后天</option>
+				</select>
+				<select name="hour" id="order_pre_hour" >
+				<?php for ($i=10;$i<=21;$i++){?>
+				<option value="<?php echo $i;?>" <?php if($i==(int)date('H')){?>selected="selected"<?php }?>><?php echo $i;?></option>
+				<?php }?>
+				</select>点
+				<select name="minutes" id="order_pre_minute">
+				<?php for ($i=0;$i<=5;$i++){?>
+				<option value="<?php echo 10*$i;?>" <?php if($i==5){?>selected="selected"<?php }?>><?php echo $i==0?"00":10*$i;?></option>
+				<?php }?>
+				</select>分
+				</div>
+				</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                <input style="margin:0px" class="fancybox" type="submit" id='ConfigOrder' name='ConfigOrder' value='确定订单' />
+                <input style="margin:0px" class="fancybox" type='button' id='ClearOrder' name='ClearOrder' value='清空' /></td>
+              </tr>
+            </table>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="<?php echo $this->baseUrl?>jcart/jcart-javascript.php"></script>		
+<script type="text/javascript">
+var IS_TABTOP=false;
+var FANDIAN_UID = '<?php echo $this->uid;?>';
+var LAST_NAME = '<?php echo addslashes(trim($_COOKIE['contactor']));?>';
+var LAST_PHONE = '<?php echo addslashes(trim($_COOKIE['phone']));?>';
+var LAST_ADDR = '<?php echo addslashes(trim($_COOKIE['address']));?>';
+var LAST_REMARK = '<?php echo addslashes(trim($_COOKIE['address']));?>';
+
+var sidebar_top = $('#sidebar').offset().top;
+var clientheight = document.documentElement.clientHeight;
+$(document).ready(function(){
+	window.onscroll=scall;
+
+	$("#configCart").submit(function(){
+	    if($("#icount").val()==0)
+	    {
+		    alert("抱歉，您的餐车还没有餐品!");
+		    return false;
+	    }else if($("#OrderContactor").val()=="")
+	    {
+		    alert("请填写接收人姓名，谢谢！");
+		    return false;
+	    }else if($("#OrderPhone").val()=="")
+	    {
+		    alert("请填写接收人电话，谢谢！");
+		    return false;
+	    }else if($("#OrderAddress").val()=="")
+	    {
+		    alert("请填写送餐地址，谢谢！");
+		    return false;
+	    }
+
+		return true;
+	});
+});
+
+</script>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

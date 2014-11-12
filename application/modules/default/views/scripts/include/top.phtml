@@ -1,0 +1,173 @@
+<div class="site-header">
+  <?php if ($this->need_scroll && $this->cName=='index' && $this->data['idx_sb']['url']) { ?>
+  <div class="row">
+  <div class="twelvecol">
+  <div id='scroll_banner' class='scroll_banner' style='display:none;'></div>
+  </div>
+  </div>
+  <?php } ?>	  
+  <div class="site-top">
+    <div class="row">
+      <div class="twelvecol">
+        <div class="top-phone"> 
+        <span class="hotline">订餐热线：400-114-7777</span>
+        <span class="welcome">您好 <?php if(isset($this->member['UserName'])){echo $this->member['UserName'];}?>！欢迎来到饭店网 
+	    <?php if ($this->uid) { ?>
+	    <a href='<?php echo $this->scriptUrl;?>member/login/logout' onclick="return confirm('确定要退出登录了吗？');">[退出登录]</a>
+	    <?php } else { ?>
+	    <a href='<?php echo $this->scriptUrl;?>member/login'>[登录]</a> <a href='<?php echo $this->scriptUrl;?>member/register'>[注册]</a>
+	    <?php } ?>
+	    </span>
+        <div class="clear"></div>
+        </div>
+        <div class="top-menu">
+          <div class="head-link">
+            <ul id="megamenu" class="mega-menu">
+              <li class="head-fav"><a id="collect" href="http://<?php echo Msd_Config::appConfig()->domain->main;?>">收藏</a></li>
+              <li><a href="<?php echo $this->scriptUrl;?>order/history"><font color="#FF4400">我的订单</font></a></li>
+              <li><a href="<?php echo $this->scriptUrl;?>article/help">帮助 </a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div class="row">
+    <div class="twelvecol">
+      <div class="logo"><a href="<?php echo $this->scriptUrl;?>">饭店网</a></div>
+      <div class="select-city"> <a id="sel-city" href="javascript:void(0)"><span><?php echo $this->CityConfig->short_name;?></span></a>
+        <div id="sle-area">
+        <?php 
+		$cs = explode(',', $this->CityConfig->navi->cities);
+		$_cs = array();
+		foreach ($cs as $c) {
+			list($cname, $domain) = explode('|', $c);
+			if($cname != $this->CityConfig->short_name)
+			{
+				$_cs[] = "<a href='http://".$domain.".fandian.com'>".$cname."</a>";
+			}
+		}
+		echo implode(' | ', $_cs);
+		?>
+        </div>	
+      </div>
+      <div class="sina">
+      <iframe width="200" height="24" frameborder="0" allowtransparency="true" marginwidth="0" marginheight="0" scrolling="no" border="0" src="http://widget.weibo.com/relationship/followbutton.php?language=zh_cn&width=230&height=24&uid=1943484772&style=3&btn=light&dpc=1"></iframe>
+      </div>
+      <div class="my-search">
+        <ul class="tabs">
+          <li <?php if(!$this->keyword){?>class="active"<?php }?> tab="1"><a href="javascript:void(0)">地图点餐</a></li>
+          <li <?php if($this->keyword){?>class="active"<?php }?> tab="2"><a href="javascript:void(0)">美食搜索</a></li>
+        </ul>
+        <div class="tab_container">
+		<div id="tab1" class="tab_content" <?php if($this->keyword){?>style="display:none"<?php }?>>
+		<input id="stepadd" name="address"  class="my-input" type="text" value="<?php echo $_COOKIE['searchaddress']?$_COOKIE['searchaddress']:'如：街道，交叉路口，明显建筑物等';?>" />
+		<input type="image" src="<?php echo $this->scriptUrl?>common/images/search_submit.png" value="搜索" class="my-submit inline" id='gonext' />
+		</div>
+		
+		<div id="tab2" class="tab_content" <?php if($this->keyword){?>style="display:block"<?php }?>>
+		<input id='search_keyword' class="my-input" type="text" name='keyword' value="<?php echo $this->keyword ? $this->keyword : '如：菜名，店名';?>" />
+		<input type="image" src="<?php echo $this->scriptUrl?>common/images/search_submit.png"  class="my-submit" id='idx_search_input' title="搜索" type="button" />
+		</div>
+		<input type='hidden' name='CoordGuid' id='CoordGuid' value='<?php echo $_COOKIE['coord_guid'];?>' />
+		</div>
+      </div>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div class="site-menu">
+    <div class="row">
+      <div class="twelvecol">
+        <div class="menu">
+            <?php if($_SERVER['REQUEST_URI']=='/' || $_SERVER['REQUEST_URI']=='/index/home'){?>
+          <div class="area">
+            <div class="location">区域选择</div>
+            <ul class="area-ul" style="display: none;">
+          <?php foreach ($this->data['biz_area'] as $i=>$row) {?>
+          <li>
+          <div class="area-loc"><?php echo $row['RegionName'];?></div>
+          <div class="areashow">
+          <div id="area-ctg">
+           <span>菜系：</span>
+           <span class='active ctgspan'>全部</span>
+           <?php 
+            foreach($this->data['categories'] as $catguid=>$ctgname){
+                echo "<span class='ctgspan'>".$ctgname."</span>";
+		    }
+		    ?>
+		  </div>
+          <div style="overflow:hidden; float:left; width:660px;padding:0">
+          <?php 
+          foreach($row['vendors'] as $key=>$vendors){ 
+          	echo "<div style='width:650px;overflow:hidden; padding-left:10px; line-height:220%;margin-bottom:10px;'>";
+  		    echo "<div class='area-district'>".$key."</div><div style='float:left;width:520px'>";
+          	$_vguids = array();
+          	foreach($vendors as $vendor){ 
+				if (!in_array($vendor['VendorGuid'], $_vguids)) {
+			?>
+          	<a class="area-vendor" ctgname="<?php echo $vendor['CtgName']?>" href='<?php echo $this->scriptUrl;?>vendor/<?php echo $vendor['VendorName'];?>'><?php echo $this->Fvendorname($vendor['VendorName']);?></a>
+            <?php
+            		$_vguids[] = $vendor['VendorGuid']; 
+				}
+			}echo "</div></div>";
+          } ?>
+          
+          </div>
+          <div style="overflow:hidden; float:left; width:90px; padding:0">
+          <p style="border-bottom:1px solid #FE6732; color:#FE6732; font-weight:bold; margin-bottom:10px;text-align:center">推荐品牌</p>
+           <?php $_vguids = array();?>
+           <?php foreach ($row['rec_vendors'] as $rec_vendors) { ?>
+           <?php 
+           	if (!in_array($rec_vendors['VendorGuid'], $_vguids)) {
+           ?>
+		  <a href='<?php echo $this->scriptUrl;?>vendor/<?php echo $rec_vendors['VendorName'];?>' title='<?php echo addslashes($rec_vendors['VendorName']);?>'>
+		  <img height=54px width=83px style='border:1px solid #ccc' alt='<?php echo $rec_vendors['VendorName'];?>' src='<?php echo Msd_Waimaibao_Vendor::imageUrl(array('VendorGuid' => $rec_vendors['VendorGuid']));?>' />
+		  </a>
+		  <?php 
+				$_vguids[] = $rec_vendors['VendorGuid'];
+			}
+		  ?>
+          <?php } ?>
+          </div>
+          </div>
+          </li>
+          <?php }?>
+          </ul>
+          </div>
+          <?php }?>
+          <ul>
+            <li class='first <?php echo $this->Hovermenu('default', 'index');?>'><a href="<?php echo $this->scriptUrl;?>index/home"><span>首页</span></a></li>
+			<li class='<?php echo $this->Hovermenu('default', array('step', 'vendor'), strlen($this->controllerParams['keyword']) ? $this->controllerParams['keyword'] : '_fucking_');?>'>
+			<a href="<?php echo $this->scriptUrl;?>vendor"><span>我要送餐</span></a></li>
+			<?php if ($this->CityConfig->navi->newyear_enabled) { ?>
+			<li class='<?php echo $this->Hovermenu('default', 'new-year');?>'><a href="<?php echo $this->scriptUrl;?>new-year" ><span style="font-size:14pt">年夜饭</span></a></li>
+			<?php }?>
+			<?php if ($this->CityConfig->navi->welfare_enabled) { ?>
+			<li class='<?php echo $this->Hovermenu('default', 'welfare');?>'><a href="<?php echo $this->scriptUrl;?>welfare"><span>生日福利</span></a></li>
+			<?php }?>
+			<?php if ($this->CityConfig->navi->special_enabled) { ?>
+			<li class='<?php echo $this->Hovermenu('default', array('special'));?>'><a href="<?php echo $this->scriptUrl;?>special"><span>特价套餐</span></a></li>
+			<?php } ?>
+			<?php if ($this->CityConfig->navi->xwc_enabled) { ?>
+			<li class='<?php echo $this->Hovermenu('default', array('vendor'), '下午茶');?>'><a href="<?php echo $this->scriptUrl;?>vendor/index/service/下午茶" ><span>下午茶</span></a></li>
+			<?php } ?>
+			<?php if ($this->CityConfig->navi->yx_enabled) {?>	
+			<li class='<?php echo $this->Hovermenu('default', array('vendor'), '夜宵');?>'><a href="<?php echo $this->scriptUrl;?>vendor/index/service/夜宵"><span>夜宵</span></a></li>
+			<?php } ?>
+			<li class='<?php echo $this->Hovermenu('member').' '.$this->Hovermenu('default', array('order'));?>'><a href='<?php echo $this->scriptUrl;?>member'><span>我的帐户</span></a></li>
+			<?php if ($this->CityConfig->credit->enabled) { ?>
+			<li class='<?php echo $this->Hovermenu('default', 'integral');?>'><a href='<?php echo $this->scriptUrl;?>integral'><span>积分兑换</span></a></li>
+			<?php } ?>
+			<li class='<?php echo $this->Hovermenu('default', 'feedback');?>'><a href='<?php echo $this->scriptUrl;?>feedback'><span>留言板</span></a></li>
+          		<?php if($this->CityConfig->short_name == '南京' && time()<strtotime('2014-10-18 21:00:00')){ ?>
+			<li class='<?php echo $this->Hovermenu('default', 'topic');?>'><a href='http://topic.fandian.com' target="_blank"><span style='font-size:16pt'>我要上封面</span></a></li>
+			<?php }?>
+		</ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

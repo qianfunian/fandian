@@ -1,0 +1,14 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+<div class="row">
+<h2>
+<?php echo $this->flag?'恭喜，激活成功，':'抱歉，激活失败或您的邮箱已经激活，谢谢！'?><a href='http://<?php echo $_SERVER[HTTP_HOST];?>'>返回首页</a>
+</h2>
+</div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

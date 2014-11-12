@@ -1,0 +1,108 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<link rel="stylesheet" href="<?php echo $this->jsUrl;?>colorbox/colorbox.css?<?php echo FANDIAN_APP_VER;?>" />
+
+<script src="<?php echo $this->baseUrl;?>common/js/jquery.colorbox-min.js"></script>
+<script>
+	$(document).ready(function(){
+		$(".iframe").colorbox({
+			iframe:true,
+			 width:"60%", 
+			 height:"80%",
+			 title:"我要报名上封面",
+			 onClosed:function(){
+				 window.parent.frames["main_frame"].location.reload();
+			 }
+
+		});
+	});
+</script>
+<style type="text/css">
+
+th { 
+font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif; 
+color: #4f6b72; 
+border-right: 1px solid #C1DAD7; 
+border-bottom: 1px solid #C1DAD7; 
+border-top: 1px solid #C1DAD7; 
+letter-spacing: 2px; 
+text-transform: uppercase; 
+text-align: left; 
+padding: 6px 6px 6px 12px; 
+background: #CAE8EA  no-repeat; 
+} 
+
+td { 
+background: #fff; 
+font-size:12px; 
+padding: 6px 6px 6px 12px; 
+color: #4f6b72; 
+border-bottom:1px solid #CCC
+} 
+</style>
+<div class='wrapper'>
+<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+<div class='page_nav'>
+	<div class='page_info'>我要上封面-用户管理</div>
+	
+	<div class='page_now'><a class='iframe' href="<?php echo $this->baseUrl?>active/attend?from=1">添加用户</a></div>
+</div>	
+<table width="100%">
+<tr><th>状态</th><th>票数</th><th>姓名</th><th>性别</th><th>年龄</th><th>头像</th><th>所在城市</th><th>所在行政区</th><th>手机号码</th><th>QQ</th><th>邮箱</th><th>个人爱好</th><th>拉票宣言</th><th>删除</th></tr>
+<?php foreach($this->rows as $row){?><tr id="tr<?php echo $row['ID']?>">
+<td><span id="span<?php echo $row['ID'];?>" style="cursor:pointer" class="confim" uid="<?php echo $row['ID']?>" tag="<?php echo $row['Active']?0:1;?>"><?php echo $row['Active']?'审核通过':'<font color=red>待审核</font>';?></span></td>
+<td><?php echo $row['Poll']?:'0';?></td>
+<td><?php echo $row['Realname']?></td>
+<td><?php echo $row['Sex']?></td>
+<td><?php echo $row['Age']?></td>
+<td><a href="<?php echo $row['Photolink']?>" target="_blank">点击查看</a></td>
+<td><?php echo $row['City']?></td>
+<td><?php echo $row['District']?></td>
+<td><?php echo $row['Mobilephone']?></td>
+<td><?php echo $row['Qq']?></td>
+<td><?php echo $row['Email']?></td>
+<td><?php echo $row['Favorite']?></td>
+<td><?php echo $row['Enounce']?></td>
+<td><a href="javascript:void(0)" class="delete" id="<?php echo $row['ID']?>">删除</a></td>
+</tr>
+<?php }?>
+</table>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.delete').click(function(){
+	 if(confirm("你确认删除吗？这将会删除关于此用户的所有相关信息")){
+		 var uid = $(this).attr("id");
+			$.post("<?php echo $this->baseUrl?>"+"active/delete",{uid:uid},function(result)
+			{
+				if(result==1){
+					alert('删除成功');
+					$('#tr'+uid).hide();
+				}else{
+					alert('删除失败');
+				}
+			});
+	   }else
+	   {
+	      return false;
+	   }
+	})
+
+	$('.confim').click(function(){
+		var tag = $(this).attr("tag");
+		var uid = $(this).attr("uid");
+		$.post("<?php echo $this->baseUrl?>"+"active/confim",{tag:tag,uid:uid},function(result)
+		{
+			if(result==1){
+				alert('审核通过');
+				$("#span"+uid).attr("tag",'0').html('审核通过');
+			}else if(result==0){
+				alert('待审核');
+				$("#span"+uid).attr("tag",'1').html('待审核');
+			}else{
+				alert("操作失败，请联系我QQ312181918");
+			}
+		});
+	})
+})
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

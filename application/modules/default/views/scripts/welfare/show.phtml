@@ -1,0 +1,83 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol" id='wrapper'>
+      <div class="step-left">
+        <div class="my-step-left">
+          <h1><?php echo $this->extend['LongTitle'];?></h1>
+          <div class="tuan-info">
+            <div class="tuan-content"><h5><span>【本单详情】</span></h5>
+            <?php echo $this->extend['Detail'];?>
+            </div>
+            <div class="detail-buy">
+              <div class="fl">¥<?php echo $this->data['UnitPrice'];?></div>
+              <table style="display:none">
+                <tbody>
+                  <tr>
+                    <th>价值</th>
+                    <th>折扣</th>
+                    <th>已购买</th>
+                  </tr>
+                  <tr>
+                    <td><span>¥</span><del><?php echo $this->extend['Persisted'];?></del></td>
+                    <td><?php echo $this->Cutoffprice($this->extend['Persisted'], $this->data['UnitPrice']);?>折</td>
+                    <td><?php echo (int)$this->extend['Sales'];?>人</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div class="fr">
+                <input type="submit" onclick="Tuan_AddItem('<?php echo $this->data['VendorGuid'];?>', '<?php echo $this->data['ItemGuid'];?>');" class="sumit-btn" value="立即预订">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <?php include_once dirname(__FILE__).'/widget.phtml';?>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<script type='text/javascript'>
+var VENDOR_IN_SERVICE = true;
+var TUAN_ITEMS = [];
+var CITEMS = [];
+<?php foreach ($this->items as $row) { ?>
+TUAN_ITEMS.push(['<?php echo $row['VendorGuid'];?>', '<?php echo $row['VendorName'];?>', '<?php echo $row['freight'];?>', <?php echo json_encode($row['items']);?>]);
+<?php } ?>
+<?php foreach ($this->c_items as $_VendorGuid=>$row) { ?>
+CITEMS.push(['<?php echo $_VendorGuid;?>', <?php echo json_encode($row);?>]);
+<?php } ?>
+var LAST_ITEM_GUID = '';
+var PREPARED_ITEMS = <?php echo json_encode($this->itemids);?>;
+var LAST_NAME = '<?php echo addslashes(trim($_COOKIE['contactor']));?>';
+var LAST_PHONE = '<?php echo addslashes(trim($_COOKIE['phone']));?>';
+var LAST_ADDR = '<?php echo addslashes(trim($_COOKIE['address']));?>';
+var REMAIN_ITEMS = <?php echo json_encode($this->remain_items);?>;
+var SERVICES = <?php echo json_encode($this->services);?>;
+var ITEM_TYPES = <?php echo (int)$this->itypes;?>;
+var TITEMS = <?php echo json_encode($this->titems);?>;
+var VENDOR_SERVICE_TIME = [];
+
+var ORDER_PARAMS = {
+	'items': <?php echo json_encode($this->citems);?>,
+	'remarks': <?php echo json_encode($this->cremarks);?>,
+	'contactor': '<?php echo addslashes($_COOKIE['contactor']);?>',
+	'phone': '<?php echo addslashes($_COOKIE['phone']);?>',
+	'address': '<?php echo addslashes($_COOKIE['address']);?>',
+	'paymethod': <?php echo (int)$_COOKIE['paymethod'];?>,
+	'express_setting': <?php echo (int)$_COOKIE['express_setting'];?>,
+	'pre_year':'<?php echo addslashes($_COOKIE['pre_year']);?>',
+	'pre_month': '<?php echo addslashes($_COOKIE['pre_month']);?>',
+	'pre_day': '<?php echo addslashes($_COOKIE['pre_day']);?>',
+	'pre_hour': '<?php echo addslashes($_COOKIE['pre_hour']);?>',
+	'pre_minute': '<?php echo addslashes($_COOKIE['pre_minute']);?>',
+	'coord_guid': '<?php echo addslashes($_COOKIE['coord_guid']);?>'
+};
+</script>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<script type='text/javascript' charset='utf-8' src='<?php echo $this->jsUrl;?>modules/default/gift.js?<?php echo FANDIAN_APP_VER;?>'></script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>>

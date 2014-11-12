@@ -1,0 +1,99 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="con-left">
+        <div class="my-news">
+          <div class="news">我的饭店网</div>
+          <ul>
+          <?php include_once dirname(__FILE__).'/../include/left_nav.phtml';?>
+          </ul>
+        </div>
+      </div>
+      <div class="con-right">
+      <div class="my-content">
+    
+	    <div class="m" id="orderinfo">
+	    <div class="mt"><strong>商家餐品评价</strong></div>
+	    <div class="mc">
+		  <div class="m" id="orderstate">
+		  <div class="mt"><strong><a target="_blank" href="/vendor/迎宾楼"><?php echo $this->data['vendor']['VendorName'];?></a>&nbsp;订单号：<?php echo $this->data['order']['OrderId'];?>&nbsp;&nbsp;&nbsp;&nbsp;状态：<span class="ftx14"><?php echo $this->OSName($this->data['order']['StatusId']);?></span></strong></div>
+		  </div>
+		  <dl>
+		  <dt>餐品清单：</dt>
+		  <dd class="p-list">
+		    <table width="100%" cellspacing="0" cellpadding="0">
+		      <tbody>
+		      <tr>
+		        <th width="25%"> 菜品名称 </th>
+		        <th width="25%"> 菜品数量 </th>
+		        <th width="25%"> 菜品单价</th>
+		        <th width="25%"> 菜品总价 </th>
+		      </tr>
+		      <?php foreach ($this->data['items'] as $item) { ?>
+		      <tr>
+		        <td><?php echo $item['ItemName'];?></td>
+		        <td><?php echo $item['ItemQty'];?></td>
+		        <td><span class="ftx04"><?php echo $item['ItemUnit'];?></span></td>
+		        <td><?php echo $item['ItemPrice'];?></td>
+		      </tr>
+		      <?php }?>
+		      </tbody>
+		    </table>
+		  </dd>
+		  </dl>
+		  <dl>
+		  <?php if ($this->data['order']['StatusId']==Msd_Config::appConfig()->order->status->delivered) { ?>
+				<span><b>评价:</b></span><br>
+				<?php 
+				if ($this->comment['Content']) {
+					echo nl2br($this->comment['Content']);
+				 } else {
+                ?>
+                <form method='post' action='<?php echo $this->scriptUrl;?>order/savecomment' >
+				<div class="fl">
+				<ul class="star-list">
+					<li>
+					<input type="radio" class="radio" value="5" name="core">
+					<label>五颗星</label>
+					</li>
+					<li>
+					<input type="radio" class="radio" value="4" name="core">
+					<label>四颗星</label>
+					</li>
+					<li>
+					<input type="radio" class="radio" value="3" name="core">
+					<label>三颗星</label>
+					</li>
+					<li>
+					<input type="radio" class="radio" value="2" name="core">
+					<label>二颗星</label>
+					</li>
+					<li>
+					<input type="radio" class="radio" value="1" name="core">
+					<label>一颗星</label>
+					</li>
+				</ul>
+				</div>
+				
+				<textarea name='comment_content' id='comment_content' rows='4' cols='80'></textarea>
+				<input type='submit' class='b_input' value='保存评论' id='save_comment' name='save_comment' />
+				<input type='hidden' name='OrderGuid' id='OrderGuid' value='<?php echo $this->data['order']['OrderGuid'];?>' />
+				<input type='hidden' name="VendorGuid" id="VendorGuid" value="<?php echo $this->data['order']['VendorGuid'];?>" />
+				</form>
+				<?php } ?>
+		  <?php } ?>
+		  </dl>
+	    </div>
+	    </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

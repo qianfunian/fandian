@@ -1,0 +1,116 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览附件</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'Name' => '附件名称',
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+	&nbsp;
+	用途：
+	<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'0' => '文章',
+			'1' => '用户头像(origin)',
+			'2' => '用户头像(normal)',
+			'3' => '用户头像(small)',
+			), 'Usage', $this->request['Usage']);?>
+	&nbsp;
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'Name' => '附件名称',
+			'UploadTime' => '上传时间',
+			'ReadTimes' => '浏览量'
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<form method='post' action='<?php echo $this->scriptUrl;?>attachment/actions' id='form_attach_list'>
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='5%'>序号</th>
+		<th width='15%'>附件名称</th>
+		<th width='10%'>用途</th>
+		<th width='10%'>扩展名</th>
+		<th width='10%'>附件尺寸</th>
+		<th width='15%'>Mime类型</th>
+		<th width='10%'>浏览量</th>
+		<th width='15%'>上传时间</th>
+		<th></th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td class='left'>
+	<a href='<?php echo $this->baseUrl;?>files/down/<?php echo $row['FileId'];?>'>
+	<?php echo $this->Attachicon($row);?>
+	<?php echo $row['Name'];?></a>
+	</td>
+	<td><?php echo $this->Attachmentusage($row['Usage']);?></td>
+	<td><?php echo $row['Ext'];?></a></td>
+	<td><?php echo Msd_Files::FormatSize($row['Size']);?></td>
+	<td><?php echo $row['MimeType'];?></a></td>
+	<td><?php echo $row['ReadTimes'];?></td>
+	<td><?php echo $this->Dt($row['UploadTime']);?></td>
+	<td><input type='checkbox' name='to_del[]' value='<?php echo $row['FileId'];?>' /></td>
+</tr>
+<?php } ?>
+<tr class='ths'>
+	<th colspan='10'>
+		<input type='button' name='btnChooseAll' reldata='form_attach_list' value='全 选' id='btnChooseAll' rel='choose_all'/>
+		<input type='button' name='btnUnchooseAll' reldata='form_attach_list' value='全不选' id='btnUnchooseAll' rel='unchoose_all' />
+		<input type='button' name='btnRevertAll' reldata='form_attach_list' value='反 选' id='btnRevertAll' rel='revert_all' />
+	</th>
+</tr>
+<tr class='ths'>
+	<th colspan='10'>
+		<input type='submit' name='btnDel' value='删除所选' id='btnDel' />
+		<input type='hidden' name='todo' id='todo' value='delete' />
+	</th>
+</tr>
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+</form>
+</div>
+<script type='text/javascript'>
+$(function(){
+	$('#btnDel').click(function(){
+		return confirm('确定？');
+	});
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

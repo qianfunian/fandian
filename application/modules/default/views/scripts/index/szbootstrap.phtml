@@ -1,0 +1,115 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?><!--演示内容开始-->
+    <style type="text/css">
+        /* myjQuery */
+        #myjQuery
+        {
+            padding: 5px;
+            background: #f0f0f0;
+            width: 960px;
+            position: relative;
+            height: 590px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        #myjQueryContent
+        {
+            border: solid 1px #fff;
+            width: 958px;
+            height: 539px;
+            overflow: hidden;
+        }
+        #myjQueryContent div
+        {
+            position: absolute;
+            height: 539px;
+        }
+        #myjQueryContent img
+        {
+            width: 958px;
+            height: 539px;
+        }
+        #myjQuery ul
+        {
+            display: block;
+            overflow: hidden;
+            width: 958px;
+            height: 47px;
+        }
+        #myjQuery ul li
+        {
+            display: block;
+            float: left;
+            width: 318px;
+            cursor: pointer;
+            padding-top: 7px;
+            height: 40px;
+            text-align: center;
+        }
+        #myjQuery ul li a
+        {
+            display: block;
+            width: 318px;
+            margin: 0px auto;
+            height: 35px;
+            overflow: hidden;
+            color: #C00;
+            position: relative;
+            z-index: 12;
+            text-decoration: none;
+            font: 22px/35px 微软雅黑;
+            font-weight: bold;
+        }
+        #myjQuery ul li.current a
+        {
+            color: #FFF;
+        }
+      
+        #myjQuery #flow
+        {
+            margin-top: -588px;
+            z-index: 10;
+            background: url(<?php echo $this->baseUrl;?>images/sz/fcurrent.png);
+            left: 5px;
+            width: 318px;
+            position: absolute;
+            height: 47px;
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript" src="<?php echo $this->baseUrl;?>images/sz//blockSlide.js?v=1"></script>
+    <div id="myjQuery">
+     <ul>
+     <li class="current"><a href="<?php echo $this->baseUrl;?>index/home">市 区<br />市区</a></li>
+     <li><a href="http://sz-sip.fandian.com">园 区<br />园区</a></li>
+     <li><a href="http://szhd.fandian.com">湖东<br />湖东</a></li>
+     </ul>
+        <div id="myjQueryContent">
+            <div style="z-index:9;">
+            <a href="<?php echo $this->baseUrl;?>index/home">
+            <img width="950" height="539" src="<?php echo $this->baseUrl;?>images/sz/sq.jpg?v=1" alt="进入饭店网 苏州市区 分站" title='进入饭店网 苏州市区 分站' />
+            </a>
+            </div>
+            <div>
+            <a href="http://sz-sip.fandian.com">
+            <img width="950" height="539" src="<?php echo $this->baseUrl;?>images/sz/yq.jpg?v=1" alt="进入饭店网 苏州园区分站" title="进入饭店网 苏州园区分站" /></a>
+            </div>
+            <div>
+            <a href="http://szhd.fandian.com">
+            <img width="950" height="539" src="<?php echo $this->baseUrl;?>images/sz/szhdmap.jpg?v=1" alt="进入饭店网 苏州湖东分站" title="进入饭店网 苏州湖东分站" />
+            </a></div>
+        </div>
+       
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#myjQuery").blockSlide({
+                speed: "slow",
+                num: 3,
+                timer: 5000,
+                flowSpeed: 300
+            });
+        });
+    </script>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

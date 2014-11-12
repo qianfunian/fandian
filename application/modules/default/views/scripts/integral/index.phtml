@@ -1,0 +1,178 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div id='main'>
+	<div class="feedback_title"><h2>积分兑换</h2></div>
+		
+		<div id='lmain' class="left" >
+			<ul id="productnav">
+				<?php foreach ($this->categories as $cid=>$cname) { ?>
+				<li id="tow<?php echo $cid;?>" onclick="SetTab('tow',<?php echo $cid;?>,<?php echo count($this->categories);?>);" <?php if ($cid==1) { ?>class='tow_on'<?php } ?>><?php echo $cname;?></li>
+				<?php } ?>
+			</ul>
+			<ul id="productpan">
+				<?php foreach ($this->categories as $cid=>$cname) { ?>
+				<li id="con_tow_<?php echo $cid;?>" style="<?php if ($cid==1) { ?> display: block<?php } else { ?>display: none;<?php } ?>">
+					<ol class="productListPics">
+						<?php foreach ($this->rows as $row) { ?>
+						<?php if ($row['Category']==$cid) { ?>
+						<li>
+							<div class="pic">
+								<a href="javascript:ShowBigImg('<?php echo $row['ArticleId'];?>', '<?php echo $this->Attachurl($row['FirstAttach']);?>', '<?php echo addslashes($row['Title'])?>');" id='ii_<?php echo $row['ArticleId'];?>' >
+										<img class='item_img' alt='<?php echo addslashes($row['Title']);?>' src='<?php echo $this->Attachurl($row['FirstAttach']);?>' />
+								</a>
+							</div>
+							<div class="titleppp">
+								<div title="<?php echo $row['Title'];?>" class="productTitle"><a href="javascript:ShowExchangeModal({'ArticleId':'<?php echo $row['ArticleId'];?>', 'Title':'<?php echo $row['Title'];?>', 'Credit':'<?php echo $row['Credit'];?>', 'Total':'<?php echo $row['Total'];?>', 'Remains':'<?php echo $row['Remains'];?>'});" id='it_<?php echo $row['ArticleId'];?>'><?php echo $row['Title']?></a></div>
+									<div class="pprice">所需积分：<?php echo $row['Credit'];?></div>
+									<div class="pptall">总量：<?php echo $row['Total'];?></div>
+									<div class="pptsum">剩余：<?php echo $row['Remains'];?><input onclick="ShowExchangeModal({'ArticleId':'<?php echo $row['ArticleId'];?>', 'Title':'<?php echo $row['Title'];?>', 'Credit':'<?php echo $row['Credit'];?>', 'Total':'<?php echo $row['Total'];?>', 'Remains':'<?php echo $row['Remains'];?>'});" type='button' value='兑换' class="right b_input" /></div>
+							</div>
+							<div id='credit_intro_<?php echo $row['ArticleId'];?>' class='hidden'><?php echo $row['Detail'];?></div>
+						</li>
+						<?php } ?>
+						<?php } ?>						
+					</ol>
+				</li>
+				<?php } ?>
+			</ul>
+			<ul><li id="pages_links"></li></ul>
+		</div>
+		
+		<div id='rmain' class="right" >
+			<h3 class="h3title">说明位</h3>
+		</div>
+		
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+</div>
+<div class='modal_wrap' id='modal_credit'>
+		<div class='map_header'>您正在兑换 <span id='CreditTitle'></span>，请填好下列表格</div>
+	
+<hr />
+<form>
+	<div class='map_container'>
+地址：<input size='50' class='input' type='text' name='Address' id='Address' value='<?php echo $this->request['Address'];?>' /> 
+	<span class='error' id='error_Address'><?php echo $this->error['Address'];?></span>
+<hr />
+	联系人：<input class='input' type='text' name='Contactor' id='Contactor' value='<?php echo $this->request['Contactor'];?>' /> <span class='error' id='error_Contactor'><?php echo $this->error['Contactor'];?></span>
+<hr />
+电话：<input class='input' type='text' name='Phone' id='Phone' value='<?php echo $this->request['Phone'];?>' /> <span class='error' id='error_Phone'><?php echo $this->error['Phone'];?></span>
+<hr />
+注意：兑换过后将扣除您 <span class='error' id='CreditNeeded'></span> 积分值
+	</div>
+	<div class='map_buttons'>
+		<input type='hidden' name='ArticleId' id='ArticleId' value='' />
+		<input class='b_input'  type='button' id='address_confirm' name='address_confirm' value='  确 定  ' onclick="DoExchange();" />
+		<input class='b_input' type='button' id='address_cancel' name='address_cancel' value='  取 消  ' onclick="try{cmodal.close();} catch(e){}"  />
+	</div>
+</form>
+</div>
+
+<div class='modal_wrap' id='credit_big_img'>
+	<div class='map_header' id='credit_big_img_title'></div>
+	<div id='credit_big_img_container'></div>
+	<div class='credit_intro'>
+		<fieldset>
+			<legend>简介</legend>
+			<div id='credit_intro'></div>
+		</fieldset>
+	</div>
+	<div class='map_buttons'>
+		<input class='b_input' type='button' id='close_big_img' name='close_big_img' value='  关 闭  ' onclick="try{imodal.close();} catch(e){}"  />
+	</div>
+</div>
+
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<script type='text/javascript'>
+var cmodal = null;
+var imodal = null;
+
+function ResizeImg(dom)
+{
+	if (dom.width>550) {
+		dom.width = 550;
+	}
+
+	if (dom.height>280) {
+		h = dom.height;
+		dom.height = 280;
+		dom.width = 280*550/h;
+	}
+}
+
+function ShowBigImg(ArticleId, src, imgTitle)
+{
+	Fandian_SetDomHtml('credit_big_img_title', imgTitle);
+
+	big_img = '<a href="'+src+'" target="_blank"><img src="'+src+'" alt="'+imgTitle+'" class="credit_big_img" onload="ResizeImg(this)"/></a>';
+	ci = document.getElementById('credit_intro_'+ArticleId).innerHTML;
+	
+	Fandian_SetDomHtml('credit_big_img_container', big_img);
+	Fandian_SetDomHtml('credit_intro', ci);
+	
+	imodal.open();
+}
+
+function DoExchange()
+{
+	if (Fandian_IsGuid(FANDIAN_UID)) {
+		_ArticleId = parseInt(document.getElementById('ArticleId').value);
+		_Phone = encodeURI(document.getElementById('Contactor').value);
+		_Contactor = encodeURI(document.getElementById('Contactor').value);
+		_Address = encodeURI(document.getElementById('Address').value);
+		
+		url = FANDIAN_SCRIPT_URL+'integral/do?ArticleId='+_ArticleId+'&Phone='+_Phone+'&Contactor='+_Contactor+'&Address='+_Address;
+		Fandian_AjaxLoading();
+
+		Fandian_SimpleSilentAjax({
+			'url': url,
+			'callback': function(ir){
+				Fandian_Alert(ir.message);
+				Fandian_AjaxCompleted();
+				if (ir.success>0) {
+					cmodal.close();
+				}
+			}
+		});
+	} else {
+		Fandian_Alert('请先登录！');
+	}
+}
+
+function ShowExchangeModal(obj)
+{
+	if (Fandian_IsGuid(FANDIAN_UID)) {
+		if (obj.Remains>0) {
+			Fandian_SetDomHtml('CreditNeeded', obj.Credit);
+			Fandian_SetDomHtml('CreditTitle', obj.Title);
+			Fandian_SetDomValue('ArticleId', obj.ArticleId);
+			cmodal.open();
+		} else {
+			Fandian_Alert('对不起，该物品已经兑换完了。');
+		}
+	} else {
+		Fandian_Alert('请先登录！');
+	}
+}
+
+document.ready(function(){
+	cmodal = new Fandian_Modal('modal_credit', {
+		width: 700,
+		height: 200,
+		top: 100,
+		afterOpen: function(){
+			
+		},
+		afterClose: function(){
+		}
+	});
+
+	imodal = new Fandian_Modal('credit_big_img', {
+		width: 600,
+		height: 500,
+		top: 50,
+		afterOpen: function(){
+		}
+	});
+});
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

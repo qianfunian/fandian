@@ -1,0 +1,104 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览后台操作日志</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'Memo' => '操作内容',
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+	&nbsp;
+	<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'browse' => '浏览',
+			'insert' => '新增',
+			'update' => '修改',
+			'delete' => '删除',
+			'login' => '登录',
+			'logout' => '注销'
+			), 'ActionType', $this->request['ActionType']);?>
+	&nbsp;
+	日期范围：
+	<input type='text' name='from' id='from' value='<?php echo $this->request['from'];?>' /> 
+	至 
+	<input type='text' name='to' id='to' value='<?php echo $this->request['to'];?>' /> 
+	&nbsp;
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'ActionTime' => '操作时间',
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='5%'>序号</th>
+		<th width='8%'>操作员</th>
+		<th width='10%'>操作时间</th>
+		<th width='8%'>操作类型</th>
+		<th width='10%'>操作内容</th>
+		<th width='10%'>IP</th>
+		<th>Url</th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td>
+	<?php echo $row['Username'];?>
+	</td>
+	<td><?php echo $this->Dt($row['ActionTime']);?></a></td>
+	<td><?php echo $this->Actionname($row['ActionType']);?></td>
+	<td><div class='log_memo'><?php echo $row['Memo'];?></div></td>
+	<td><?php echo $row['Ip'];?></td>
+	<td class='left'><div class='log_url' title='<?php echo addslashes($row['Url']);?>'><?php echo $row['Url'];?></div></td>
+</tr>
+<?php } ?>
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+
+</div>
+<script type='text/javascript'>
+$(function(){
+	$('#btnDel').click(function(){
+		return confirm('确定？');
+	});
+
+	$('#from, #to').datepicker({
+		'dateFormat': 'yy-mm-dd'
+	});
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

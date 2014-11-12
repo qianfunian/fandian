@@ -1,0 +1,106 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>编辑用户留言</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form method='post' action='<?php echo $this->scriptUrl;?>feedback/doedit' target='_self'>	
+<table class='edit_table' cellspacing='1'>
+	<tbody>
+		<tr>
+			<td width='15%' class='center left'>
+				留言用户
+			</td>
+			<td colspan='3' class='text right'>
+				<?php echo $this->data['CustGuid'] ? $this->data['Username'] : '匿名用户';?>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				留言时间
+			</td>
+			<td class='text right'>
+				<?php echo $this->Dt($this->data['CreateTime']);?>
+			</td>
+			<td width='15%' class='center left'>
+				IP地址
+			</td>
+			<td class='text right'>
+				<?php echo $this->data['IpAddress'];?>
+			</td>
+		</tr>		
+		<tr>
+			<td width='15%' class='center left'>
+				留言内容
+			</td>
+			<td colspan='3' class='text right'>
+				<?php echo nl2br($this->data['Content']);?>
+			</td>
+		</tr>		
+			
+		<tr>
+			<td width='15%' class='center left'>
+				回复内容
+			</td>
+			<td colspan='3' class='text right'>
+				<textarea name='ReplyContent' id='ReplyContent'  class='p_kindeditor'><?php echo htmlspecialchars($this->data['ReplyContent']);?></textarea>
+			</td>
+		</tr>		
+
+		<tr>
+			<td width='15%' class='center left'>
+				设置
+			</td>
+			<td class='text right'>
+				<?php echo $this->Checkbox(array(
+						'name' => 'DisplayFlag',
+						'value' => '1',
+						'user_value' => $this->data['DisplayFlag'],
+						'label' => '前台显示该留言'
+						));?>
+			</td>
+			<td width='15%' class='center left'>
+				排序
+			</td>
+			<td class='text right'>
+				<input type='text' size='4' maxlength='4' name='OrderNo' id='OrderNo' value='<?php echo $this->data['OrderNo'];?>' /><span class='error'><?php echo $this->error['OrderNo'];?></span>
+			</td>
+		</tr>			
+		<tr>
+			<td colspan='4' class='center bottom'>
+				<input type='submit' id='submit' value='确定' />
+				<input type='button' id='back' value='返回' onclick="javascript:history.back()" />
+				<input type='hidden' name='AutoId' value='<?php echo $this->data['AutoId'];?>' id='AutoId' />		
+			</td>
+		</tr>
+	</tbody>
+</table>
+</form>
+</div>
+<script type='text/javascript'>
+var editor = 'ReplyContent';
+var attachs = <?php echo json_encode($this->files);?>;
+
+$(function(){
+	KindEditor.ready(function(K) {
+		editor = K.create('textarea[name="ReplyContent"]', {
+			uploadJson : '<?php echo $this->baseUrl;?>fadmin/kind-editor/upload',
+			allowFileManager : false,
+			items : [
+			         'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'code', 'cut', 'copy', 'paste',
+			         'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+			         'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+			         'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+			         'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+			         'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 
+			         'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+			         'anchor', 'link', 'unlink', '|', 'about'
+			        ]
+		});
+	});
+});
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

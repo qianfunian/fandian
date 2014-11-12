@@ -1,0 +1,40 @@
+<?php include (dirname(__FILE__).'/../include/page_head.phtml');?>
+
+<div class='login_wrap'>
+	<div class='login_container'>
+	<div class='login_header'>出错啦!</div>
+	<div class='login_content'>
+		<table border='0' width='100%'>
+			<tbody>
+				<tr>
+					<td>
+						错误信息: 
+						<div>
+							<?php echo $this->message ?>
+						</div>
+					</td>
+				</tr>
+				
+			  <?php if (isset($this->exception) && Msd_Config::appConfig()->error->show_exception) { ?>
+				<tr>
+					<td>
+						Exception: 
+						<div>
+							<?php echo $this->exception->getMessage() ?>
+						</div>
+					</td>
+				</tr>
+			  <?php } ?>
+			  
+				<tr>
+					<td align='center'>
+						<input type='button' value=' 刷 新 (r) ' accesskey='r' onclick="window.location.reload();" />
+						<input type='button' value=' 返 回 (b) ' accesskey='b' onclick="history.go(-1);" />
+					</td>
+				</tr>			  
+			</tbody>
+		</table>
+</div>
+	</div>
+</div>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

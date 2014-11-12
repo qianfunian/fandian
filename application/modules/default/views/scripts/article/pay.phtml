@@ -1,0 +1,50 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="con-left">
+        <div class="my-news">
+          <div class="news">系统帮助</div>
+          <ul>
+          <?php if (count($this->rows)>0) {foreach ($this->rows as $row) {?>
+          <li><a href='<?php echo $this->scriptUrl;?>article/help/<?php echo $row['Title'];?>'><?php echo $row['Title'];?></a></li>
+          <?php }} else {?>
+          <li>暂无公告</li>
+          <?php }?>
+          <?php if ($this->CityConfig->onlinepay_enabled) { ?>
+		  <li>
+		  <a href='<?php echo $this->scriptUrl;?>article/pay'>网上支付注意事项</a>
+		  </li>
+		  <?php } ?>
+          </ul>
+        </div>
+      </div>
+      <div class="con-right">
+        <div class="my-content">
+          <h1>网上支付注意事项</h1>
+          <div>					
+			<p>目前饭店网支持的在线支付银行有：</p>	
+			<?php foreach ($this->op_config['bankcmb']['support_banks'] as $key=>$bank) {?>
+			<img src='<?php echo $this->baseUrl;?>images/pay/<?php echo $bank['url']?$bank['url']:$bank['code'];?>.jpg' alt='<?php echo $bank['name'];?>' />
+			<?php }?>
+					
+			<p>在选择了网上支付订餐费用后，为了避免不必要的麻烦，请等待我们的客服回访跟您确定订单全部金额过后再进行支付。</p>
+			<p>当您在网站上看到您订单的状态变成了“已确认”，就表示您可以进行在线支付了。</p>
+			<p>在客服跟您确定了网上支付的全部金额过后，请尽快进行支付，否则会影响订单的下单时间，从而造成您不能按时用餐。</p>
+			<p>如果您一次提交了多个订单，那么只有您提交的所有订单都符合支付条件后您才能进行网上支付。</p>
+			<p>在您支付完成以后，如果发生订单金额的变动（如您添加了菜品或某个菜品商家已经售罄），最终的款项差异将在速递员将菜品送到您手中时以多退少补的方式当面结算。如下单后使用网上支付功能支付了100元餐费，后来又通过我们客服给您的订单增加了一道20元的菜品，那么这增加的20元需要在我们的速递员上门后额外当面付款。</p>
+			<p>如果由于您或者我们的原因，造成订单终止，需要给您退回本次订餐的款项，您可以选择如下两种方式：
+			<p>a) 将本次订餐款项寄存在我们这里，在您下次订餐时使用，多退少补。</p>
+			<p>b) 如果您选择了将款项退回您的银行卡，那么您需要给我们提供您支付卡号所对应的户主姓名，由于网上银行退款的限制，您需要等待大约15个工作日后才能收到订单的退款。</p>
+
+		  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

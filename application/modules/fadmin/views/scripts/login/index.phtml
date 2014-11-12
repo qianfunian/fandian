@@ -1,0 +1,49 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+
+<div class='login_wrap'>
+	<div class='login_container'>
+	<div class='login_header'>登录系统</div>
+	<div class='login_content'>
+		<form method='post' action='<?php echo $this->baseUrl;?>fadmin/login/dologin' target='_top' id='form_login'>
+		<table border='0'>
+			<tbody>
+				<tr>
+					<td width='45%' align='right'>用户名：</td>
+					<td>
+						<input type='text' name='username' id='username' value='' />
+					</td>
+				</tr>
+				<tr>
+					<td width='45%' align='right'>密码：</td>
+					<td>
+						<input type='password' name='password' id='password' value='' />
+					</td>
+				</tr>
+				<tr>
+					<td width='45%' align='right'>验证码：</td>
+					<td>
+						<input type='text' name='captcha' id='captcha' size='4' value='' maxlength='4' /><img alt='换一个验证码' class='captcha' src='<?php echo $this->baseUrl;?>service/image/captcha?sess=admin' onclick="this.src='<?php echo $this->baseUrl;?>service/image/captcha?sess=admin&'+Math.random();" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan='2'>&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan='2' class='center'>
+						<input type='submit' id='submit' value=' 登 录 (s)' accesskey='s' />
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</form>
+</div>
+	</div>
+</div>
+<script type='text/javascript'>
+$(function(){
+	$('#form_login').submit(function(){
+		$('#submit').attr('disabled', true);
+	});
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

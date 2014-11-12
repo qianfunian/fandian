@@ -1,0 +1,27 @@
+<?php Msd_Output::prepareHtml('200', 'gb2312');?>
+<html>
+<head>
+	<title>Please wait ...</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+</head>
+
+<body>
+<form name='onlinepay' id='onlinepay' method='post' action='<?php echo $this->form_action;?>'>
+	<input type='hidden' name='branchid' id='branchid' value='0025' />
+	<input type='hidden' name='cono' id='cono' value='004610' />
+	<input type='hidden' name='date' id='date' value='<?php echo date('Ymd');?>' />
+	<input type='hidden' name='billno' id='billno' value='<?php echo substr($this->order_id, 1, 10);?>' />
+	<input type='hidden' name='amount' id='amount' value='<?php echo $this->total;?>' />
+	<input type='hidden' name='merchantPara' id='merchantPara' value='' />
+	<input type='hidden' name='merchantUrl' id='merchantUrl' value='<?php echo $this->callback_base;?>order/opcallback' />
+	<input type='hidden' name='strBankID' id='strBankID' value='<?php echo $this->bank_no;?>' />
+	<input type='hidden' name='in_test' id='in_test' value='' />
+</form>
+<script type='text/javascript'>
+window.onload = function(){
+	document.getElementById('onlinepay').submit();
+};
+</script>
+</body>
+</html>
+<?php Msd_Output::doOutput();?>

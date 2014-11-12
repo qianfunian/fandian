@@ -1,0 +1,81 @@
+<div style="float: right; width:288px; height:355px;border:1px solid #ccc;margin-bottom:10px;background-color:#FEF8E2;line-height:25px;padding:5px">
+<p class="site-title" style="margin:5px 0;color:#323232;">年夜饭购买须知：</p>
+<font style="font-size:12px;font-weight:bold">预订时间</font>：2013.12.11—2014.01.27(10:00—21:30)<br>
+<font style="font-size:12px;font-weight:bolder">外送时间</font>：小年夜、大年夜、年初一、年初二、年初三(1月29日、30日、31日、2月1日、2日)<br>
+<font style="font-size:12px;font-weight:bolder">收费说明</font>：年夜饭预定须全额支付（含：餐费+运费），在3日内可通过网上支付或工作人员上门收取。 付款成功的年夜饭订单如需取消，请在1月25日前办理，并扣除订单全额的25%做为餐损费用。<br>
+<font style="font-size:12px;font-weight:bolder">友情提醒</font>：1.凡通过网上下单并支付金额的，顾客都会收到下单成功的短信通知。请顾客妥善保存，以便送餐人员验证核实。2.年夜饭送餐当日，餐品是冷的，回热后即可食用且不影响口感。3. 年夜饭套餐不与其他优惠活动同享。（饭店网保留最终解释权） 
+ </div>
+<div class="step-right">
+        <div class="my-step-right"  id="sidebar" style="top:380px" >
+          <?php echo $this->cart;?>
+          <div class="my-info">
+            <p class="site-title">配送信息</p>
+            <form id="configCart" action="<?php echo $this->baseUrl;?>submit/confirm" method="post">
+            <table width="100%" class="menu-express">
+              <tr>
+                <td width="55px">收餐人</td>
+                <td>
+                  <input type='text' name='OrderContactor' id='OrderContactor' value='<?php echo addslashes(trim($_COOKIE['contactor']));?>' />
+                  <br><span id='oc' class="msg"></span>
+                </td>
+              </tr>
+              <tr>
+                <td>手机号码</td>
+                <td>
+                  <input type='text' name='OrderPhone' id='OrderPhone' value='<?php echo addslashes(trim($_COOKIE['phone']));?>' />
+                  <br><span id='op' class="msg"></span>
+                </td>
+              </tr>
+              <tr style="<?php if($this->lsas==''){?>display:none<?php }?>" id="trls">
+                <td>历史地址</td>
+                <td>
+                <select id="lsadds" name="lsadds" style="width:200px">
+                <?php echo $this->lsas;?>
+                </select></td>
+              </tr>
+              <tr>
+                <td>送餐地址</td>
+                <td>
+                  <input type='text' name='OrderAddress' id='OrderAddress' autocomplete="off" value='<?php echo addslashes($_COOKIE['coord_name'])?:addslashes($_COOKIE['order_address']);?>' />
+                  <br><span id='oa' class="msg"></span>
+                  <input type='hidden' name='OrderCoordGuid' id='OrderCoordGuid' value='<?php echo addslashes($_COOKIE['coord_guid']);?>' />
+                </td>
+              </tr>
+              <tr>
+                <td>门牌号</td>
+                <td>
+                <input type='text' name='OrderDoor' id='OrderDoor' value='<?php echo addslashes(trim($_COOKIE['order_door']));?>' />
+                </td>
+              </tr>
+              <tr>
+              <td>备注</td>
+              <td><input type="text" name="OrderRemark" id="OrderRemark" value='<?php echo addslashes(trim($_COOKIE['remark']));?>' /></td>
+              </tr>
+              <?php if(1){?>
+              <tr>
+                <td>支付方式</td>
+                <td>
+                <input type="radio" name="OrderPaymethod" value="0" />上门收取
+                <input type="radio" name="OrderPaymethod" value="1"  checked = "checked" /><b>网银支付</b>
+                </td>
+              </tr>
+              <?php } ?>
+              <tr>
+                <td></td>
+                <td>
+                <input type="hidden" name="OrderExpressTime" value="0" />
+                <input type="hidden" name="service" value="1"  />
+                <input style="margin:0px" class="fancybox" type="button" id='ConfigOrder' name='ConfigOrder' value='确定订单' />
+                </td>
+              </tr>
+            </table>
+            </form>
+          </div>
+        </div>
+      </div>
+      <script type="text/javascript">
+      var LAST_NAME = '<?php echo addslashes(trim($_COOKIE['contactor']));?>';
+      var LAST_PHONE = '<?php echo addslashes(trim($_COOKIE['phone']));?>';
+      var LAST_ADDR = '<?php echo addslashes(trim($_COOKIE['address']));?>';
+      var LAST_REMARK = '<?php echo addslashes(trim($_COOKIE['address']));?>';
+      </script>

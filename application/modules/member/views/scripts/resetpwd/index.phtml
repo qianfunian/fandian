@@ -1,0 +1,42 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+
+<div class="wrap">
+<div class="row">
+    <form method='post' class="formlyWrapper-Base">
+	<?php if ($this->success) { ?>
+	<table style="margin:20px auto">
+	<tr align="center"><td><h3>一封关于如何重置您密码的Email已经发送到了您的邮箱  请注意查收</h3></td></tr>
+	<tr align="center"><td>&nbsp;</td></tr>
+	<tr align="center"><td><input class='b_input reg' type='button' value="返回登录" onclick="javascript:window.location.href='<?php echo $this->scriptUrl;?>login';" /></td></tr>
+	</table>
+	
+	<?php } else {  ?>
+	
+	
+	<table style="margin:20px auto">
+	<tr align="center"><td><h3>请填写您注册时使用的Email：</h3></td></tr>
+    <tr align="center"><td>&nbsp;</td></tr>
+	<tr align="center"><td>
+	<input type='text' name='Email' id='Email'  size='40' class='input' value='<?php echo $this->request['Email'];?>' />
+	</td></tr>
+	<tr align="center"><td>&nbsp;</td></tr>
+	
+	<?php if(isset($this->error['Email'])){?>
+	<tr>
+	<td><span style="padding-left:15px;color:#FF4400"><?php echo $this->error['Email'];?></span></td>
+	</tr>
+	<tr align="center"><td>&nbsp;</td></tr>
+	<?php }?>
+	
+	<tr><td><input type='submit' value="找回密码" /><input type='button' value="返回登录" onclick="javascript:window.location.href='<?php echo $this->scriptUrl;?>login';" /></td></tr>
+	</table>
+	<?php } ?>
+	</form>
+</div>
+</div>
+<div class="clear"></div>
+
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

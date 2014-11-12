@@ -1,0 +1,261 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览超时单，运费：<?php echo (int)$this->request['price'];?>，
+		开始时间：<?php echo $this->request['s_date'];?> <?php echo $this->request['s_hour'];?>:<?php echo $this->request['s_minute'];?>:00，
+		结束时间：<?php echo $this->request['e_date'];?> <?php echo $this->request['e_hour'];?>:<?php echo $this->request['e_minute'];?>:00，
+		，指定时间：
+		<?php 
+		switch ($this->request['s_date_key']) {
+			case 'issued':
+				echo '商家下单时间';
+				break;
+			case 'assigned':
+				echo '指派速递时间';
+				break;
+			default:
+				echo '客户下单时间';
+				break;
+		}
+		?>
+		</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<table cellspacing='1' class='list_table'>
+<tr>
+	<td width='30%' valign='top'>
+		<table cellspacing='1' class='list_table' >
+		<thead>
+			<tr class='ths'>
+				<th colspan='3'>超时单最多的5个商家</th>
+			</tr>
+			<tr class='ths'>
+				<th width='30'>序号</th>
+				<th>商家</th>
+				<th>次数</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php 
+		$i = 1;
+		foreach ($this->tVendors as $VendorName=>$count) { 
+		?>
+		<tr class='c<?php echo fmod($i, 2);?>'>
+			<td width='30' class='center'><?php echo $i++;?></td>
+			<td>&nbsp;<?php echo $VendorName;?></td>
+			<td class='center'><?php echo $count;?></td>
+		</tr>
+		<?php } ?>
+		</tbody>
+		</table>
+	
+	</td>
+	<td width='30%' valign='top'>
+		
+		<table cellspacing='1' class='list_table' >
+		<thead>
+			<tr class='ths'>
+				<th colspan='3'>超时单最多的5个速递</th>
+			</tr>
+			<tr class='ths'>
+				<th width='30'>序号</th>
+				<th>速递</th>
+				<th>次数</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php 
+		$i = 1;
+		foreach ($this->tDelivers as $Deliver=>$count) { 
+		?>
+		<tr class='c<?php echo fmod($i, 2);?>'>
+			<td width='30' class='center'><?php echo $i++;?></td>
+			<td>&nbsp;<?php echo $Deliver;?></td>
+			<td class='center'><?php echo $count;?></td>
+		</tr>
+		<?php } ?>
+		</tbody>
+		</table>	
+	</td>
+	
+	
+	<td width='30%' valign='top'>
+		
+		<table cellspacing='1' class='list_table' >
+		<thead>
+			<tr class='ths'>
+				<th colspan='3'>超时单最多的5个时间段</th>
+			</tr>
+			<tr class='ths'>
+				<th width='30'>序号</th>
+				<th>时间段</th>
+				<th>次数</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php 
+		$i = 1;
+		foreach ($this->tTimers as $tH=>$count) { 
+		?>
+		<tr class='c<?php echo fmod($i, 2);?>'>
+			<td width='30' class='center'><?php echo $i++;?></td>
+			<td>&nbsp;<?php echo $tH==23 ? $tH.':00 ~ 00:00' : $tH.':00 ~ '.($tH+1).':00';?></td>
+			<td class='center'><?php echo $count;?></td>
+		</tr>
+		<?php } ?>
+		</tbody>
+		</table>	
+	</td>
+</tr>
+</table>
+
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='4%'>序号</th>
+		<th width='12%'>单号</th>
+		<th width='10%'>商家</th>
+		<th width='5%'>一级</th>
+		<th width='9%'>
+		<?php if ($this->request['s_date_key']=='posted') { ?>
+		<span class='error err'>
+		<?php } ?>
+		客户下单
+		<?php if ($this->request['s_date_key']=='posted') { ?>
+		</span>
+		<?php } ?>
+		</th>
+		<th width='9%'>
+		<?php if ($this->request['s_date_key']=='issued') { ?>
+		<span class='error err'>
+		<?php } ?>
+		商家下单
+		<?php if ($this->request['s_date_key']=='issued') { ?>
+		</span>
+		<?php } ?>		
+		</th>
+		<th width='9%'>
+		<?php if ($this->request['s_date_key']=='assigned') { ?>
+		<span class='error err'>
+		<?php } ?>
+		分配速递
+		<?php if ($this->request['s_date_key']=='assigned') { ?>
+		</span>
+		<?php } ?>			
+		</th>
+		<th width='9%'>送达时间</th>
+		<th width='9%'>要求时间</th>
+		<th width='9%'>最后改单</th>
+		<th width='5%'>耗时</th>
+		<th width='5%'>配送费</th>
+		<th>配送员</th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td>
+		<a href='#' onclick="ShowOrderDetail('<?php echo $row['OrderGuid'];?>');return false;"><?php echo $row['OrderId'];?></a>
+		<?php 
+		if ($row['LastChangeTime']) {
+		?>
+		[<span class='error err'>有改单</span>]
+		<?php 
+		}
+		?>
+	</td>
+	<td><?php echo $row['VendorName'];?></td>
+	<td>
+	<?php echo $row['IsVip'] ? '<span class="error err">是</span>' : '否';?>
+	</td>
+	<td><?php echo $this->Dt($row['AddTime'], 'short_datetime');?></td>
+	<td><?php echo $this->Dt($row['InformTime'], 'short_datetime')?></td>
+	<td><?php echo $this->Dt($row['AssignedTime'], 'short_datetime');?></td>
+	<td><?php echo $this->Dt($row['DeliveryedTime'], 'short_datetime');?></td>
+	<td><?php echo strlen($row['ReqDateTime']) ? $this->Dt($row['ReqDateTime'], 'time') : '-';?></td>
+	<td><?php echo $row['LastChangeTime'] ? $this->Dt($row['LastChangeTime'], 'short_datetime') : '--';?></td>
+	<td title="耗时：<?php echo $row['Costs'];?>分钟"><?php echo $this->Minutes2hm($row['Costs'])?></td>
+	<td>
+	<?php 
+	if ($row['Distance']==0) {
+		$freight = 0;
+	} else if ($row['Distance']<=3000) {
+		$freight = 8;
+	} else if ($row['Distance']>3000 && $row['Distance']<=5000) {
+		$freight = 15;
+	} else if ($row['Distance']>5000 && $row['Distance']<=6000) {
+		$freight = 18;
+	} else {
+		$freight = '>18';
+	}
+	
+	echo $freight;
+	?>
+	</td>
+	<td>
+		<?php echo $row['Deliver'];?>
+	</td>
+</tr>
+<?php } ?>
+<tr class='c1'>
+	<td colspan='16' class='center'>
+		<form method='post' action='<?php echo $this->scriptUrl;?>timeout/export'>
+		<input type='submit' value='导出为Excel' id='export' name='export' />
+		<?php foreach ($this->request as $k=>$v) { ?>
+		<input type='hidden' name='<?php echo $k;?>' value='<?php echo $v;?>' />
+		<?php } ?>
+		</form>
+	</td>
+</tr>
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='16' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+</table>
+
+</div>
+<div id='order_detail' title='订单状态变化详情'></div>
+<script type='text/javascript'>
+function ShowOrderDetail(OrderGuid)
+{
+	$('#order_detail').html('<div style="font-weight: bold;font-size: 16px;">加载中...</div>');
+	
+	$.get(BASE_URL+'fadmin/timeout/logs', {
+		'OrderGuid': OrderGuid
+	}, function(html){
+		$('#order_detail').html(html);
+	});
+	
+	$('#order_detail').dialog('open');
+}
+
+$(function(){
+	$('#export').click(function(){
+
+	});
+
+	$('#order_detail').dialog({
+		bgiframe: true,
+		modal: true,
+		closeOnEscape: true,
+		resizable: false,
+		zIndex: 3999,
+		position: ['center', 'middle'],
+		draggable: false,
+		autoOpen: false,
+		width: 720
+	});
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

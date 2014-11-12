@@ -1,0 +1,140 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>超时单查询</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form action='<?php echo $this->scriptUrl;?>timeout' id='homepage_form'>
+<table cellspacing='1' class='edit_table'>
+<tbody>
+	<tr>
+		<td class='center left' width='11%'>开始时间：</td>
+		<td class='right' colspan='3'>
+			 <input type='text' size='10' name='s_date' id='s_date' value='<?php echo $this->request['s_date'] ? $this->request['s_date'] : date('Y-m-d');?>' />
+			<?php echo $this->Select($this->hours, 's_hour', $this->request['s_hour']);?>时
+			<?php echo $this->Select($this->minutes, 's_minute', $this->request['s_minute']);?>分
+		</td>
+		<td class='center left' width='11%'>结束时间：</td>
+		<td class='right' colspan='4'>
+			 <input type='text' size='10' name='e_date' id='e_date' value='<?php echo $this->request['e_date'] ? $this->request['e_date'] : date('Y-m-d');?>' />
+			<?php echo $this->Select($this->hours, 'e_hour', $this->request['e_hour'] ? $this->request['e_hour'] : 23);?>时
+			<?php echo $this->Select($this->minutes, 'e_minute', $this->request['e_minute'] ? $this->request['e_minute'] : 59);?>分		
+		</td>		
+	</tr>
+	<tr>
+		<td class='center left' width='11%'>起始时间：</td>
+		<td class='right' colspan='3'>
+			 <?php echo $this->Select(array(
+			 		'posted' => '客户下单时间',
+			 		'issued' => '商家下单时间',
+			 		'assigned' => '指派速递时间',
+			 		), 's_date_key', $this->request['s_date_key']);?>
+		</td>
+		<td class='center left' width='11%'>配送耗时：</td>
+		<td class='right' colspan='4'>
+			 <?php echo $this->Select($this->costs, 'timeout', $this->request['timeout'] ? $this->request['timeout'] : '');?>
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='11%'>预定：</td>
+		<td class='right' colspan='3'>
+			 <?php echo $this->Checkbox(array(
+			 		'name' => 'without_pre',
+			 		'value' => 1,
+			 		'user_value' => (int)$this->request['without_pre'],
+			 		'label' => '<span style="color: red;font-weight: bold;">排除预订单</span>',
+			 		));?>
+		</td>
+		<td class='center left' width='11%'>改单：</td>
+		<td class='right' colspan='4'>
+			 <?php echo $this->Checkbox(array(
+			 		'name' => 'without_chg',
+			 		'value' => 1,
+			 		'user_value' => (int)$this->request['without_chg'],
+			 		'label' => '<span style="color: red;font-weight: bold;">排除改单</span>',
+			 		));?>
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='11%'>速递：</td>
+		<td class='right' colspan='3'>
+			 <?php echo $this->Select($this->ds, 'deliver', $this->request['deliver']); ?>
+		</td>
+		<td class='center left' width='11%'>一级客户：</td>
+		<td class='right' colspan='4'>
+			 <?php echo $this->Checkbox(array(
+			 		'name' => 'is_vip',
+			 		'value' => 1,
+			 		'user_value' => (int)$this->request['is_vip'],
+			 		'label' => '<span style="color: red;font-weight: bold;">只看一级客户</span>',
+			 		));?>
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' width='11%'>分析耗时：</td>
+		<td class='right' colspan='8'>
+		<?php echo $this->search_costs;?>
+		</td>
+	</tr>
+	
+	<tr>
+		<td class='center left' colspan='9'>
+			<input type='submit' name='go' id='go' value=' 提 交 (s) ' accesskey='s' />
+		</td>
+	</tr>
+
+	<tr>
+		<td class='right center' colspan='9' style='font-size: 14px; font-weight: bold;'>查询结果</td>
+	</tr>
+	
+	<tr>
+		<td class='center left' width='11%'>总单数</td>
+		<td class='center left' width='11%'><a href='<?php echo $this->scriptUrl;?>timeout/search?is_vip=<?php echo $this->request['is_vip'];?>&deliver=<?php echo $this->request['deliver'];?>&without_chg=<?php echo (int)$this->request['without_chg'];?>&without_pre=<?php echo $this->request['without_pre'];?>&timeout=<?php echo $this->request['timeout'] ? $this->request['timeout'] : 60?>&price=8&s_date_key=<?php echo $this->request['s_date_key'] ? $this->request['s_date_key'] : 'posted';?>&s_date=<?php echo $this->request['s_date'] ? $this->request['s_date'] : date('Y-m-d');?>&e_date=<?php echo $this->request['e_date'] ? $this->request['e_date'] : date('Y-m-d');?>&s_hour=<?php echo $this->request['s_hour'] ? $this->request['s_hour'] : 0;?>&s_minute=<?php echo $this->request['s_minute'] ? $this->request['s_minute'] : 0;?>&e_hour=<?php echo $this->request['e_hour'] ? $this->request['e_hour'] : 23;?>&e_minute=<?php echo $this->request['e_minute'] ? $this->request['e_minute'] : 59;?>' target='t8'>8元运费</a></td>
+		<td class='center left' width='11%'>占比</td>
+		<td class='center left' width='11%'><a href='<?php echo $this->scriptUrl;?>timeout/search?is_vip=<?php echo $this->request['is_vip'];?>&deliver=<?php echo $this->request['deliver'];?>&without_chg=<?php echo (int)$this->request['without_chg'];?>&without_pre=<?php echo $this->request['without_pre'];?>&timeout=<?php echo $this->request['timeout'] ? $this->request['timeout'] : 60?>&price=15&s_date_key=<?php echo $this->request['s_date_key'] ? $this->request['s_date_key'] : 'posted';?>&s_date=<?php echo $this->request['s_date'] ? $this->request['s_date'] : date('Y-m-d');?>&e_date=<?php echo $this->request['e_date'] ? $this->request['e_date'] : date('Y-m-d');?>&s_hour=<?php echo $this->request['s_hour'] ? $this->request['s_hour'] : 0;?>&s_minute=<?php echo $this->request['s_minute'] ? $this->request['s_minute'] : 0;?>&e_hour=<?php echo $this->request['e_hour'] ? $this->request['e_hour'] : 23;?>&e_minute=<?php echo $this->request['e_minute'] ? $this->request['e_minute'] : 59;?>' target='t8'>15元运费</a></td>
+		<td class='center left' width='11%'>占比</td>
+		<td class='center left' width='11%'><a href='<?php echo $this->scriptUrl;?>timeout/search?is_vip=<?php echo $this->request['is_vip'];?>&deliver=<?php echo $this->request['deliver'];?>&without_chg=<?php echo (int)$this->request['without_chg'];?>&without_pre=<?php echo $this->request['without_pre'];?>&timeout=<?php echo $this->request['timeout'] ? $this->request['timeout'] : 60?>&price=18&s_date_key=<?php echo $this->request['s_date_key'] ? $this->request['s_date_key'] : 'posted';?>&s_date=<?php echo $this->request['s_date'] ? $this->request['s_date'] : date('Y-m-d');?>&e_date=<?php echo $this->request['e_date'] ? $this->request['e_date'] : date('Y-m-d');?>&s_hour=<?php echo $this->request['s_hour'] ? $this->request['s_hour'] : 0;?>&s_minute=<?php echo $this->request['s_minute'] ? $this->request['s_minute'] : 0;?>&e_hour=<?php echo $this->request['e_hour'] ? $this->request['e_hour'] : 23;?>&e_minute=<?php echo $this->request['e_minute'] ? $this->request['e_minute'] : 59;?>' target='t8'>18元运费</a></td>
+		<td class='center left' width='11%'>占比</td>		
+		<td class='center left' width='11%'><a href='<?php echo $this->scriptUrl;?>timeout/search?is_vip=<?php echo $this->request['is_vip'];?>&deliver=<?php echo $this->request['deliver'];?>&without_chg=<?php echo (int)$this->request['without_chg'];?>&without_pre=<?php echo $this->request['without_pre'];?>&timeout=&price=&s_date_key=<?php echo $this->request['s_date_key'] ? $this->request['s_date_key'] : 'posted';?>&s_date=<?php echo $this->request['s_date'] ? $this->request['s_date'] : date('Y-m-d');?>&e_date=<?php echo $this->request['e_date'] ? $this->request['e_date'] : date('Y-m-d');?>&s_hour=<?php echo $this->request['s_hour'] ? $this->request['s_hour'] : 0;?>&s_minute=<?php echo $this->request['s_minute'] ? $this->request['s_minute'] : 0;?>&e_hour=<?php echo $this->request['e_hour'] ? $this->request['e_hour'] : 23;?>&e_minute=<?php echo $this->request['e_minute'] ? $this->request['e_minute'] : 59;?>' target='t8'>全部</a></td>
+		<td class='center left' width='11%'>占比</td>		
+				
+	</tr>
+	
+	<tr>
+		<td class='center right' width='11%'><?php echo $this->data['total'];?></td>
+		<td class='center right' width='11%'><?php echo $this->data['freight_8'];?></td>
+		<td class='center right' width='11%'><?php echo $this->data['total'] ? Msd_Format::money($this->data['freight_8']*100/$this->data['total']) : 0;?> %</td>
+		<td class='center right' width='11%'><?php echo $this->data['freight_15'];?></td>
+		<td class='center right' width='11%'><?php echo $this->data['total'] ? Msd_Format::money($this->data['freight_15']*100/$this->data['total']) : 0;?> %</td>
+		<td class='center right' width='11%'><?php echo $this->data['freight_18'];?></td>
+		<td class='center right' width='11%'><?php echo $this->data['total'] ? Msd_Format::money($this->data['freight_18']*100/$this->data['total']) : 0;?> %</td>
+		<td class='center right' width='11%'><?php echo $this->data['timeout_total'];?></td>
+		<td class='center right' width='11%'><?php echo $this->data['total'] ? Msd_Format::money($this->data['timeout_total']*100/$this->data['total']) : 0;?> %</td>
+	</tr>
+	
+	<tr>
+		<td colspan='9'>
+			<fieldset style='padding: 10px;'>
+				<legend>超时标准相关说明定义</legend>
+				<ol style='margin: 0px; padding: 0px 20px; '>
+				</ol>
+			</fieldset>
+		</td>
+	</tr>
+</tbody>
+</table>
+</form>
+
+</div>
+
+<script type='text/javascript'>
+$(function(){
+	$('#s_date, #e_date').datepicker({
+		'dateFormat': 'yy-mm-dd'
+	});
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

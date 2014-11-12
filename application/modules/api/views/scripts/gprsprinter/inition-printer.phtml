@@ -1,0 +1,5 @@
+<?php Msd_Output::prepareHtml(200, 'gb2312');?>
+<?php foreach ($this->data as $k=>$v) { ?>
+<?php echo '<'.$k.'>'.$v.'</'.$k.'>';?>
+<?php } ?>
+<?php Msd_Output::doOutput();?>

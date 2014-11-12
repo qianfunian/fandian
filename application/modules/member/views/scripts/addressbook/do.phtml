@@ -1,0 +1,32 @@
+<?php Msd_Output::prepareHtml();?>
+<script type='text/javascript'>
+var op = window.top;
+var has_error = <?php echo count($this->error);?>;
+var error = <?php echo json_encode($this->error);?>;
+var ids = ['Title', 'Address', 'Contactor', 'Phone'];
+
+if (has_error) {
+	for(i in ids) {
+		id = 'error_'+ids[i];
+		
+		op.Fandian_SetDomHtml(id, '');
+		op.Fandian_HideDom(id);
+	}
+
+	for(i in error) {
+		error_msg = eval('error.'+i);
+		id = 'error_'+i;
+
+		op.Fandian_SetDomHtml(id, error_msg);
+		op.Fandian_ShowDom(id, 'inline');
+	}
+
+	op.Fandian_AjaxCompleted();
+	op.modal.open();
+} else {
+	alert('地址簿保存成功！');
+	op.location = op.location;
+}
+
+</script>
+<?php Msd_Output::doOutput();?>

@@ -1,0 +1,79 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览系统用户</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'CategoryName' => '分类名称',
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+			
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'CategoryName' => '分类名称',
+			'OrderNo' => '排序'
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th>序号</th>
+		<th>分类名称</th>
+		<th>排序</th>
+		<th><a href='<?php echo $this->scriptUr;?>articlecategory/edit'>增加文章分类</a></th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td><?php echo $row['CategoryName'];?></a></td>
+	<td><?php echo $row['OrderNo'];?></td>
+	<td><a href='<?php echo $this->scriptUrl;?>articlecategory/edit?CategoryId=<?php echo $row['CategoryId'];?>'>修改</a> <a href='<?php echo $this->scriptUrl;?>articlecategory/del?CategoryId=<?php echo $row['CategoryId'];?>' rel='delete'>删除</a></td>
+</tr>
+<?php } ?>
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+
+</div>
+<script type='text/javascript'>
+$(function(){
+	$('#organization_name').click(function(){
+		window.showModalDialog('<?php echo $this->baseUrl;?>organization/smalltree', '', 'dialogWidth=212px;dialogHeight=510px')
+	});
+});
+</script>
+
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

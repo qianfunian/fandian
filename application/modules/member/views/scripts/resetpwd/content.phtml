@@ -1,0 +1,14 @@
+<html>
+	<head><title>重置您在饭店网的密码</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	</head>
+<body>
+
+<p><br/>重置密码链接-----找回密码</p>
+
+<strong><a href="<?php echo 'http://'.$_SERVER['HTTP_HOST'].$this->scriptUrl.'resetpwd/do?email='.$this->verifyemail.'&verify='.$this->verifystring;?>">点击链接重置您在饭店网的密码</a></strong>
+<p><br/><small>如果上述文字点击无效，请把下面网页地址复制到浏览器地址栏中打开：</small></p>
+<?php echo 'http://'.$_SERVER['HTTP_HOST'].$this->scriptUrl.'resetpwd/do?email='.$this->verifyemail.'&verify='.$this->verifystring;?>
+
+</body>
+</html>

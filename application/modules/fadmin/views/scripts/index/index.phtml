@@ -1,0 +1,83 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<table width='100%' border='0' cellspacing='0' cellpadding='0' height='100%'>
+<tbody>
+<tr>
+	<td width='180' style=' vertical-align: top; padding-top: 10px; overflow-y: auto; ' id='menu_left'>
+		<div><a href='<?php echo $this->baseUrl;?>' target='_blank' title='网站首页'><img src='<?php echo $this->baseUrl;?>images/logo.png' /></a></div>
+		<ul id='menu' class='filetree'>
+			<?php foreach ($this->acl_groups as $group) { ?>
+			<?php $group_acls = explode('|', $group['rights']);?>
+			<?php if (!$this->member_is_super) { ?>
+			
+			<?php if (count(array_intersect($group_acls, $this->user_acls))) { ?>
+			<li><span class='folder'><?php echo $group['name'];?></span>
+			
+				<ul>
+				<?php foreach ($this->user_acls as $acl) {  ?>
+				<?php if (in_array($acl, $group_acls)) { ?>
+				<?php if ($this->acls[$acl]['url']) { ?>
+					<li><a class='file hand' href='<?php echo $this->scriptUrl.$this->acls[$acl]['url'];?>' target='main_frame'><?php echo $this->acls[$acl]['name'];?></a></li>
+				<?php } ?>
+				<?php } ?>
+				<?php } ?>
+				</ul>
+				
+			<?php } ?>
+			</li>
+			<?php } else { ?>
+			
+			<li><span class='folder'><?php echo $group['name'];?></span>
+				<ul>
+				<?php foreach ($group_acls as $acl) { ?>
+					<?php if ($this->acls[$acl]['url']) { ?>
+						<li><a class='file hand' href='<?php echo $this->scriptUrl.$this->acls[$acl]['url'];?>' target='main_frame'><?php echo $this->acls[$acl]['name'];?></a></li>
+					<?php } ?>
+				<?php } ?>
+				</ul>
+			</li>
+			
+			<?php } ?>
+			<?php } ?>
+			<li class='closed'><span class='folder hand' id='logout'>退出系统</span></li>
+		</ul>
+	</td>
+	<td id='menu_middle'>
+		<div id='menu_switcher' class='switcher_open' title='展开/收起左侧菜单'></div>
+	</td>
+	<td valign='top' style='background: #f3f3f3'>
+		<iframe name='main_frame' id='main_frame' src='<?php echo $this->frame_url;?>' frameborder='0' width='100%'  height='100%'></iframe>
+	</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript' src='<?php echo $this->baseUrl;?>js/jquery/jquery.treeview.js'></script>
+<script type='text/javascript'>
+$(function(){
+	$('#menu').treeview();
+
+	$('span#logout').click(function(){
+		if (confirm('确定？')) {
+			window.location = '<?php echo $this->scriptUrl;?>login/logout';
+		}
+	});
+
+	$('span[href!=""]').click(function(){
+		$('#main_frame').attr('src', $(this).attr('href'));
+	});
+
+	h = $(window).height();
+	$('td#menu_left, iframe#main_frame').css({
+		'height': (h-5)+'px'
+	});
+
+	$('ul#menu').css({
+		'height': (h-65)+'px'
+	});
+
+	$('#menu_switcher').click(function(){
+		$('#menu_left').toggle();
+		$(this).toggleClass('switcher_close');
+	});
+});
+</script>
+<?php include dirname(__FILE__).'/../include/page_foot.phtml';?>

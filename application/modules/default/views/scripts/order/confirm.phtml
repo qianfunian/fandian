@@ -1,0 +1,147 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="step-process">
+        <ul class="step-text">
+          <li class="act-text">选择街道</li>
+          <li class="act-text">选择餐厅</li>
+          <li class="act-text">选择菜品</li>
+          <li class="act-text">确认订单</li>
+          <li>完成订餐</li>
+        </ul>
+        <ul>
+          <li class="act-step"><span><a href="<?php echo $this->baseUrl?>step?s=1">1</a></span></li>
+          <li class="act-step"><span><a href="<?php echo $this->baseUrl?>vendor">2</a></span></li>
+          <li class="act-step"><span><a href="<?php echo $this->baseUrl?>vendor<?php echo $this->last_vendor_name ? '/'.$this->last_vendor_name : '';?>">3</a></span></li>
+          <li class="act-step"><span><a href="#">4</a></span></li>
+          <li><span><a href="#">5</a></span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  <div class="row">
+    <div class="twelvecol">
+      <div class="step-left">
+        <div class="my-step-left">
+          <p>您选择的地址在：<span class="coordname"><?php echo $this->CityConfig->name;?><?php echo $_COOKIE['address'];?> </span><?php if ($_COOKIE['coord_name']) { ?>位于 <span class="coordname"><?php echo $_COOKIE['coord_name'];?></span> 附近<?php } ?></p>
+          <div class="clear"></div>
+          <div class="all-confirm">
+            <h4>您的订单信息如下：</h4>
+            <?php $hash_total = $i = 0;?>
+            <?php foreach ($this->data as $VendorGuid=>$data) { ?>
+                <?php if($i++!=0){?>
+                <p style="border-bottom:2px solid #FE6732;width:100%"></p>
+                <?php }?>
+	            <P>【<?php echo $this->Fvendorname($data['VendorName']);?>】选择的菜品：</P>
+	            <?php $freight = $data['Freight'];?>
+	            <?php $box = $total = 0; ?>
+	            
+	            <?php foreach ($data['items'] as $item) { ?>
+		            <?php $total += $item['UnitPrice']*$item['_count_'];?>
+		            <?php $box += ($item['_count_']/($item['MinOrderQty'] ? (int)$item['MinOrderQty'] : 1))*$item['BoxQty']*$item['BoxUnitPrice'];?>
+		            <p><span>　──┐</span><?php echo $item['ItemName']?> - <?php echo $item['_count_'];?> - 单价：<?php echo $item['UnitPrice'];?> - 总共：<?php echo $item['_count_']*$item['UnitPrice'];?></p>
+		        <?php } ?>
+	            <p>菜品价格：￥<?php echo $total;?></p>
+	            <p>打包盒：￥<?php echo $box;?></p>
+	            <p>运费：￥<?php echo $freight ? $freight : '尚未确定';?></p>
+	            <p>总价：￥<?php echo $total+$box+$freight; $hash_total += $total+$box+$freight;?><?php if (!$freight) { ?><span class='error'>此价格不包含运费，最终的订单总价会在我们的客服对您进行回访后确定。</span><?php } ?></p>
+	            <p>备注：<?php echo $this->remark[$VendorGuid] ? $this->remark[$VendorGuid] : '暂无备注';?></p>
+                
+            <?php } ?>
+            </div>
+            <div class="all-confirm">
+            
+            <h4>用户信息</h4>
+            <p> 姓名：<?php echo $_COOKIE['contactor'];?></p>
+            <p> 手机号码：<?php echo $_COOKIE['phone'];?></p>
+            <p> 送餐地址：<?php echo $_COOKIE['address'];?></p>
+            <p> 送餐时间：<?php echo (int)$_COOKIE['express_setting'] ? '预订' : '尽快';?></p>
+            <?php if ((int)$_COOKIE['express_setting']) { ?>
+            <p>预订时间：<?php echo $_COOKIE['pre_year'].'-'.$_COOKIE['pre_month'].'-'.$_COOKIE['pre_day'].' '.$_COOKIE['pre_hour'].':'.$_COOKIE['pre_minute'];?></p>
+            <?php }?>
+            <p>支付方式：<?php echo $_COOKIE['paymethod'] ? '网上支付' : '到付';?></p>
+          </div>
+          <?php if(isset($this->over_value)){?>
+          <div class="all-confirm" style="color: #FE6833;font-size:14pt">总价：￥<?php echo $hash_total?>元。可使用生日卡抵用￥<?php echo $this->over_value;?>元
+          </div>
+          <?php }?>
+         
+           <?php if(isset($this->over_value)){?>
+          <p class="formlyWrapper-Base">您还需要支付：<span class="money">￥<?php 
+          if($hash_total-$this->over_value>0){echo $hash_total-$this->over_value;}else{ echo "0";}?></span></p>
+          <?php }else{?>
+          <p class="formlyWrapper-Base">您总共需要支付：<span class="money">￥<?php echo $hash_total;?></span></p>
+          <?php }?>
+
+          <input class="b_input" id='do_submit' type='button' value='确定下单'  style='cursor: pointer; font-weight: bold; font-size: 14px; height: 32px;  ' />
+          <?php if(isset($this->over_value)){?> 
+          <input class="b_input" type='button' value='返回修改' onclick="window.location=FANDIAN_SCRIPT_URL+'welfare'" />
+          <?php }else{?>
+          <input class="b_input" type='button' value='返回修改' onclick="window.location=FANDIAN_SCRIPT_URL+'vendor<?php echo $this->last_vendor_name ? '/'.$this->last_vendor_name : '';?>';" />
+          <?php }?>
+          <input class='b_input' type='button' value='返回修改地址' onclick="window.location=FANDIAN_SCRIPT_URL+'step?s=confirm';" />
+          <input type='hidden' name='hash' id='hash' value='<?php echo $this->hash;?>' />
+        </div>
+      </div>
+      <div class="step-right">
+        <div class="my-step-right">
+          <p>提交订单前的最后确认</p>
+          <ul class="my-info">
+            <li class="s1">请确认您点的商家、菜品，以及您的联系方式</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<script type='text/javascript'>
+var HasFreight = <?php echo $freight ? 'true' : 'false';?>;
+var From = '<?php echo $this->request['from'];?>';
+
+function Back2EditAddr()
+{
+	window.location=FANDIAN_SCRIPT_URL+'step?s=confirm&service=<?php echo $this->ServiceName;?>&from='+From;	
+}
+
+function Back2Edit()
+{
+	switch (From) {
+		case 'special':
+			window.location = FANDIAN_SCRIPT_URL + 'special';
+			break;
+		case 'tuan':
+			window.location = FANDIAN_SCRIPT_URL+'tuan';
+			break;
+		default:
+			window.location=FANDIAN_SCRIPT_URL+'vendor<?php echo $this->last_vendor_name ? '/'.$this->last_vendor_name.($this->ServiceName ? '/service/'.$this->ServiceName : '') : '';?>';
+			break;
+	}
+}
+
+document.ready(function(){
+	document.getElementById('do_submit').onclick = function() {
+		if (HasFreight || (!HasFreight && confirm('您还没有设定您的地标，订单的总价暂时不包含所需的运费。\n\n最终的订单总价及运费将会在我们的客服对您进行回访以后才能确认。\n\n您可以点击页面下方的“返回修改地址”来确定您的地标及运费。\n\n\n确定要提交订单了吗？'))) {
+			this.disabled = true;
+			Fandian_SimpleAjax({
+				'url': FANDIAN_BASE_URL+'order/submit?service=<?php echo urlencode($this->ServiceName);?>&from=<?php echo $this->request['from'];?>&giftcode=<?php echo $_GET['giftcode']?>',
+				'callback': function(json){
+					if (typeof(json.exception)!='undefined') {
+						Fandian_Alert('下单失败：'+json.exception);
+					} else {
+						window.location = FANDIAN_BASE_URL+'order/rhash<?php if(isset($this->over_value)){ echo "?value=".$this->over_value;}?>';
+					}
+				}
+			});
+		}
+	};
+});
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

@@ -1,0 +1,10 @@
+<?php if (count($this->rows)) {foreach ($this->rows as $row) {?>
+<li>
+<a href='javascript:void(0);' onclick="ChoosedFromUsed('<?php echo addslashes($row['CustAddress']);?>', '<?php echo addslashes($row['CoordGuid']);?>','<?php echo addslashes($row['CoordName']);?>','<?php echo addslashes($row['Longitude']);?>','<?php echo addslashes($row['Latitude']);?>');">
+<?php echo $row['CustAddress'];?>
+</a>
+</li>
+<?php }} else {?>
+	<li class='none'>您还没有点过餐</li>
+<?php }?>
+

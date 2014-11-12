@@ -1,0 +1,21 @@
+<?php Msd_Output::prepareHtml();?>
+<html>
+	<head><title>Test</title>
+	
+	</head>
+<body>
+
+<h2>站内公告</h2>
+<h3><?php echo $this->data['Title'];?></h3>
+<h4>所在分类：<?php echo $this->data['CategoryName'];?></h4>
+<fieldset>
+	<legend>公告详情</legend>
+	<div>
+		<?php echo $this->data['Detail'];?>
+	</div>
+</fieldset>
+<h4>发布时间：<?php echo $this->data['PubTime'];?></h4>
+<h4>浏览量：<?php echo $this->views;?></h4>
+</body>
+</html>
+<?php Msd_Output::doOutput();?>

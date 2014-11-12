@@ -1,0 +1,62 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>清理缓存</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form method='post' action='<?php echo $this->scriptUrl;?>cache/do' id='cache_form'>
+<table cellspacing='1' class='edit_table'>
+<tbody>
+	<tr>
+		<td colspan='2' class='center left'>
+			清理缓存
+		</td>
+	</tr>
+	<tr>
+		<td class='center right' colspan='2'>
+			<div style='padding:20px;'>
+			<ol>
+				<li><a href="<?php echo $this->scriptUrl;?>cache/clear?do=config">删除配置缓存</a></li>
+				<li><a href="<?php echo $this->scriptUrl;?>cache/clear?do=vars" >删除系统信息缓存</a></li>
+				<li><a href="<?php echo $this->scriptUrl;?>cache/clear?do=index" >删除首页缓存</a></li>
+				<li><a href="<?php echo $this->scriptUrl;?>cache/clear?do=categories" >删除文章分类缓存</a></li>
+				<li><a href="<?php echo $this->scriptUrl;?>cache/clear?do=apikeys" >删除Api缓存</a></li>
+				<li><a href="<?php echo $this->scriptUrl;?>cache/clear?do=regions">删除地区缓存</a></li>
+				<li><a href="<?php echo $this->scriptUrl;?>cache/clear?do=vendors">删除商家详情缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=enums'>删除字典缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=orderstatus'>删除订单状态缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=vendor_categories'>删除商家分类缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=items'>删除菜品缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=sitemap'>删除站内地图缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=ics'>删除商家菜品分类缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=services'>删除业务分类缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=votes'>删除投票调查缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=service_group'>删除业务数据缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=gift'>删除生日福利首页缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=new_year'>删除年夜饭首页缓存</a></li>
+				<li><a href='<?php echo $this->scriptUrl;?>cache/clear?do=lsas'>删除历史订单地址缓存</a></li>
+			</ol>
+			</div>
+		</td>
+	</tr>
+	<tr>
+		<td class='center left' colspan='2'>
+			<input type='button' name='all' id='all' value=' 全 部 清 理 (s) ' accesskey='a' onclick="if (confirm('确定？')) { window.location='<?php echo $this->scriptUrl;?>cache/clearall';}" />
+		</td>
+	</tr>
+</tbody>
+</table>
+</form>
+
+</div>
+<script>
+$(function(){
+	$('#cache_form a').click(function(){
+		return confirm('确定？');
+	});
+});
+</script>	
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

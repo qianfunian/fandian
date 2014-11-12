@@ -1,0 +1,55 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<!--  <div id="main">
+<div class="feedback_title"><h2>历史订单</h2></div>
+
+<div class="pubbox">
+<ol class='feedback'>
+
+	<?php if (count($this->rows)>0) { ?>
+	<?php foreach ($this->rows as $row) { ?>
+	
+	<li class="feedback_gest porder_history">
+		<a title='浏览订单详情' target='_blank' href='<?php echo $this->scriptUrl;?>order/hash?hash=<?php echo $this->Ohash($row['OrderGuid']);?>'><?php echo $row['OrderId'];?> - <?php echo $this->Fvendorname($row['VendorName']);?> - <?php echo $this->OSName($row['StatusId']);?></a>
+		
+		<div class='porder_history_right'>
+		 	<?php echo $this->Dt($row['AddTime']);?>
+		</div>
+	</li>
+						
+	<?php } ?>
+	<?php } else {  ?>
+<li class="feedback_gest" style='padding: 5px; '>
+	暂无订单
+</li>
+	<?php } ?>	
+</ol>
+
+<div class='order_history_alert'>未注册用户只显示7天内的、最后的10份订单</div>
+			
+</div>
+-->
+	
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+    <div class="history-order">
+    <p class="site-title">历史订单</p>
+    <ul>
+    <?php if (count($this->rows)>0) { ?>
+    
+	<?php foreach ($this->rows as $row) { ?>
+	<li><a title='浏览订单详情' target='_blank' href='<?php echo $this->scriptUrl;?>order/hash?hash=<?php echo $this->Ohash($row['OrderGuid']);?>'><?php echo $row['OrderId'];?> - <?php echo $this->Fvendorname($row['VendorName']);?> - <?php echo $this->OSName($row['StatusId']);?>-<?php echo $this->Dt($row['AddTime']);?></a></li>					
+	<?php } ?>
+	<?php } else {  ?>
+	<Li>暂无订单</Li>
+	<?php } ?>
+	</ul>	
+    </div>
+   </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

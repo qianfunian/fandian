@@ -1,0 +1,65 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>编辑GPRS打印机</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form method='post' action='<?php echo $this->scriptUrl;?>gprsprinter/doedit' target='_self'>	
+<table class='edit_table' cellspacing='1'>
+	<tbody>
+		<tr>
+			<td width='15%' class='center left'>
+				商家名
+			</td>
+			<td class='text right' colspan='3'>
+				<input type='text' size='70' name='VendorName' id='VendorName' value='<?php echo $this->vendor['VendorName'];?>' <?php if ($this->data['VendorGuid']) { ?>readonly='readonly'<?php }?>/> <span class='error'><?php echo $this->error['VendorName'];?></span>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				SN1
+			</td>
+			<td class='text right' colspan='3'>
+				<input type='text' size='70' name='Sn1' id='Sn1' value='<?php echo $this->data['Sn1'];?>' /> <span class='error'><?php echo $this->error['Sn1'];?></span>
+			</td>
+		</tr>	
+		<tr>
+			<td width='15%' class='center left'>
+				SN2
+			</td>
+			<td class='text right' colspan='3'>
+				<input type='text' size='70' name='Sn2' id='Sn2' value='<?php echo $this->data['Sn2'];?>' /> <span class='error'><?php echo $this->error['Sn2'];?></span>
+			</td>
+		</tr>	
+		<tr>
+			<td width='15%' class='center left'>
+				Key
+			</td>
+			<td class='text right' colspan='3'>
+				<input type='text' size='70' name='Key' id='Key' value='<?php echo $this->data['Key'];?>' /> <span class='error'><?php echo $this->error['Key'];?></span>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				主控手机号
+			</td>
+			<td class='text right' colspan='3'>
+				<input type='text' size='70' name='Cell' id='Cell' value='<?php echo $this->data['Cell'];?>' /> <span class='error'><?php echo $this->error['Cell'];?></span>
+			</td>
+		</tr>	
+		<tr>
+			<td colspan='4' class='center bottom'>
+				<input type='submit' id='submit' value='确定' />
+				<input type='button' id='back' value='返回' onclick="javascript:history.back()" />
+				<input type='hidden' name='VendorGuid' value='<?php echo $this->data['VendorGuid'];?>' id='VendorGuid' />		
+			</td>
+		</tr>
+	</tbody>
+</table>
+</form>
+</div>
+
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

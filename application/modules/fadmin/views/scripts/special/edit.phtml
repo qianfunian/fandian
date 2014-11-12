@@ -1,0 +1,117 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>编辑菜品</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form id='modify_form' method='post' action='<?php echo $this->scriptUrl;?>special/doedit' target='_self' enctype='multipart/form-data'>
+<table class='edit_table' cellspacing='1'>
+	<tbody>
+		<tr>
+			<td width='15%' class='center left'>
+				菜品名
+			</td>
+			<td class='text right' colspan='3'>
+				<?php echo $this->data['ItemName'];?>			
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				长标题
+			</td>
+			<td class='text right' colspan='3'>
+				<textarea name='LongTitle' rows='5' cols='80' id='LongTitle'><?php echo $this->extend['LongTitle'];?></textarea>		
+			</td>
+		</tr>
+
+		<tr>
+			<td width='15%' class='center left'>
+				已售出
+			</td>
+			<td width='35%' class='text right'>
+				<input type='text' size='4' maxlength='4' name='Sales' id='Sales' value='<?php echo $this->extend['Sales'];?>' /><span class='error'><?php echo $this->error['Sales'];?></span>
+			</td>
+			<td width='15%' class='center left'>
+				原价
+			</td>
+			<td width='35%' class='text right'>
+				￥<input type='text' size='4' maxlength='4' name='Persisted' id='Persisted' value='<?php echo $this->extend['Persisted'];?>' /><span class='error'><?php echo $this->error['Persisted'];?></span>
+			</td>
+		</tr>	
+		<tr>
+			<td width='15%' class='center left'>
+				展示图<br />
+				268x160
+			</td>
+			<td class='text right' colspan='3'>
+				<span id='item_logo_small'>上传图片</span>
+				<span id='item_logo_url' href='<?php echo $this->item_logo_url;?>'>点击浏览</span>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				详细介绍
+			</td>
+			<td colspan='3' class='text right'>
+				<textarea name='Detail' id='Detail'  class='p_kindeditor'><?php echo htmlspecialchars($this->extend['Detail']);?></textarea>
+			</td>
+		</tr>		
+		<tr>
+			<td colspan='4' class='center bottom'>
+				<input type='submit' id='submit' value='确定' />
+				<input type='button' id='back' value='返回' onclick="javascript:history.back()" />
+				<input type='hidden' name='ItemGuid' value='<?php echo $this->data['ItemGuid'];?>' id='ItemGuid' />	
+			</td>
+		</tr>
+	</tbody>
+</table>
+</form>
+</div>
+<script type='text/javascript'>
+var uploader = null;
+$(function(){
+
+	KindEditor.ready(function(K) {
+		editor = K.create('textarea[name="Detail"]', {
+			uploadJson : '<?php echo $this->baseUrl;?>fadmin/kind-editor/upload',
+			allowFileManager : false,
+			items : [
+			         'source', '|', 'undo', 'redo', '|', 'preview', 'print', 'code', 'cut', 'copy', 'paste',
+			         'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+			         'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+			         'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+			         'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+			         'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 
+			         'insertfile', 'table', 'hr', 'emoticons', 'baidumap', 'pagebreak',
+			         'anchor', 'link', 'unlink', '|', 'about'
+			        ]
+		});
+	});
+
+	uploader = new AjaxUpload('#item_logo_small', {
+		action: '<?php echo $this->baseUrl;?>files/upload/itemspecial',
+		name: 'myfile',
+		data: {
+			'ItemGuid': '<?php echo $this->data['ItemGuid'];?>',
+			'VendorGuid': '<?php echo $this->data['VendorGuid'];?>'
+		},
+		autoSubmit: true,
+		onSubmit: function(file,ext){
+		},
+		onComplete: function(file, upload_response){
+			tmp = eval(upload_response);
+			Src = tmp[0];
+			$('#item_logo_url').attr('href', Src);
+			alert('上传成功');
+		}
+	});	
+
+	$('#item_logo_url').click(function(){
+		window.open($(this).attr('href'));
+	});		
+});
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

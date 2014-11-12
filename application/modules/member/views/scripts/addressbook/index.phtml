@@ -1,0 +1,166 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="con-left">
+        <div class="my-news">
+          <div class="news">我的饭店网</div>
+          <ul>
+          <?php include_once dirname(__FILE__).'/../include/left_nav.phtml';?>
+          </ul>
+        </div>
+      </div>
+      <div class="con-right">
+        <div class="my-content">
+        <h1>我的地址</h1>
+        <form method='post' action='<?php echo $this->scriptUrl;?>profile/do' enctype='multipart/form-data'>
+			<ol id="mypan">
+				<li id="con_one_1" style="display: block">
+
+						<hr />
+						<?php if (count($this->rows)>0) { ?>
+						<?php foreach ($this->rows as $row) { ?>
+						<div><a href='<?php echo $this->scriptUrl;?>addressbook/del?AutoId=<?php echo $row['AutoId'];?>' title='删除本地址' onclick="return confirm('确定要删除该地址簿吗？');"><span class="del">x</span></a>
+						标题：<?php echo $row['Title'];?> <?php if ($row['IsDefault']) { ?>【默认】<?php } ?><br />
+						地址：<?php echo $row['Address'];?><br />
+						电话：<?php echo $row['Phone'];?><br />
+						联系人：<?php echo $row['Contactor'];?><br />
+						[<a href='javascript:void(0);' onclick="initForm('<?php echo $row['AutoId'];?>', '<?php echo $row['Title'];?>','<?php echo $row['Address'];?>', '<?php echo $row['CoordGuid'];?>', '<?php echo $row['Contactor'];?>', '<?php echo $row['Phone'];?>', '<?php echo $row['IsDefault'] ? '1' : '0';?>');modal.open();">修改</a>]&nbsp;
+						</div>
+						<hr />
+						<?php } ?>
+						<?php } else {  ?>
+						<h3 class='error'>暂无数据</h3>
+						<hr />
+						<?php } ?>
+						<input class='b_input' id='add_new' type="button" value="新增常用地址"  />						
+				</li>
+			</ol>
+		</form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<div class='modal_wrap' id='modal_new_address' style="display: none">
+	<h3>地址簿维护</h3>
+	<hr />
+	<form method='post' action='<?php echo $this->scriptUrl;?>addressbook/do' target='form_iframe' onsubmit="getCoordGuid()">
+	<div class="textalgin w80">标题：</div>
+	<input class='input' type='text' name='Title' id='Title' value='<?php echo $this->request['Title'];?>' /> <span class='error' id='error_Title'><?php echo $this->error['Title'];?></span>
+	<hr />
+	<div class="textalgin w80">地址：</div>
+	<input size='28' class='input' type='text' name='Address' id='Address' value='<?php echo $this->request['Address'];?>' />
+	<a id='show_address_map' href='javascript:void(0)'>设定地标</a>
+	<span class='error' id='error_Address'><?php echo $this->error['Address'];?></span>
+	<hr />
+	<div class="textalgin w80">联系人：</div><input class='input' type='text' name='Contactor' id='Contactor' value='<?php echo $this->request['Contactor'];?>' /> <span class='error' id='error_Contactor'><?php echo $this->error['Contactor'];?></span>
+	<hr />
+	<div class="textalgin w80">电话：</div><input class='input' type='text' name='Phone' id='Phone' value='<?php echo $this->request['Phone'];?>' /> <span class='error' id='error_Phone'><?php echo $this->error['Phone'];?></span>
+	<hr />
+	<div class="textalgin w80">设置：</div><?php echo $this->FormCheckbox('IsDefault', '1', array(
+			'checked' => $this->request['IsDefault'] ? true : false
+			));?><?php echo $this->FormLabel('IsDefault', '设为默认');?>
+	<hr />
+	<input type='hidden' name='AutoId' id='AutoId' value='<?php echo $this->request['AutoId'];?>' />
+	<input class='b_input' type='submit'  id='save_address' name='save_address' value='保存' />
+	<input class='b_input' type='button' id='close_modal' name='close_modal' value='关闭' />
+	<input type='hidden' name='CoordGuid' id='aCoordGuid' value='<?php echo $this->request['CoordGuid'];?>' />
+	</form>
+	<a id='modal_new_address_close' class='modal_close'></a>
+	<iframe class='hidden' id='form_iframe' name='form_iframe' src=''></iframe>
+</div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<script type='text/javascript'>
+var rows = <?php echo count($this->rows);?>;
+function getCoordGuid()
+{
+	$('#aCoordGuid').val($('#CoordGuid').val());
+	return true;
+}
+function initForm(AutoId, Title, Address, CoordGuid, Contactor, Phone, IsDefault)
+{
+	Fandian_SetDomValue('AutoId', AutoId);
+	Fandian_SetDomValue('Title', Title);
+	Fandian_SetDomValue('Address', Address);
+	Fandian_SetDomValue('CoordGuid', CoordGuid);
+	Fandian_SetDomValue('Contactor', Contactor);
+	Fandian_SetDomValue('Phone', Phone);
+
+	if (IsDefault>0) {
+		Fandian_SetDomAttr('IsDefault', 'checked', true);
+	} else {
+		Fandian_SetDomAttr('IsDefault', 'checked', false);
+	}
+}
+
+document.ready(function(){
+
+	document.getElementById('show_address_map').onclick = function(){
+		address = document.getElementById('Address').value;
+		if (address!='') {
+			amap = new Fandian_Modal('add_new_address', {
+				width: 740,
+				height: 400,
+				top: 50,
+				closeButton: Fandian_CloseMapModal,
+				afterOpen: function(){
+					Fandian_Service_BaiduPlace(document.getElementById('Address').value, function(){
+						if (bmap==null) {
+							Fandian_LoadBaiduMapScript('Fandian_RenderAddressMap');
+						}
+
+						if (!bmapTimer) {
+							bmapTimer = setInterval(Fandian_MoveMapCenter, 500);
+						}
+					});
+				},
+				afterClose: function(){
+					if (bmapTimer) {
+						clearInterval(bmapTimer);
+					}
+				}
+			});
+			amap.open();
+		} else {
+			alert('请先填写地址！');
+			document.getElementById('Address').focus();
+		}
+	};
+	
+	document.getElementById('add_new').onclick = function(){
+		if (rows>=5) {
+			alert('地址簿最多只能保存5条数据！');
+		} else {
+			initForm('0', '', '', '', '', '', '');
+			modal = new Fandian_Modal('modal_new_address', {
+				width: 500,
+				height: BROWSER.ie ? 280 : 260,
+				closeButton: function(){
+					document.getElementById('close_modal').click();
+				},
+				top: 100
+			});
+			modal.open();
+		}
+	};
+
+	document.getElementById('close_modal').onclick = function(){
+		modal.close();
+	};
+
+	document.getElementById('save_address').onclick = function(){
+		modal.close();
+		Fandian_AjaxLoading();
+	}
+})
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>
+
+
+

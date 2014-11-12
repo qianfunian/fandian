@@ -1,0 +1,49 @@
+<?php Msd_Output::prepareHtml(200, 'gb2312');?>
+<time><?php echo $this->Sdt($this->AddTime, 'full');?></time>
+<orderid><?php echo $this->data['orderid'];?>-v<?php echo (int)$this->data['versionid']+1;?></orderid>
+<OdCont>
+<?php 
+$t = 20;
+echo "------------------------------\n";
+if (!$this->is_first_version && $this->item_changed) {
+	echo Msd_Iconv::u2g("菜品有变化，请注意")."\n\n";
+}
+$boxes = 0;
+$boxPrices = 0;
+foreach ($this->data['items'] as $item) { 
+	$boxes += $item['BoxPrice'] ? ($item['BoxAmount']/$item['BoxPrice']) : 0;
+	$boxPrices += $item['BoxAmount'];
+	
+	$in = $item['LineIndex'].'、'.$item['ItemName'];
+	$in = str_replace('(', '（', $in);
+	$in = str_replace(')', '）', $in);
+	$remark = '';
+	$prefix = ($this->pre_item_guids && !in_array($item['ItemGuid'], $this->pre_item_guids)) ? '+' : ' ';
+	
+	$str = $prefix.Msd_Iconv::u2g($in);
+	$strlen = strlen($str);
+	$str .= str_repeat(' ', 25-$strlen);
+	$str .= ($item['ItemPrice'] ? $item['ItemAmount']/$item['ItemPrice'] : 1).' '.$item['ItemAmount'];
+?>
+<?php echo $str."\n";?>
+<?php 
+	if (strlen($item['Remark']) || strlen($item['ItemReq'])) {
+		$tmp = array();
+		strlen($item['ItemReq']) && $tmp[] = $item['ItemReq'];
+		strlen($item['Remark']) && $tmp[] = $item['Remark'];
+		$remark = '   '.Msd_Iconv::u2g(implode('，', $tmp))."\n";
+		echo $remark;
+	}
+} 
+echo "\n------------------------------\n";
+echo Msd_Iconv::u2g('打包盒数：'.$boxes.'，价格：'.$boxPrices)."\n";
+echo Msd_Iconv::u2g('订单总价：').($this->item_amount+$boxPrices)."\n";
+echo "\n------------------------------\n";
+echo "\n\n".Msd_Iconv::u2g('取菜时间：').$this->time_expected."\n";
+if ($this->request_remark) {
+	echo "\n\n".Msd_Iconv::u2g("备注：".$this->request_remark)."\n";	
+}
+?>
+</OdCont>
+<end></end>
+<?php Msd_Output::doOutput();?>

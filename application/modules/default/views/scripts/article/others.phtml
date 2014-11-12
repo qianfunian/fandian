@@ -1,0 +1,35 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="con-left">
+        <div class="my-news">
+          <div class="news">关于我们</div>
+          <ul>
+          <?php if (count($this->rows)>0) {foreach ($this->rows as $row) {?>
+          <li><a href='<?php echo $this->scriptUrl;?>article/others/<?php echo $row['Title'];?>'><?php echo $row['Title'];?></a></li>
+          <?php }} else {?>
+          <li>暂无公告</li>
+          <?php }?>
+          <?php if ($this->CityConfig->onlinepay_enabled) { ?>
+		  <li>
+		  <a href='<?php echo $this->scriptUrl;?>article/pay'>网上支付注意事项</a>
+		  </li>
+	<?php } ?>
+          </ul>
+        </div>
+      </div>
+      <div class="con-right">
+        <div class="my-content">
+          <h1><?php echo $this->data['Title'];?><span><?php echo $this->Dt($this->data['PubTime'], 'date');?> 浏览量：<?php echo $this->views;?></span></h1>
+          <p><?php echo $this->data['Detail'];?></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

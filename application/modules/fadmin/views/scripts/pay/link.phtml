@@ -1,0 +1,38 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>网上支付链接</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form action='<?php echo $this->scriptUrl;?>pay/link' id='homepage_form'>
+<table cellspacing='1' class='edit_table'>
+<tbody>
+	<tr>
+		<td class='center left' width='15%'>网单订单号：</td>
+		<td class='right'>
+			 <input type="text" name="OrderId" id="OrderId" value="<?php echo $this->request['OrderId'];?>" size='40' />
+		</td>
+	</tr>
+	<?php if ($this->data) { ?>
+	<tr>
+		<td class='center left' width='15%'>网上支付链接：</td>
+		<td class='right'>
+			<a href='<?php echo Msd_Config::cityConfig()->meta->base_href;?>order/hash?hash=<?php echo $this->data['Hash'];?>' target='_blank'><?php echo Msd_Config::cityConfig()->meta->base_href;?>order/hash?hash=<?php echo $this->data['Hash'];?></a>
+		</td>
+	</tr>		
+	<?php } ?>
+	<tr>
+		<td class='center left' colspan='2'>
+			<input type='submit' name='go' id='go' value=' 提 交 (s) ' accesskey='s' />
+			<input type='hidden' name='do_search' value='1' />
+		</td>
+	</tr>
+</tbody>
+</table>
+</form>
+
+</div>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

@@ -1,0 +1,107 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>编辑积分兑换记录</div>
+		
+		<div class='page_now'></div>
+	</div>	
+
+<form method='post' action='<?php echo $this->scriptUrl;?>creditlogs/doedit' target='_self'>	
+<table class='edit_table' cellspacing='1'>
+	<tbody>
+		<tr>
+			<td width='15%' class='center left'>
+				标题
+			</td>
+			<td class='text right'>
+				<?php echo $this->adata['Title'];?>
+			</td>
+			<td width='15%' class='center left'>
+				兑换时间
+			</td>
+			<td class='text right'>
+				<?php echo $this->Dt($this->data['CreateTime']);?>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				联系人
+			</td>
+			<td colspan='3' class='text right'>
+				<?php echo $this->data['Contactor'];?>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				地址
+			</td>
+			<td colspan='3' class='text right'>
+				<?php echo $this->data['Address'];?>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				电话
+			</td>
+			<td colspan='3' class='text right'>
+				<?php echo $this->data['CellPhone'];?>
+			</td>
+		</tr>
+		<tr>
+			<td width='15%' class='center left'>
+				备注
+			</td>
+			<td colspan='3' class='text right'>
+				<?php echo nl2br($this->data['Remark']);?>
+			</td>
+		</tr>		
+		<tr>
+			<td width='15%' class='center left'>
+				处理备注
+			</td>
+			<td colspan='3' class='text right'>
+				<textarea name='ActRemark' id='ActRemark' rows='5' cols='80'><?php echo $this->data['ActRemark'];?></textarea>
+			</td>
+		</tr>		
+		<tr>
+			<td width='15%' class='center left'>
+				处理时间
+			</td>
+			<td class='text right'>
+				<input type='text' size='20' name='ActTime' id='ActTime' value='<?php echo $this->Dt($this->data['ActTime'], 'date');?>' /> 
+			</td>
+			<td width='15%' class='center left'>
+				设置
+			</td>
+			<td class='text right'>
+				<?php echo $this->Checkbox(array(
+						'name' => 'Actlag',
+						'value' => '1',
+						'user_value' => $this->data['Actlag'],
+						'label' => '标记为已处理'
+						));?>
+			</td>
+		</tr>			
+		<tr>
+			<td colspan='4' class='center bottom'>
+				<input type='submit' id='submit' value='确定' />
+				<input type='button' id='back' value='返回' onclick="javascript:history.back()" />
+				<input type='hidden' name='AutoId' value='<?php echo $this->data['AutoId'];?>' id='AutoId' />			
+			</td>
+		</tr>
+	</tbody>
+</table>
+</form>
+</div>
+<script type='text/javascript'>
+$(function(){
+	$('#ActTime').datepicker({
+		'dateFormat': 'yy-mm-dd',
+		'defaultDate': '<?php echo $this->Dt($this->data['ActTime'], 'date');?>',
+		'changeMonth': true,
+		'changeYear': true
+	});
+});
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

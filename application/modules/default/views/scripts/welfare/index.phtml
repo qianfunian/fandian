@@ -1,0 +1,182 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<link rel="stylesheet" href="./js/colorbox/colorbox.css" />
+<script src="./js/colorbox/jquery.colorbox-min.js"></script>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div id="banner2" style="visibility:hidden;"> <a href="#" ><img src="css/images/banner.png" /></a><a href="#" ><img src="css/images/banner.png" /></a> </div>
+      <div class="my-tools2">
+        <div style="border:1px solid #ccc; padding:5px;min-height: 200px;">
+          <p><span style="font-weight:bold;color:#666;font-size:16px;font-family:microsoft yahei ; ">全国统一服务热线</span></p>
+          <p><span style=" font-weight:bold;color:#E53810;font-size:20px;font-family: Georgia, 'Times New Roman', Times, serif ; background:url(css/images/phone-icon.png) no-repeat 0 4px; padding-left:30px;">400-114-7777</span></p>
+          <p style="border-bottom:1px dotted #ccc; margin:10px 0 ;padding:0 "></p>
+          <p><span style="font-weight:bold;color:#666;font-size:16px;font-family:microsoft yahei ; ">生日礼品兑换通道</span></p>
+          <p><span style=" font-weight:bold;color:#666; background:url(css/images/key-icon.png) no-repeat 0 4px; padding-left:30px;padding: 5px 0 0 30px; ">请输入您的卡号：</span></p>
+          <p>
+            <input type="text" name="giftcode" id="giftcode" style="border:1px solid #ccc; height:22px;">
+            <input type="button" class='inline' href="#inline_content" style="background:#FE6732; height:25px; color:#fff; border:0; cursor:pointer" value="确定">
+          </p>
+        </div>
+        <div class="slideshow"><img src="css/images/newplayer.png"></div>
+        <div class="clear"></div>
+      </div>
+      <div style="clear:both; padding:10px 0 0"><img src="css/images/banner2.png"></div>
+    </div>
+    <div class="row">
+      <div class="twelvecol">
+        <div class="recommend-shops">
+          <div class="recommend-pic">
+            <div class="line2" ><span class="group-title">套餐精选</span></div>
+            <ul class="all-shops2">
+            <?php foreach($this->items['set'] as $item){?>
+              <li>
+                <div class="hot-shops2"><img width="165px" height="180px" src="<?php echo $this->Itemspecialurl($item, $this->staticUrl.'design/product/nopic.jpg?'.FANDIAN_APP_VER);?>"></div>
+                <div class="hot-name2"><?php echo $item['ItemName'];?></div>
+                <div class="hot-order2"><span class="hot-price">￥<?php echo $item['UnitPrice'];?></span>
+                  <button onclick="location.href='<?php echo $this->baseUrl?>welfare/show?Item=<?php echo $item['ItemGuid']?>'" class="button2 btn-cart" title="订购" type="button"><span>查看详情</span></a></button>
+                </div>
+              </li>
+              <?php }?>
+            </ul>
+          </div>
+          <div class="recommend-text last">
+            <div class="slideshow"><img src="css/images/custom.png"></div>
+            <div class="line2" ><span class="news-title">福利资讯</span></div>
+            <ul class="my-news2">
+              <?php foreach( $this->items['fulizixun'] as $item){?>
+               <li><a href="<?php echo $this->baseUrl."article/fulizixun/".$item['Title']?>">&#8226; <?php echo $item['Title'];?></a></li>
+              <?php }?>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clear"></div>
+    <div class="row">
+      <div class="twelvecol">
+        <div class="recommend-shops">
+          <div class="recommend-pic">
+            <div class="line2" ><span class="diy-title">DIY自选超市</span></div>
+            <div class="fix-bug">
+              <ul class="diy-tabs">
+                <li><a href="#tabs01" class="icon01">生日蛋糕</a></li>
+                <li><a href="#tabs02" class="icon02">鲜花祝福</a></li>
+                <li><a href="#tabs03" class="icon03">生日配餐</a></li>
+                <li><a href="#tabs04" class="icon04">生日好礼</a></li>
+              </ul>
+              <ul id="tabs01" class="free">
+              <?php foreach($this->items['cake'] as $item){?>
+                <li>
+                  <div class="recommend-shop"><img src="css/images/other/85度C 草莓蛋糕.jpg"></div>
+                  <div class="recommend-name"><?php echo $item['VendorName']?>
+                    <p><?php echo $item['ItemName']?></p>
+                  </div>
+                </li>
+                <?php }?>
+              </ul>
+              <ul id="tabs02" class="free">
+              <?php foreach($this->items['flower'] as $item){?>
+                <li>
+                  <div class="recommend-shop"><img src="css/images/flw/爱在心中.jpg"></div>
+                  <div class="recommend-name">鲜花
+                    <p>爱在心中</p>
+                  </div>
+                </li>
+                <?php }?>
+              </ul>
+              <ul id="tabs03" class="free">
+               <?php foreach($this->items['food'] as $item){?>
+                <li>
+                  <div class="recommend-shop"><img src="css/images/bir/百合蛋糕组合.jpg"></div>
+                  <div class="recommend-name">配餐
+                    <p>百合蛋糕组合</p>
+                  </div>
+                </li>
+                 <?php }?>
+              </ul>
+              <ul id="tabs04" class="free">
+               <?php foreach($this->items['food'] as $item){?>
+                <li>
+                  <div class="recommend-shop"><img src="css/images/gift/百年好合化妆镜.jpg"></div>
+                  <div class="recommend-name">好礼
+                    <p>百年好合化妆镜</p>
+                  </div>
+                </li>
+                <?php }?>
+              </ul>
+            </div>
+          </div>
+          <div class="recommend-text last">
+            <div class="line2" ><span class="day-title">节日福利</span></div>
+            <ul class="my-news2">
+              <?php foreach( $this->items['jierifuli'] as $item){?>
+              <li><a href="<?php echo $this->baseUrl."article/jierifuli/".$item['Title']?>">&#8226; <?php echo $item['Title'];?></a></li>
+              <?php }?>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div style='display:none'>
+	<div id='inline_content' style='padding:10px; background:#fff;'>
+	</div>
+</div>
+<script text="text/javascript">
+
+$(document).ready(function(){
+	//Examples of how to assign the ColorBox event to elements
+	
+	$(".inline").colorbox({
+		inline:true, 
+		width:"30%",
+		height:"200px",
+		onComplete:function(){
+			$('#inline_content').html('');
+			queryGiftcard();
+		}
+		//onLoad:function(){ alert('onLoad: colorbox has started to load the targeted content'); },
+		//onComplete:function(){ alert('onComplete: colorbox has displayed the loaded content'); },
+		//onCleanup:function(){ alert('onCleanup: colorbox has begun the close process'); },
+		//onClosed:function(){ alert('onClosed: colorbox has completely closed'); }
+
+	});
+
+	function queryGiftcard()
+	{
+		var giftcode = $.trim($("#giftcode").val());
+		if(giftcode =='')
+		{
+			$('#inline_content').html("请输入礼品卡号");
+		}else
+		{
+			$.ajax({
+				type: "POST",
+				dataType : "json",
+				data:{"giftcode":giftcode},
+				async : false,
+				url: FANDIAN_BASE_URL+'welfare/query-giftcard?giftcode='+giftcode,
+				success: function(res){
+					if(typeof(res.Value)=="undefined")
+					{
+						$('#inline_content').html("抱歉，您输入的卡号不存在");
+					}else
+					{
+						var state= res.UsedTime==null?"未使用":"已使用";
+						$('#inline_content').html("<table width='100%'><tr><td>礼品卡号</td><td>礼品面值</td><td>状态</td></tr><tr><td>"+giftcode+"</td><td>￥"+res.Value+"元</td><td>"+state+"</td></tr></table>");
+					}
+				},
+				error : function(res,msg,err) {
+					$('#inline_content').html("查询失败，请联系网站管理员，谢谢！");
+				}
+			});
+		}
+	}
+});
+</script>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

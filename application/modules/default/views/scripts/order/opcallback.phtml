@@ -1,0 +1,16 @@
+<?php Msd_Output::prepareHtml();?>
+<html>
+<head>
+	<title>支付完成</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body>
+<h2>您已经成功通过网上银行支付了 <?php echo (float)$this->total;?></h2>
+<a href='#' onclick="window.close();">关闭窗口</a>
+<script type='text/javascript'>
+window.close();
+</script>
+</body>
+</html>
+<?php Msd_Output::doOutput();?>

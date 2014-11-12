@@ -1,0 +1,274 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+	<div class="tuanad"><img src="<?php echo $this->staticUrl;?>adv/2012/09/59.ts.jpg" alt='' /></div>
+	<div id="main">
+	<div class="feedback_title"><h2 class='ot'><?php echo $this->OrderStepTip(3);?></h2></div>
+	<div class="pubbox">
+		<div id="lmain" class="tuan_left">
+
+			<a name='navtop'></a>
+				<div id='vendor_float_banner'>
+							<div class='refer_tip'>本网站所有菜品图片仅供参考，以实物为准。</div>
+				</div>			
+				<div class="">
+					<?php 
+					$i = 1;
+					foreach ($this->titems as $row) {
+					?>
+					<ul class="fixedbar" id='fb_<?php echo $i;?>'>
+						<li class="tuan_left">
+						<a href='<?php echo urldecode($_SERVER['REQUEST_URI']);?>#tc_<?php echo md5($row['VendorGuid']);?>'><?php echo $row['VendorName'];?></a></li>
+						<li class="tuan_right"><div class="tuan_hide_button" onclick="thide(this,'pr0<?php echo $i;?>')" title="点击收缩/展开">∧</div></li>
+					</ul>
+					<a name='tc_<?php echo md5($row['VendorGuid']);?>'></a>
+					<ul id="pr0<?php echo $i;?>" class="prbox">
+						<?php 
+						$j = 1;
+						foreach ($row['items'] as $item) {
+						?>
+						<li id='titem_<?php echo $item['ItemGuid'];?>' class="tuan_<?php echo fmod($j, 2)==0 ? 'right' : 'left';?> <?php echo in_array($item['ItemGuid'], $this->itemids) ? 'selected_pic' : '';?>"  onmouseover="tuanshow('tuanhide_<?php echo $i;?>_<?php echo $j;?>')" onmouseout="tuanhide('tuanhide_<?php echo $i;?>_<?php echo $j;?>')">
+							<div class="tuan_pic">
+								<a href='#' onclick="Tuan_ShowItemGallery('<?php echo $item['ItemGuid'];?>', '<?php echo addslashes($item['ItemName']);?>');return false;">
+								<img onerror='ItemImgOnError(this);' alt='<?php echo addslashes($item['ItemName']);?>' src='<?php echo $this->Itemtuanurl($item, $this->staticUrl.'design/product/nopic.jpg?'.FANDIAN_APP_VER);?>' data-url='' />
+								</a>
+							</div>
+							<div class="tuan_hiddendiv" style="display:none" id="tuanhide_<?php echo $i;?>_<?php echo $j;?>"  onmouseout="tuanhide('tuanhide_<?php echo $i;?>_<?php echo $j;?>')"><div class="tuan_order_button" onclick="Tuan_AddItem('<?php echo $row['VendorGuid'];?>', '<?php echo $item['ItemGuid'];?>');">订购</div><?php echo $item['Description'];?></div>
+							<div class="tuan_orderpic" onclick="Tuan_AddItem('<?php echo $row['VendorGuid'];?>', '<?php echo $item['ItemGuid'];?>');"><div><div class="tuan_left">
+							<?php if ($item['UnitPrice']) { ?>
+							<?php echo $item['UnitPrice']*$item['ItemQty'];?>元/<?php echo $item['ItemQty'];?><?php echo $item['UnitName'];?>
+							<?php } else { ?>
+							时价
+							<?php } ?>
+							</div>
+							</div>
+							</div>
+							<div class="tuan_text"><?php echo $item['ItemName'];?></div>
+						</li>
+						<?php 
+							$j++;
+						}
+						?>					
+					</ul>
+					<?php 
+						$i++;
+					}
+					?>
+				</div>
+				<div class="clear"></div>
+				<div class="tuan_adpic"><img src="" alr=""  /></div>
+				<div class="tuan_vote">
+				<div class="tuan_vote_first_title">投票调查</div>
+					<?php 
+					$j=1;
+					foreach ($this->votes as $vote) { ?>
+					<form id='vote_form_<?php echo $vote['vote']['AutoId'];?>' method='post' action='<?php echo $this->scriptUrl;?>vote/submit' target='vote_frame' onsubmit="return VoteCheck('<?php echo $vote['vote']['AutoId'];?>', <?php echo (int)$vote['vote']['IsMultiChoice'];?>);">
+					<div class='tuan_vote_cell <?php echo fmod($j, 2)==0 ? 'left' : 'right';?>'>
+						<div class='tuan_vote_title'>
+							<?php echo $vote['vote']['VoteTitle'];?>
+						</div>
+						<ol>
+							<?php foreach ($vote['choices'] as $choice) { ?>
+							<li class="li_line"><?php echo $this->VoteChoice($choice, $vote['vote']);?></li>
+							<?php } ?>
+						</ol>
+						<div class='tuan_vote_buttons'>
+							<input type='submit' class='b_input' value='投票' />
+							<input type='hidden' name='vid' value='<?php echo $vote['vote']['AutoId'];?>' />
+						</div>
+					</div>
+					</form>
+					<?php 
+					$j++;
+					} ?>
+					<iframe id='vote_frame' name='vote_frame' style='display:none;'></iframe>
+				</div>
+		</div>
+		<div id="rmain" class="right">
+			<div class="test450" id='order_widget'><h3 class="h3title">订单详细信息</h3>
+				<ol class='order_vendors' id='order_vendors'>
+					<?php if (count($this->p_items)>0) { ?>
+					<?php foreach ($this->p_items as $VendorGuid=>$row) {?>
+					<li id='order_vendor_<?php echo $VendorGuid;?>'><span class='order_vendor_title'>【<?php echo $row['VendorName'];?>】</span>
+						<ol class='order_vendor_items' id='order_vendor_items_<?php echo $VendorGuid;?>'>
+							<li class='order_vendor_item_header'>
+								<ul class='order_vendor_item_row'>
+									<li class='order_vendor_item_row_1'>菜名</li>
+									<li class='order_vendor_item_row_2'>份数</li>
+									<li class='order_vendor_item_row_3'>价格</li>
+									<li class='order_vendor_item_row_4'>操作</li>
+								</ul>
+							</li>
+							<?php foreach ($this->p_items[$VendorGuid]['items'] as $item) {?>
+							<li id='order_vendor_item_<?php echo $item['ItemGuid'];?>' class='order_vendor_item'>
+								<ul class='order_vendor_item_row'>
+									<li class='order_vendor_item_row_1'><?php echo $item['ItemName'];?></li>
+									<li class='order_vendor_item_row_2'><span id='order_vendor_item_count_<?php echo $item['ItemGuid'];?>'><?php echo $item['_count_'];?></span> <?php echo $item['UnitName'];?></li>
+									<li class='order_vendor_item_row_3'><span id='order_vendor_item_price_<?php echo $item['ItemGuid'];?>'><?php echo $item['_count_']*$item['UnitPrice'];?></span></li>
+									<li class='order_vendor_item_row_4'>
+										<a href='javascript:void(0);' class='add_order_item' onclick="Tuan_AddItem('<?php echo $row['VendorGuid'];?>', '<?php echo $item['ItemGuid'];?>');">+</a>
+										<a href='javascript:void(0);' class='reduce_order_item' onclick="Tuan_ReduceItem('<?php echo $row['VendorGuid'];?>', '<?php echo $item['ItemGuid'];?>');">-</a>
+									</li>
+								</ul>
+							</li>
+							<?php } ?>
+						</ol>
+						<ol class='order_vendor_items' id='order_summary_<?php echo $VendorGuid;?>'>
+							<li>
+								<span style='float:left;'>外送费：￥<span id='order_freight_<?php echo $VendorGuid;?>'><?php echo $this->ods[$VendorGuid]['Freight'];?></span></span>
+								<span style='float:left; margin-left: 100px;'>打包盒：<span id='order_boxes_<?php echo $VendorGuid;?>'><?php echo $this->ods[$VendorGuid]['Boxes'];?></span>，共：￥<span id='order_boxes_price_<?php echo $VendorGuid;?>'><?php echo $this->ods[$VendorGuid]['BoxesTotal'];?></span></span>
+							</li>
+							<li style='clear: both;'>
+							合计：￥<span id='order_total_<?php echo $VendorGuid;?>'><?php echo $this->ods[$VendorGuid]['Total'];?></span>
+							</li>
+							<li>
+								备注：<input type='text' onblur="SaveRemark(this.value, '<?php echo $VendorGuid;?>');" name='order_remark_<?php echo $VendorGuid;?>' id='order_remark_<?php echo $VendorGuid;?>' value='<?php echo $this->remark[$VendorGuid];?>'  size='30' />
+							</li>
+						</ol>
+					</li>
+					<?php } ?>
+					<?php } ?>
+					</ol>
+					<ol class='order_vendors'>
+					<li class='order_express'>
+						<ul>
+							<li class='order_express_element'>姓名</li>
+							<li class='order_express_form'><input type='text' name='OrderContactor' id='OrderContactor' value='<?php echo addslashes(trim($_COOKIE['contactor']));?>' onblur="SaveOrderCommon('contactor', this.value);" /></li>
+							<li class='order_express_element'>电话</li>
+							<li class='order_express_form'><input type='text' name='OrderPhone' id='OrderPhone' value='<?php echo addslashes(trim($_COOKIE['phone']));?>' onblur="SaveOrderCommon('phone', this.value);" onkeyup="CheckPhoneFormat(this)" /></li>
+							<li class='order_express_element'>送餐地址</li>
+							<li class='order_express_form'>
+								<input type='text' name='OrderAddress' id='OrderAddress' value='<?php echo addslashes(trim($_COOKIE['address']));?>' onblur="SaveOrderCommon('address', this.value);" />
+								<input type='hidden' name='OrderCoordGuid' id='OrderCoordGuid' value='<?php echo addslashes($_COOKIE['coord_guid']);?>' />
+							</li>
+							<li class='order_express_element'>支付方式</li>
+							<li class='order_express_form'>
+								<div class='oef'>
+								<?php echo $this->Radiobox(array(
+										'name' => 'OrderPayMethod',
+										'label' => '到付',
+										'value' => 0,
+										'user_value' => (int)$_COOKIE['paymethod'],
+										'onclick' => "SwitchOrderPayMethod(this)",
+										'id' => 'OrderPayMethod_0',
+										));?>
+								</div>
+								<div class='oef'>
+								<?php echo $this->Radiobox(array(
+										'name' => 'OrderPayMethod',
+										'label' => '网上支付',
+										'value' => 1,
+										'user_value' => (int)$_COOKIE['paymethod'],
+										'onclick' => "SwitchOrderPayMethod(this)",
+										'id' => 'OrderPayMethod_1',
+										));?>		
+								</div>
+								<div class='oef'>
+									<img src='<?php echo $this->imageUrl;?>pay.jpg' alt='网上支付' class='order_express_form_onlinepay_img' />						
+								</div>
+							</li>
+							<li class='order_express_element'>送餐时间</li>
+							<li class='order_express_form'>
+								<div class='oef'>
+								<?php echo $this->Radiobox(array(
+										'name' => 'OrderExpressTime',
+										'label' => '尽快',
+										'value' => 0,
+										'user_value' => (int)$_COOKIE['express_setting'],
+										'onclick' => "return SwitchOrderExpressTime(this);",
+										'id' => 'OrderExpressTime_0',
+										));?>
+								</div>
+								<div class='oef'>	
+								<?php echo $this->Radiobox(array(
+										'name' => 'OrderExpressTime',
+										'label' => '预订',
+										'value' => 1,
+										'user_value' => (int)$_COOKIE['express_setting'],
+										'onclick' => "return SwitchOrderExpressTime(this);",
+										'id' => 'OrderExpressTime_1',
+										));?>
+								</div>
+								<div id='OrderExpressTimePreSettings' style='clear: both; display:<?php if (!$_COOKIE['express_setting']) { ?>none<?php } else { ?>block<?php } ?>;'>
+									<?php echo $this->Orderpreselect(array(
+											'year' => $_COOKIE['pre_year'],
+											'month' => $_COOKIE['pre_month'],
+											'day' => $_COOKIE['pre_day'],
+											'hour' => $_COOKIE['pre_hour'],
+											'minute' => $_COOKIE['pre_minute']
+											));?>
+								</div>													
+							</li>
+						</ul>
+					</li>
+					<li class='order_express'>
+						<input class="b_input" type='button' id='SubmitOrder' name='SubmitOrder' value='提交订单'  onclick="SubmitOrder();" />
+						<input class="b_input" type='button' id='ClearOrder' name='ClearOrder' value='清空'  onclick="ClearOrder();"/>
+						
+					</li>
+				</ol>
+			</div>			
+			<div class="test450" id='order_note'>
+				<h3 class="h3title">相关说明</h3>
+				<div class='order_tips'>
+					1、请您提交真实的姓名、电话、地址等信息，以便准确、准时的为您配送餐品<br />
+					2、请选择合适的配送方式和支付方式，以确保尽快完成预定流程。<br />
+					3、正常送餐将在给商家下单后40-60分钟内完成。<br />
+				</div>
+			</div>			
+		</div>
+	</div>
+
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+</div>
+
+<div class='modal_wrap' id='modal_item_gallery'>
+	<div class='ig_container' id='ig_container'></div>
+	<div class='ig_buttons'>
+		<a href='#' id='ig_pre' onclick="Tuan_ItemGalleryPrev();return false;" title='上一张'>前一个</a>
+		<div id='igallery_title'></div>
+		<a href='#' id='ig_next' onclick="Tuan_ItemGalleryNext();return false;" title='下一张'>下一个</a>
+	</div>
+	<a id='modal_item_gallery_close' class='modal_close'></a>
+</div>
+
+<script type='text/javascript'>
+var VENDOR_IN_SERVICE = true;
+var TUAN_ITEMS = [];
+var CITEMS = [];
+<?php foreach ($this->titems as $row) { ?>
+TUAN_ITEMS.push(['<?php echo $row['VendorGuid'];?>', '<?php echo $row['VendorName'];?>', '<?php echo $row['freight'];?>', <?php echo json_encode($row['items']);?>]);
+<?php } ?>
+<?php foreach ($this->c_items as $_VendorGuid=>$row) { ?>
+CITEMS.push(['<?php echo $_VendorGuid;?>', <?php echo json_encode($row);?>]);
+<?php } ?>
+var LAST_ITEM_GUID = '';
+var PREPARED_ITEMS = <?php echo json_encode($this->itemids);?>;
+var LAST_NAME = '<?php echo addslashes(trim($_COOKIE['contactor']));?>';
+var LAST_PHONE = '<?php echo addslashes(trim($_COOKIE['phone']));?>';
+var LAST_ADDR = '<?php echo addslashes(trim($_COOKIE['address']));?>';
+var REMAIN_ITEMS = <?php echo json_encode($this->remain_items);?>;
+var SERVICES = <?php echo json_encode($this->services);?>;
+var ITEM_TYPES = <?php echo (int)$this->itypes;?>;
+var TITEMS = <?php echo json_encode($this->titems);?>;
+var VENDOR_SERVICE_TIME = [];
+
+var ORDER_PARAMS = {
+	'items': <?php echo json_encode($this->citems);?>,
+	'remarks': <?php echo json_encode($this->cremarks);?>,
+	'contactor': '<?php echo addslashes($_COOKIE['contactor']);?>',
+	'phone': '<?php echo addslashes($_COOKIE['phone']);?>',
+	'address': '<?php echo addslashes($_COOKIE['address']);?>',
+	'paymethod': <?php echo (int)$_COOKIE['paymethod'];?>,
+	'express_setting': <?php echo (int)$_COOKIE['express_setting'];?>,
+	'pre_year':'<?php echo addslashes($_COOKIE['pre_year']);?>',
+	'pre_month': '<?php echo addslashes($_COOKIE['pre_month']);?>',
+	'pre_day': '<?php echo addslashes($_COOKIE['pre_day']);?>',
+	'pre_hour': '<?php echo addslashes($_COOKIE['pre_hour']);?>',
+	'pre_minute': '<?php echo addslashes($_COOKIE['pre_minute']);?>',
+	'coord_guid': '<?php echo addslashes($_COOKIE['coord_guid']);?>'
+};
+
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<script type='text/javascript' charset='utf-8' src='<?php echo $this->jsUrl;?>modules/default/tuan.js?<?php echo FANDIAN_APP_VER;?>'></script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

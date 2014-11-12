@@ -1,0 +1,90 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览投票</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'Title' => '文章标题',
+			'Detail' => '文章内容',
+			'CategoryName' => '分类名称'
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+	&nbsp;
+	所属分类：<?php echo $this->Select(Msd_Functions::ArrayMerge(array(
+			'' => '* 请选择 *'
+			), $this->Categories), 'CategoryId', $this->request['CategoryId']);?>
+	&nbsp;
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'a.Title' => '文章标题',
+			'a.CreateTime' => '录入时间',
+			'a.OrderNo' => '排序值',
+			'c.CategoryName' => '分类名称'
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='5%'>序号</th>
+		<th width='35%'>标题</th>
+		<th width='10%'>排序</th>
+		<th width='10%'>所在模块</th>
+		<th width='10%'>录入时间</th>
+		<th width='10%'>选项数</th>
+		<th width='10%'>发布到前台</th>
+		<th><a href='<?php echo $this->scriptUr;?>votes/edit'>增加投票</a></th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td class='left'>
+	<?php echo $this->Attachicon($row);?>
+	<?php echo $row['VoteTitle'];?></td>
+	<td><?php echo $row['OrderNo'];?></td>
+	<td><?php echo $row['Module'];?></td>
+	<td><?php echo $this->Dt($row['AddTime'], 'date');?></td>
+	<td><?php echo $row['Choices'];?></td>
+	<td><?php echo $row['PubFlag'] ? '是' : '否';?></td>
+	<td><a href='<?php echo $this->scriptUrl;?>votes/edit?AutoId=<?php echo $row['AutoId'];?>'>修改</a> <a href='<?php echo $this->scriptUrl;?>votes/del?AutoId=<?php echo $row['AutoId'];?>' rel='delete'>删除</a></td>
+</tr>
+<?php } ?>
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='10'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+
+</div>
+
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

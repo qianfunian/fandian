@@ -1,0 +1,21 @@
+<?php Msd_Output::prepareHtml();?>
+<html>
+	<head><title>Test</title>
+	
+	</head>
+<body>
+
+<h2>用户中心</h2>
+
+<ol>
+	<li><a href='<?php echo $this->scriptUrl;?>profile'>个人资料修改</a></li>
+	<li><a href='<?php echo $this->scriptUrl;?>addressbook'>我的地址簿</a></li>
+	<li><a href='<?php echo $this->scriptUrl;?>favorites/vendors'>我的收藏</a></li>
+	<li><a href='<?php echo $this->scriptUrl;?>feedback'>我的留言</a></li>
+	<li><a href='<?php echo $this->scriptUrl;?>order'>我的订单</a></li>
+	<li><a href='<?php echo $this->scriptUrl;?>login/logout'>退出登录</a></li>
+</ol>
+
+</body>
+</html>
+<?php Msd_Output::doOutput();?>

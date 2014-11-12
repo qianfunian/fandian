@@ -1,0 +1,292 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+<div class='wrapper'>
+	<?php include_once(dirname(__FILE__).'/../include/page_info.phtml');?>
+	<div class='page_nav'>
+		<div class='page_info'>浏览商家菜品 （<?php echo $this->VendorDetail['basic']['VendorName'];?>）</div>
+		
+		<div class='page_now'></div>
+	</div>	
+	
+<form>
+<table cellspacing='1' class='search_table'>
+<tbody>
+<tr>
+	<td >
+	搜索：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'VendorName' => '商家名',
+			'ItemName' => '菜品名',
+			), 'search_key', $this->request['search_key']);?><input type='text' name='search_val' id='search_val' value='<?php echo $this->request['search_val'];?>' />
+	&nbsp;
+
+	<?php echo $this->Checkbox(array(
+			'name' => 'IsRec',
+			'value' => '1',
+			'user_value' => $this->request['IsRec'],
+			'label' => '是否推荐菜'
+			));?>
+	
+	排序：<?php echo $this->Select(array(
+			'' => '* 请选择 *',
+			'ItemId' => '菜品编号',
+			'AddTime' => '添加时间',
+			'IsRec' => '推荐菜'
+			), 'order_key', $this->request['order_key']);?>
+		<input type='submit' name='btn_search' id='btn_search' value=' 搜 索 (s) ' accesskey='s' />
+		<input type='hidden' name='VendorGuid' value='<?php echo $this->VendorGuid;?>' />
+	</td>
+</tr>
+</tbody>
+</table>
+</form>
+
+<form method='post' action='<?php echo $this->scriptUrl;?>attachment/actions' id='form_attach_list'>
+<table cellspacing='1' class='list_table'>
+<thead>
+	<tr class='ths'>
+		<th width='5%'>序号</th>
+		<th width='15%'>商家名</th>
+		<th width='8%'>菜品ID</th>
+		<th width='8%'>是否团膳</th>
+		<th width='20%'>菜品名</th>
+		<th width='10%'>分类</th>
+		<th width='5%'>单位</th>
+		<th width='5%'>单价</th>
+		<th width='10%'>备注</th>
+		<th width='8%'>图片</th>
+		<th>大图</th>
+	</tr>
+</thead>
+<tbody class='datalist'>
+<?php if (count($this->rows)>0) { ?>
+<?php 
+foreach ($this->rows as $row) { 
+?>
+<tr class='c<?php echo fmod($row['_seq'], 2);?>' class='item_img_tr'>
+	<td width='50'><?php echo $row['_seq'];?></td>
+	<td class='left'>
+		<?php echo $row['VendorName'];?>
+	</td>
+	<td>
+		<?php echo $row['ItemId'];?>
+	</td>
+	<td>
+		<a href="javascript:SwitchTuanStatus('<?php echo $row['ItemGuid'];?>');" id='tuan_<?php echo $row['ItemGuid'];?>'><?php echo $row['IsTuan'] ? '是' : '否';?></a>
+		<input type='hidden' id='tuaned_<?php echo $row['ItemGuid'];?>' value='<?php echo $row['IsTuan'] ? 1 : 0;?>' />
+	</td>
+	<td class='left'>
+		<div id='item_img_div_<?php echo $row['ItemGuid'];?>' class='item_img_div' src='<?php echo $row['img_url'];?>'><?php echo $row['ItemName'];?>
+			<span src='<?php echo $row['img_url'];?>' class='has_img_s'  id='has_img_<?php echo $row['ItemGuid'];?>'><?php if ($row['img_url']!=Msd_Config::appConfig()->static_url.Msd_Config::appConfig()->attachment->web_url->item_default) { ?><img src='<?php echo $this->imageUrl;?>image_s.gif' /><?php } ?></span>
+			<span src='<?php echo $row['bimg_url'];?>' class='has_img_b'  id='has_bimg_<?php echo $row['ItemGuid'];?>'><?php if ($row['bimg_url']!=Msd_Config::appConfig()->static_url.Msd_Config::appConfig()->attachment->web_url->item_default) { ?><img src='<?php echo $this->imageUrl;?>image_b.gif' /><?php } ?></span>	
+		</div>
+		<div class="right <?php if ($row['IsRec']) { ?>favoritedthis<?php } else { ?>favoritethis<?php } ?>" id='favorite_<?php echo $row['ItemGuid'];?>' onclick="SwitchFavoritedStatus('<?php echo $row['ItemGuid'];?>', '<?php echo $row['IsRec'] ? 1 : 0;?>')"></div>
+		<input type='hidden' id='favorited_<?php echo $row['ItemGuid'];?>' value='<?php echo $row['IsRec'] ? 1 : 0;?>' />
+		<?php if ($row['Disabled']) { ?>
+		[<span style='color: red; font-weight: bold;'>已禁用</span>]
+		<?php } ?>
+	</td>
+	<td><?php echo $row['CtgGroupName'];?></td>
+	<td><?php echo $row['UnitName'];?></td>
+	<td><?php echo $row['UnitPrice'];?></td>
+	<td><?php echo $row['Description'] ? $row['Description'] : '--';?></td>
+	<td>
+		<span alt='<?php echo addslashes($row['ItemName']);?>' id='item_img_a_<?php echo $row['ItemGuid'];?>' vendor_guid='<?php echo $row['VendorGuid'];?>' item_guid='<?php echo $row['ItemGuid'];?>' class='item_imgs_a'>更改图片</span>
+	</td>
+	<td>
+		<span alt='<?php echo addslashes($row['ItemName']);?>' id='item_img_b_<?php echo $row['ItemGuid'];?>' vendor_guid='<?php echo $row['VendorGuid'];?>' item_guid='<?php echo $row['ItemGuid'];?>' class='item_imgs_b'>更改图片</span>
+	</td>
+</tr>
+<?php } ?>
+
+<?php } else { ?>
+<tr class='c1'>
+	<td colspan='10' class='center'>
+		<span class='error'>暂无数据</span>
+	</td>
+</tr>
+<?php } ?>
+</tbody>
+<tfoot>
+	<tr>
+		<td colspan='12'>
+			<div class='pager'><?php echo $this->page_links;?></div>
+		</td>
+	</tr>
+</tfoot>
+</table>
+</form>
+</div>
+<?php echo $this->headScript();?>
+<script type='text/javascript'>
+var THIS_ITEM_ID = '';
+var uploaders = [];
+
+function SwitchFavoritedStatus(ItemGuid, IsRec)
+{
+	DivDom = document.getElementById('favorite_'+ItemGuid);
+	hDom = document.getElementById('favorited_'+ItemGuid);
+	
+	Favorited = parseInt(hDom.value);
+	if (Favorited>0) {
+		url = BASE_URL+'fadmin/items/unsetrec?ItemGuid='+ItemGuid;
+		$.getJSON(url, function(){
+			DivDom.className = 'right favoritethis';
+			hDom.value = '0';
+		});
+	} else {
+		url = BASE_URL+'fadmin/items/setrec?ItemGuid='+ItemGuid;
+		$.getJSON(url, function(){
+			DivDom.className = 'right favoritedthis';
+			hDom.value = '1';
+		});
+	}	
+}
+
+function SwitchTuanStatus(ItemGuid, IsTuan)
+{
+	DivDom = document.getElementById('tuan_'+ItemGuid);
+	hDom = document.getElementById('tuaned_'+ItemGuid);
+	
+	Favorited = parseInt(hDom.value);
+	if (Favorited>0) {
+		url = BASE_URL+'fadmin/items/unsettuan?ItemGuid='+ItemGuid;
+		$.getJSON(url, function(){
+			DivDom.innerHTML = '否';
+			hDom.value = '0';
+		});
+	} else {
+		url = BASE_URL+'fadmin/items/settuan?ItemGuid='+ItemGuid;
+		$.getJSON(url, function(){
+			DivDom.innerHTML = '是';
+			hDom.value = '1';
+		});
+	}	
+}
+		
+function upload_on_completed(file, upload_response)
+{
+	var fresult = 0;
+	Err = '';
+	ItemGuid = Src = '';
+	tmp = 'ok';
+
+	try {
+		tmp = eval(upload_response);
+		ItemGuid = tmp[0];
+		Src = tmp[1];
+	} catch (rte) {
+		Err = rte.message;
+	}
+
+	if (Err || tmp=='') {
+		alert('上传失败: '+Err);
+	} else {
+		if (ItemGuid && Src) {
+			Src += '?'+Math.random();
+			$('div#item_img_div_'+ItemGuid).attr('src', Src);
+			_img = $("<img src='<?php echo $this->imageUrl;?>image_s.gif' />");
+			$('span#has_img_'+ItemGuid).empty().append(_img);
+		}
+	}	
+}
+		
+function bupload_on_completed(file, upload_response)
+{
+	var fresult = 0;
+	Err = '';
+	ItemGuid = Src = '';
+	tmp = 'ok';
+	
+	try {
+		tmp = eval(upload_response);
+		ItemGuid = tmp[0];
+		Src = tmp[1];
+	} catch (rte) {
+		Err = rte.message;
+	}
+
+	if (Err || tmp=='') {
+		alert('上传失败: '+Err);
+	} else {
+		if (ItemGuid && Src) {
+			Src += '?'+Math.random();
+			$('div#item_img_div_'+ItemGuid).attr('src', Src);
+			_img = $("<img src='<?php echo $this->imageUrl;?>image_b.gif' />");
+			$('span#has_img_'+ItemGuid).empty().append(_img);
+		}
+	}	
+}
+
+$(function(){
+	$('#btnDel').click(function(){
+		return confirm('确定？');
+	});
+
+	$('span.item_imgs_a').each(function(){
+		aid = $(this).attr('id');
+		
+		uploader = new AjaxUpload('#'+aid, {
+			action: '<?php echo $this->baseUrl;?>files/upload/item',
+			name: 'myfile',
+			data: {
+				'ItemGuid': $(this).attr('item_guid'),
+				'VendorGuid': $(this).attr('vendor_guid')
+			},
+			autoSubmit: true,
+			onSubmit: function(file,ext){
+			},
+			onComplete: function(file, upload_response){
+				upload_on_completed(file, upload_response);
+			}
+		});			
+
+		uploaders.push(uploader);
+	});
+
+	$('span.item_imgs_b').each(function(){
+		aid = $(this).attr('id');
+		
+		uploader = new AjaxUpload('#'+aid, {
+			action: '<?php echo $this->baseUrl;?>files/upload/itembig',
+			name: 'myfile',
+			data: {
+				'ItemGuid': $(this).attr('item_guid'),
+				'VendorGuid': $(this).attr('vendor_guid')
+			},
+			autoSubmit: true,
+			onSubmit: function(file,ext){
+			},
+			onComplete: function(file, upload_response){
+				bupload_on_completed(file, upload_response);
+			}
+		});			
+
+		uploaders.push(uploader);
+	});
+
+	$('span.has_img_s, span.has_img_b').tooltip({
+		'delay': 0,
+		'showURL': false,
+		'bodyHandler': function(){
+			src = $(this).attr('src');
+
+			img = $('<img />').attr('src', src).load(function(){
+				obj = $(this);
+				if (obj.width()>400) {
+					h = 400*obj.height()/obj.width();
+					obj.css({
+						'width': '400px',
+						'height': h+'px'
+					});
+				}
+			});
+			return img;
+		}		
+	});
+
+});
+</script>
+	</div>
+</body>
+</html>
+<?php Msd_Output::doOutput();?>

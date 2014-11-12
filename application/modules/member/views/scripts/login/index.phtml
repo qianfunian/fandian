@@ -1,0 +1,78 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="my-login">
+        <div class="login_container">
+          <form class="formlyWrapper-Base" id="MyForm" method='post' action='<?php echo $this->scriptUrl;?>login/do' onsubmit="return CheckLogin();">
+            <p class="site-title">登陆&nbsp;&nbsp;
+              <?php if ($this->failed) { ?>
+			      <font color="red">失败，请检查您的用户名或密码</font>
+			  <?php } ?>
+            </p>
+            <table class="formbase">
+              <tbody>
+              
+              <tr>
+                <td width="80" align="left">账号:</td>
+                <td>
+                <input type='text' name='UserName' id='UserName' value='<?php echo htmlentities($this->request['UserName']);?>' /><?php if (!$this->error['UserName']) { ?><span>Email、手机号码也可以登录哦</span><?php } ?>
+                </td>
+                <td rowspan="5"><div class="loginright">尚未注册？<a href="<?php echo $this->baseUrl?>member/register">马上注册</a></div></td>
+              </tr>
+              <tr>
+                <td align="left">密码:</td>
+                <td><input class='w120 input' type='password' name='PassWord' id='PassWord' value='<?php echo htmlentities($this->request['PassWord']);?>' /></td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                <input type="submit" value="登陆">
+                <input type="reset" value="重置">
+                </td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td>
+                <input id="forget-pwd" type="button" value="忘记密码了？" />
+                </td>
+              </tr>
+              <tr>
+                <td align="left" colspan="3">使用合作站账号登陆：
+                  <div class="third-account">
+                    <?php if ($this->CityConfig->service->sina->enabled) { ?>
+					<img align="absmiddle" style="cursor:pointer" src="<?php echo $this->baseUrl;?>common/images/weibo.png" title='使用新浪微博账号登录' onclick="window.location='<?php echo $this->weibo_login_url;?>';" />&nbsp;&nbsp;&nbsp;						
+					<?php } ?>
+					<?php if ($this->CityConfig->service->tencent->enabled) { ?>
+					<img align="absmiddle" style="cursor:pointer" src="<?php echo $this->baseUrl;?>common/images/qq.png" title='使用QQ号登录' onclick="window.location='<?php echo $this->qq_login_url;?>'" />	
+					<?php } ?>
+                  </div>
+                 </td>
+              </tr>
+            </tbody>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>							
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<script type='text/javascript'>
+function CheckLogin()
+{
+	result = false;
+
+	if (document.getElementById('UserName').value=='' || document.getElementById('PassWord').value=='') {
+		alert('请输入您的用户名、密码！');
+	} else {
+		result = true;
+	}
+	
+	return result;
+}
+</script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

@@ -1,0 +1,22 @@
+<?php include_once(dirname(__FILE__).'/../include/page_head.phtml');?>
+
+<div class='login_wrap'>
+	<div class='login_container'>
+	<div class='login_header'>操作完成</div>
+	<div class='login_content'>
+		<h1>操作成功 ...</h1>
+		
+		<div style='padding: 20px;'>
+			<a href='<?php echo $this->redirectUrl;?>'>如果不想等待，请点击这里跳转...</a>
+		</div>
+</div>
+	</div>
+</div>
+<script type='text/javascript'>
+$(function(){
+	setTimeout(function(){
+		window.location = '<?php echo $this->redirectUrl;?>';
+	}, 3000);
+});
+</script>
+<?php include_once(dirname(__FILE__).'/../include/page_foot.phtml');?>

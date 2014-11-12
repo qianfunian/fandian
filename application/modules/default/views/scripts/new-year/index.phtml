@@ -1,0 +1,81 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<style>
+.sumit-btn:hover{background:#E60012}
+.cur {
+	background:#FB6C1C;
+	color:#FFF;
+	padding:5px;
+}
+</style>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol" id='wrapper'>
+      <div id="nyleft" style="float:left; width:650px;min-height:1000px">
+      	<div style="float:left;margin-left:15px">
+      		<img src="http://x.fandian.com/images/wuxi/image/new-year.jpg?<?php echo FANDIAN_APP_VER;?>" />
+      	</div>
+      	<div style="margin-top:10px; margin-left:15px; width:620px;min-height:300px;float:left">
+      	<ul style="border-bottom:2px solid #FB6C1C; overflow:hidden">
+      	<?php 
+      	$vendors = array_keys($this->vendor);
+      	foreach ($vendors as $i=>$vendor) {
+        ?>
+        <li style="float:left;margin-right:20px; font-family:'microsoft yahei';font-weight:bolder; font-size:13pt; margin-bottom:10px">
+        <span class="all <?php if($i==0){echo 'cur';}?>" style="cursor: pointer;"  onclick="$('.all').removeClass('cur');$(this).addClass('cur');$('.vendors').hide();$('#vendor<?php echo $i?>').show();"><?php echo $vendor?></span></li>
+        <?php }?>
+        </ul>
+		<?php $i=0;
+       	foreach($this->vendor as $vendorName=>$items) { ?>
+       	    <div class="vendors" id="vendor<?php echo $i?>"style="width:100%; min-height:400px;float:left; display:<?php if($i==0){?>bolck<?php }else{?>none<?php }$i++;?>">
+      		<!-- 
+      		<div style="float:left">
+      		<img style="margin-top:10px" src="<?php //echo Msd_Waimaibao_Vendor::imageUrl(array('VendorGuid' => $items['0']['VendorGuid']));?>" alt="<?php //echo $vendorName;?>" />
+      		</div>
+      		 -->
+      		<div id="<?php echo $vendorName;?>" style="width:100%;float:right">
+      		<?php foreach($items as $item){?>
+                <div class="step-shop-menu" style="width:620px" itemname="<?php echo $item['ItemName']?>">
+                <form method="post" action="" class="jcarts">
+				<input type="hidden" name="my-item-id" value="<?php echo $item['ItemGuid']?>" />
+				<input type="hidden" name="my-item-name" value="<?php echo $item['ItemName']?>" />
+				<input type="hidden" name="my-item-price" value="<?php echo $item['UnitPrice']?>" />
+				<input type="hidden" name="my-item-qty" value="<?php echo $item['MinOrderQty']?$item['MinOrderQty']:1?>" />
+				<input type="hidden" name="my-vendor-guid" value="<?php echo $item['VendorGuid']?>" />
+				<input type="hidden" name="my-vendor-name" value="<?php echo $item['VendorName']?>" />
+				<input type="hidden" name="my-iteminbox-qty" value="<?php echo $item['ItemQty']?>" />
+				<input type="hidden" name="my-box-qty" value="<?php echo $item['BoxQty']?>" />
+				<input type="hidden" name="my-box-unitprice" value="<?php echo $item['BoxUnitPrice']?>" />	
+				<input type="hidden" name="my-unitname" value="<?php echo $item['UnitName']?>" />
+                <div class="s-left"><span><?php echo $item['ItemName']?></span>
+                <?php if($item['HasLogo']){?>
+                    <a href="javascript:void(0)" class="screenshot" rel="<?php echo $this->Itemurl($item, $this->staticUrl.'design/product/nopic.jpg');?>"> <span class="youtu">图片</span></a> 
+                    <?php }?>
+                    </div>
+	                <div class="s-right">
+	                <span><?php echo $item['UnitPrice']==0?'时价':'￥'.number_format($item['UnitPrice'],2).'/'.$item['UnitName'];?></span>          
+                <input id="<?php echo $item['ItemGuid']?>" type="submit" class="addbutton" name="my-add-button" value="预订" />
+                </div>
+                </form>
+               
+                <?php if(!empty($item['Description'])){echo '<br>'.$item['Description'];}?>
+                </div>
+                <?php }?>
+      		</div>
+      		</div>
+      	<?php }?>
+      	</div>
+      </div>
+      
+      <?php include dirname(__FILE__).'/widget.phtml';?>
+      
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php echo $this->tag;?> 
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<script type="text/javascript" src="<?php echo $this->baseUrl?>jcart/jcart-javascript.php"></script>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

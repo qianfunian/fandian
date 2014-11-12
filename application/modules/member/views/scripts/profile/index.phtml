@@ -1,0 +1,54 @@
+<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<div class="clear"></div>
+<div class="wrap">
+  <div class="row">
+    <div class="twelvecol">
+      <div class="con-left">
+        <div class="my-news">
+          <div class="news">我的饭店网</div>
+          <ul>
+          <?php include_once dirname(__FILE__).'/../include/left_nav.phtml';?>
+          </ul>
+        </div>
+      </div>
+      <div class="con-right">
+        
+        <?php if (count($this->error)>0) { ?>
+        <div style="margin:10px 0px; padding:5px 0px; border:1px solid #CCC"> 
+		<font style="color:red"> 资料更新失败</font>
+		</div>
+		<?php } else if ($this->success) {  ?>
+		<div style="margin:10px 0px; padding:5px 0px; border:1px solid #CCC"> 
+		<font style="color:green">资料更新成功</font>
+	    </div>
+		<?php } ?>
+		
+        <div class="my-content">
+	        <h1>我的个人资料</h1>
+			<form method='post' class="formlyWrapper-Base" action='<?php echo $this->scriptUrl;?>profile/do' onsubmit="Fandian_AjaxLoading();">
+			    <table>
+			    <tr><td>用户名：</td><td><input class="input" type='text' value="<?php echo $this->member['UserName'];?>" disabled="disabled" /></td></tr>
+			    <tr><td>密码：</td><td><input class='input' type='password' name='PassWord' id='PassWord' value='<?php echo $this->member['PassWord'];?>' /> 如不修改密码请留空 <span class='error'><?php echo $this->error['PassWord'];?></span></td></tr>
+			    
+				<tr><td>确认密码：</td><td><input class='input' type='password' name='PassWord2' id='PassWord2' value='<?php echo $this->member['PassWord2'];?>' /> <span class='error'><?php echo $this->error['PassWord2'];?></span></td></tr>
+				
+				<tr><td>姓名：        </td><td><input class='input' type='text' name='RealName' id='RealName' value='<?php echo $this->member['RealName'];?>' /> <span class='error'><?php echo $this->error['RealName'];?></span></td></tr>
+				<tr><td>手机号码：</td><td><input class='input' type='text' name='Cell' id='Cell' value='<?php echo $this->member['Cell'];?>' /> <span class='error'><?php echo $this->error['Cell'];?></span></td></tr>
+				<tr><td>常住地址：</td><td><input size='40' class='input' type='text' name='Address' id='Address' value='<?php echo $this->member['Address'];?>' /> <span class='error'><?php echo $this->error['Address'];?></span></td></tr>
+				<tr><td>电子邮箱：</td><td><input class='input' type='text' name='Email' id='Email' value='<?php echo $this->member['Email'];?>' /> <span class='error'><?php echo $this->error['Email'];?></span></td></tr>
+				<tr><td>个人网站：</td><td><input class='input' type='text' name='Homepage' id='Homepage' value='<?php echo $this->member['Homepage'];?>' /></td></tr>
+				<tr><td>QQ号码：  </td><td><input class='input' type='text' name='Qq' id='Qq' value='<?php echo $this->member['Qq'];?>' /> <span class='error'><?php echo $this->error['Qq'];?></span></td></tr>
+				<tr><td>MSN：        </td><td><input type='text' class='input' name='Msn' id='Msn' value='<?php echo $this->member['Msn'];?>' /> <span class='error'><?php echo $this->error['Msn'];?></span></td></tr>
+				<tr><td></td><td><input class='b_input' type="submit" value="保存" /></td></tr>
+			    </table>
+			</form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clear"></div>
+<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>

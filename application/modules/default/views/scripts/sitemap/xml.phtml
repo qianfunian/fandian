@@ -1,0 +1,128 @@
+<?php 
+$base_href = strlen($this->Basehref())>5 ? $this->Basehref() : 'http://'.$_SERVER['SERVER_NAME'].'/'; 
+?>
+<?php Msd_Output::prepareXml();?>
+<?php echo '<'.'?xml version="1.0" encoding="UTF-8"?'.'>';?>
+<urlset xmlns="http://www.google.com/schemas/sitemap/0.9">
+<url>
+<loc><?php echo $base_href;?></loc>
+<priority>1</priority>
+<lastmod><?php echo date('Y-m-d', time()-3600*24);?></lastmod>
+<changefreq>daily</changefreq>
+</url>
+<?php
+foreach ($this->sitemap['ctgs'] as $row) {
+?>
+<url>
+<loc><?php echo $base_href;?><?php echo $row['url'];?></loc>
+<priority><?php echo $row['priority'];?></priority>
+<lastmod><?php echo $row['lastmod'];?></lastmod>
+<changefreq><?php echo $row['changefreq'];?></changefreq>
+</url>
+<?php
+}
+?>
+<?php
+foreach ($this->sitemap['vendors'] as $row) {
+?>
+<url>
+<loc><?php echo $base_href;?><?php echo $row['url'];?></loc>
+<priority><?php echo $row['priority'];?></priority>
+<lastmod><?php echo $row['lastmod'];?></lastmod>
+<changefreq><?php echo $row['changefreq'];?></changefreq>
+</url>
+<?php
+}
+?>
+<url>
+<loc><?php echo $base_href;?>announce</loc>
+<priority>0.7</priority>
+<lastmod><?php echo date('Y-m-d', time()-3600*24);?></lastmod>
+<changefreq>daily</changefreq>
+</url>
+<?php
+foreach ($this->sitemap['anns'] as $row) {
+?>
+<url>
+<loc><?php echo $base_href;?>announce/<?php echo $row['Title']?></loc>
+<priority>0.7</priority>
+<lastmod><?php echo $this->Dt($row['PubTime'], 'date');?></lastmod>
+<changefreq>weekly</changefreq>
+</url>
+<?php
+}
+?>
+<url>
+<loc><?php echo $base_href;?>article/aboutus</loc>
+<priority>0.7</priority>
+<lastmod><?php echo date('Y-m-d', time()-3600*24);?></lastmod>
+<changefreq>daily</changefreq>
+</url>
+<?php
+foreach ($this->sitemap['aboutus'] as $row) {
+?>
+<url>
+<loc><?php echo $base_href;?>article/aboutus/<?php echo $row['Title']?></loc>
+<priority>0.7</priority>
+<lastmod><?php echo $this->Dt($row['PubTime'], 'date');?></lastmod>
+<changefreq>weekly</changefreq>
+</url>
+<?php
+}
+?>
+<url>
+<loc><?php echo $base_href;?>article/help</loc>
+<priority>0.7</priority>
+<lastmod><?php echo date('Y-m-d', time()-3600*24);?></lastmod>
+<changefreq>daily</changefreq>
+</url>
+<?php
+foreach ($this->sitemap['help'] as $row) {
+?>
+<url>
+<loc><?php echo $base_href;?>article/help/<?php echo $row['Title']?></loc>
+<priority>0.7</priority>
+<lastmod><?php echo $this->Dt($row['PubTime'], 'date');?></lastmod>
+<changefreq>weekly</changefreq>
+</url>
+<?php
+}
+?>
+<url>
+<loc><?php echo $base_href;?>article/service</loc>
+<priority>0.7</priority>
+<lastmod><?php echo date('Y-m-d', time()-3600*24);?></lastmod>
+<changefreq>daily</changefreq>
+</url>
+<?php
+foreach ($this->sitemap['service'] as $row) {
+?>
+<url>
+<loc><?php echo $base_href;?>article/service/<?php echo $row['Title']?></loc>
+<priority>0.7</priority>
+<lastmod><?php echo $this->Dt($row['PubTime'], 'date');?></lastmod>
+<changefreq>weekly</changefreq>
+</url>
+<?php
+}
+?>
+<url>
+<loc><?php echo $base_href;?>article/others</loc>
+<priority>0.7</priority>
+<lastmod><?php echo date('Y-m-d', time()-3600*24);?></lastmod>
+<changefreq>daily</changefreq>
+</url>
+<?php
+foreach ($this->sitemap['others'] as $row) {
+?>
+<url>
+<loc><?php echo $base_href;?>article/others/<?php echo $row['Title']?></loc>
+<priority>0.7</priority>
+<lastmod><?php echo $this->Dt($row['PubTime'], 'date');?></lastmod>
+<changefreq>weekly</changefreq>
+</url>
+<?php
+}
+?>
+</urlset>
+<?php Msd_Output::doOutput();?>
