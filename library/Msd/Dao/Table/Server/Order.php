@@ -735,7 +735,8 @@ class Msd_Dao_Table_Server_Order extends Msd_Dao_Table_Server
     {
         $codes = array_values($codes);
         $count = count($codes);
-	if ($count == 1) {
+        
+        if ($count == 1) {
             $sql = "exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "'";
         } elseif ($count == 2) {
             $sql = "exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "','" . $codes[1] . "'";
