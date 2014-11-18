@@ -1,72 +1,74 @@
-<?php if($_SERVER[REQUEST_URI]=='/'||$_SERVER[REQUEST_URI]=='/index/home'){?>
-<div style="margin:5px auto;padding:10px 0px;width:960px;border-top:1px solid #ccc">
-<h3 style='padding-bottom:15px'>友情链接</h3>
-<a target='_blank' href='http://www.bizcn.com/'>商务中国</a>
-&nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.asiae.com/'>好商网</a>
-&nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.czos.cn/'>常州东方博宜</a>
-&nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.wxos.net/'>无锡东方博宜</a>
-</div>
+<?php if ($_SERVER[REQUEST_URI] == '/' || $_SERVER[REQUEST_URI] == '/index/home') { ?>
+    <div style="margin:5px auto;padding:10px 0px;width:960px;border-top:1px solid #ccc">
+        <h3 style='padding-bottom:15px'>友情链接</h3>
+        <a target='_blank' href='http://www.bizcn.com/'>商务中国</a>
+        &nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.asiae.com/'>好商网</a>
+        &nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.czos.cn/'>常州东方博宜</a>
+        &nbsp;&nbsp;&nbsp;<a target='_blank' href='http://www.wxos.net/'>无锡东方博宜</a>
+    </div>
 
-<style type='text/css'>
-#adl {
-    background: url("<?php echo $this->baseUrl?>common/images/wxwx.jpg?v=1") no-repeat scroll left top transparent;
-    height: 345px;
-    width: 145px;
-    cursor:pointer;
-}
+    <style type='text/css'>
+        #adl {
+            background: url("<?php echo $this->baseUrl?>common/images/wxwx.jpg?v=1") no-repeat scroll left top transparent;
+            height: 345px;
+            width: 145px;
+            cursor: pointer;
+        }
 
-#adr {
-    background: url("<?php echo $this->baseUrl?>common/wx1.jpg?v=1") no-repeat scroll left top transparent;
-    height: 345px;
-    display:none;
-    width: 145px;
-    cursor:pointer;
-}
+        #adr {
+            background: url("<?php echo $this->baseUrl?>common/wx1.jpg?v=1") no-repeat scroll left top transparent;
+            height: 345px;
+            display: none;
+            width: 145px;
+            cursor: pointer;
+        }
 
-.ad .closeIco {
-    width:18px;
-    height:20px;
-}
-.ad .closeIco a {
-    background: url("<?php echo $this->baseUrl?>common/images/closeIco.jpg") no-repeat scroll left top transparent;
-    float: right;
-    height: 11px;
-    width: 11px;
-}
-.ad p {
-    color: #B54800;
-    float: left;
-    font-size: 12px;
-    line-height: 18px;
-    padding: 102px 12px 0;
-    text-align: center;
-    width: 86px;
-}
-</style>
-<div id="adl" class="ad" style="top: 192px; position: fixed; left: 10px;">
-   <div class="closeIco" style="float: left;margin-left:10px"></div>
-</div>
+        .ad .closeIco {
+            width: 18px;
+            height: 20px;
+        }
 
-<div id="adr" class="ad" style="top: 192px; position: fixed; right: 10px;">
-   <div class="closeIco" style="float: right;margin-right:8px"></div>
-</div>
-<script type="text/javascript">
-$(document).ready(function(){
-	$("#adl").click(function(){
-		window.open("http://wx.fandian.com/announce/%E5%BE%AE%E4%BF%A1%E6%97%A5%E5%85%8D%E8%BF%90%E8%B4%B9%EF%BC%8C%E5%B0%BD%E5%9C%A8%E6%AF%8F%E5%91%A8%E4%B8%80");
-	});
-	$("#adr").click(function(){
-		window.open("http://wx.fandian.com/announce/%E5%BE%AE%E4%BF%A1%E6%97%A5%E5%85%8D%E8%BF%90%E8%B4%B9%EF%BC%8C%E5%B0%BD%E5%9C%A8%E6%AF%8F%E5%91%A8%E4%B8%80");
-	});
-	$("#adl .closeIco").click(function(event){
-		$('#adl').hide();
-		event.stopPropagation();
-	});
-	$("#adr .closeIco").click(function(event){
-		$('#adr').hide();
-		event.stopPropagation();
-	});
-})
-</script>
-<?php }?>
+        .ad .closeIco a {
+            background: url("<?php echo $this->baseUrl?>common/images/closeIco.jpg") no-repeat scroll left top transparent;
+            float: right;
+            height: 11px;
+            width: 11px;
+        }
+
+        .ad p {
+            color: #B54800;
+            float: left;
+            font-size: 12px;
+            line-height: 18px;
+            padding: 102px 12px 0;
+            text-align: center;
+            width: 86px;
+        }
+    </style>
+    <div id="adl" class="ad" style="top: 192px; position: fixed; left: 10px;">
+        <div class="closeIco" style="float: left;margin-left:10px"></div>
+    </div>
+
+    <div id="adr" class="ad" style="top: 192px; position: fixed; right: 10px;">
+        <div class="closeIco" style="float: right;margin-right:8px"></div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#adl").click(function () {
+                window.open("http://wx.fandian.com/announce/%E5%BE%AE%E4%BF%A1%E6%97%A5%E5%85%8D%E8%BF%90%E8%B4%B9%EF%BC%8C%E5%B0%BD%E5%9C%A8%E6%AF%8F%E5%91%A8%E4%B8%80");
+            });
+            $("#adr").click(function () {
+                window.open("http://wx.fandian.com/announce/%E5%BE%AE%E4%BF%A1%E6%97%A5%E5%85%8D%E8%BF%90%E8%B4%B9%EF%BC%8C%E5%B0%BD%E5%9C%A8%E6%AF%8F%E5%91%A8%E4%B8%80");
+            });
+            $("#adl .closeIco").click(function (event) {
+                $('#adl').hide();
+                event.stopPropagation();
+            });
+            $("#adr .closeIco").click(function (event) {
+                $('#adr').hide();
+                event.stopPropagation();
+            });
+        })
+    </script>
+<?php } ?>
 
