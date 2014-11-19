@@ -735,12 +735,14 @@ class Msd_Dao_Table_Server_Order extends Msd_Dao_Table_Server
     {
         $codes = array_values($codes);
         $count = count($codes);
-        if ($count == 1) {
-            $this->db->query("exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "'");
+	if ($count == 1) {
+            $sql = "exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "'";
         } elseif ($count == 2) {
-            $this->db->query("exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "','" . $codes[1] . "'");
+            $sql = "exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "','" . $codes[1] . "'";
         } elseif ($count == 3) {
-            $this->db->query("exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "','" . $codes[1] . "','" . $codes[3] . "'");
+            $sql = "exec uspUsedGiftTicket '" . $phone . "','" . $codes[0] . "','" . $codes[1] . "','" . $codes[2] . "'";
         }
+        Msd_Log::getInstance()->gift($sql);
+        $this->db->query($sql);
     }
 }
