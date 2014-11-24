@@ -1,333 +1,380 @@
-<?php include_once dirname(__FILE__).'/../include/page_head.phtml';?>
-<?php include_once dirname(__FILE__).'/../include/top.phtml';?>
+<?php include_once dirname(__FILE__) . '/../include/page_head.phtml'; ?>
+<?php include_once dirname(__FILE__) . '/../include/top.phtml'; ?>
 <div class="clear"></div>
 <div class="row">
-    <div class="twelvecol">
-    <div>
-    
-    <div id="orderinfo" class="m">
+<div class="twelvecol">
+<div>
+
+<div id="orderinfo" class="m">
     <div class="mt"><strong>订单信息</strong></div>
-    <div class="mc"> 
-  
-    <?php 
-    $total = 0;
-    foreach ($this->data as $OrderGuid=>$Order) {	
-  	if (!Msd_Waimaibao_Order::isCanceled($Order['order']['StatusId'])) { 
-            	$total += $Order['order']['TotalAmount'];
-    }
-    $osl = array();
-    foreach($Order['oslog'] as $row){
-    		$osl[$row['StatusId']] = $row['AddTime'];
-    }
-    ?>
-      <div id="orderstate" class="m">
-		  <div class="mt"><strong><a href='<?php echo $this->baseUrl;?>vendor/<?php echo $Order['vendor']['VendorName'];?>' target='_blank'><?php echo $this->Fvendorname($Order['vendor']['VendorName']);?></a>&nbsp;订单号：<?php echo $Order['order']['OrderId'];?>&nbsp;&nbsp;&nbsp;&nbsp;状态：<span class="ftx14"><?php echo $this->OSName($Order['order']['StatusId']);?></span></strong></div>
-		  <div class="mc">
-		  <?php
-		
-		  if($Order['order']['StatusId']=="Posted")
-		  {
-		  	echo "订单已提交，<font color='red'>请您保持手机畅通，客服将及时与您联系确认</font>，";
-		  }elseif ($Order['order']['StatusId']=="Confirmed")
-          { 
-          	echo "订单已确认，等待发货中，";
-          	
-          }elseif (strpos($Order['order']['StatusId'],'Canceled') !== false){
-            echo "订单已取消，";
-          }elseif ($Order['order']['StatusId']=="Received")
-          {
-          	echo "送餐员已取菜，正在派送中，请准备收货，";
-          }elseif ($Order['order']['StatusId']=="Delivered")
-          {
-          	echo "订单已完成，";
-          }
-          ?>感谢您在饭店网订餐！
-		  </div>
-      </div>
-      
-      <?php 
-      if (strpos($Order['order']['StatusId'],'Canceled') === false){?>
-      <div class="section3" id="process">
-		  <div class="node fore ready">
-			  <ul>
-			  <li class="tx1">&nbsp;</li>
-			  <li class="tx2">提交订单</li>
-			  <li class="tx3" id="track_time_0">
-			  <?php echo $this->Dt($osl['Posted'],'date')?> <br>
-			  <?php echo $this->Dt($osl['Posted'],'time')?>
-			  </li>
-			  </ul>
-		  </div>
-		  <div class="proce ready"><ul><li class="tx1">&nbsp;</li></ul></div>
-	      
-	      <?php if(isset($osl['Issued'])&& $osl['Issued'] != null){?>
-	      <div class="node ready"><ul>
-	      <li class="tx1">&nbsp;</li>
-	      <li class="tx2">餐品制作中</li>
-	      <li class="tx3" id="track_time_1">
-	      <?php echo $this->Dt($osl['Issued'],'date')?> <br>
-		  <?php echo $this->Dt($osl['Issued'],'time')?>
-	      </li>
-	      </ul></div>
-	      <div class="proce ready"><ul><li class="tx1">&nbsp;</li></ul></div>
-	      <?php }else{?>
-	       <div class="node wait">
-	       <ul>
-	       <li class="tx1">&nbsp;</li>
-	       <li class="tx2">餐品制作中</li>
-	       </ul>
-	       </div>
-	      <div class="proce wait"><ul><li class="tx1">&nbsp;</li></ul></div>
-	      <?php }?>
-	      <?php if(isset($osl['Received'])&& $osl['Received'] != null){?>
-	      <div class="node ready">
-	      <ul>
-	      <li class="tx1">&nbsp;</li>
-	      <li class="tx2">餐品配送中</li>
-	      <li class="tx3" id="track_time_5">
-	      <?php echo $this->Dt($osl['Received'],'date')?> <br>
-		  <?php echo $this->Dt($osl['Received'],'time')?>
-	      </li>
-	      </ul>
-	      </div>		
-	      <div class="proce ready"><ul><li class="tx1">&nbsp;</li></ul></div>
-	      <?php }else{?>
-	      <div class="node wait">
-	      <ul>
-	      <li class="tx1">&nbsp;</li>
-	      <li class="tx2">餐品配送中</li>
-	      <li class="tx3" id="track_time_5"></li>
-	      </ul>
-	      </div>		
-	      <div class="proce wait"><ul><li class="tx1">&nbsp;</li></ul></div>
-	      <?php }?>
-	      
-	      <?php if(isset($osl['Delivered'])&& $osl['Delivered'] != null){?>
-	      <div class="node ready">
-	      <ul>
-	      <li class="tx1">&nbsp;</li>
-	      <li class="tx2">已收货</li>
-	      <li class="tx3" id="track_time_6">
-	      <?php echo $this->Dt($osl['Delivered'],'date')?> <br>
-		  <?php echo $this->Dt($osl['Delivered'],'time')?>
-	      </li>
-	      </ul>
-	      </div>
-	      <?php }else{?>
-	      <div class="node wait">
-	      <ul>
-	      <li class="tx1">&nbsp;</li>
-	      <li class="tx2">已收货</li>
-	      </ul>
-	      </div>
-	      <?php }?>
-	  </div>
-	  <?php }?>
-	  <!--商品-->
-	  <dl>
-	  <dt>餐品清单：</dt>
-	  <dd class="p-list">
-	    <table width="100%" cellspacing="0" cellpadding="0">
-	      <tbody>
-	      <tr>
-	        <th width="25%"> 菜品名称 </th>
-	        <th width="25%"> 菜品数量 </th>
-	        <th width="25%"> 菜品单价</th>
-	        <th width="25%"> 菜品总价 </th>
-	      </tr>
-	      <?php foreach ($Order['items'] as $item) { ?>
-	      <tr>
-	        <td><?php echo $item['ItemName']?></td>
-	        <td><?php echo $item['ItemQty'];?></td>
-	        <td><span class="ftx04"><?php echo $item['ItemPrice'];?></span></td>
-	        <td><?php echo $item['ItemQty']*$item['ItemPrice'];?></td>
-	      </tr>
-	      <?php } ?>
-	      
-	      </tbody>
-	      </table>
-	  </dd>
-	  </dl>
-	  <!--金额-->
-    <div class="total">
-    <ul>
-	    <li><span>餐品总额：</span>￥<?php echo $Order['order']['ItemAmount'];?></span>
-	    <span>+&nbsp;打包盒：</span>￥<?php echo $Order['order']['BoxAmount'];?></span>
-	    <span>+&nbsp;运费：</span><?php echo $Order['order']['Freight'] ?  '￥'.$Order['order']['Freight'] : '尚未确定';?></span>
-	    <span>=&nbsp;总计￥<?php echo $Order['order']['TotalAmount'];?></span></li>
-    </ul>
+    <div class="mc">
+
+        <?php
+        $total = 0;
+        foreach ($this->data as $OrderGuid => $Order) {
+            if (!Msd_Waimaibao_Order::isCanceled($Order['order']['StatusId'])) {
+                $total += $Order['order']['TotalAmount'];
+            }
+            $osl = array();
+            foreach ($Order['oslog'] as $row) {
+                $osl[$row['StatusId']] = $row['AddTime'];
+            }
+            ?>
+            <div id="orderstate" class="m">
+                <div class="mt"><strong><a
+                            href='<?php echo $this->baseUrl; ?>vendor/<?php echo $Order['vendor']['VendorName']; ?>'
+                            target='_blank'><?php echo $this->Fvendorname($Order['vendor']['VendorName']); ?></a>&nbsp;订单号：<?php echo $Order['order']['OrderId']; ?>
+                        &nbsp;&nbsp;&nbsp;&nbsp;状态：<span
+                            class="ftx14"><?php echo $this->OSName($Order['order']['StatusId']); ?></span></strong>
+                </div>
+                <div class="mc">
+                    <?php
+
+                    if ($Order['order']['StatusId'] == "Posted") {
+                        echo "订单已提交，<font color='red'>请您保持手机畅通，客服将及时与您联系确认</font>，";
+                    } elseif ($Order['order']['StatusId'] == "Confirmed") {
+                        echo "订单已确认，等待发货中，";
+
+                    } elseif (strpos($Order['order']['StatusId'], 'Canceled') !== false) {
+                        echo "订单已取消，";
+                    } elseif ($Order['order']['StatusId'] == "Received") {
+                        echo "送餐员已取菜，正在派送中，请准备收货，";
+                    } elseif ($Order['order']['StatusId'] == "Delivered") {
+                        echo "订单已完成，";
+                    }
+                    ?>感谢您在饭店网订餐！
+                </div>
+            </div>
+
+            <?php
+            if (strpos($Order['order']['StatusId'], 'Canceled') === false) {
+                ?>
+                <div class="section3" id="process">
+                    <div class="node fore ready">
+                        <ul>
+                            <li class="tx1">&nbsp;</li>
+                            <li class="tx2">提交订单</li>
+                            <li class="tx3" id="track_time_0">
+                                <?php echo $this->Dt($osl['Posted'], 'date') ?> <br>
+                                <?php echo $this->Dt($osl['Posted'], 'time') ?>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="proce ready">
+                        <ul>
+                            <li class="tx1">&nbsp;</li>
+                        </ul>
+                    </div>
+
+                    <?php if (isset($osl['Issued']) && $osl['Issued'] != null) { ?>
+                        <div class="node ready">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                                <li class="tx2">餐品制作中</li>
+                                <li class="tx3" id="track_time_1">
+                                    <?php echo $this->Dt($osl['Issued'], 'date') ?> <br>
+                                    <?php echo $this->Dt($osl['Issued'], 'time') ?>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="proce ready">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                            </ul>
+                        </div>
+                    <?php } else { ?>
+                        <div class="node wait">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                                <li class="tx2">餐品制作中</li>
+                            </ul>
+                        </div>
+                        <div class="proce wait">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                            </ul>
+                        </div>
+                    <?php } ?>
+                    <?php if (isset($osl['Received']) && $osl['Received'] != null) { ?>
+                        <div class="node ready">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                                <li class="tx2">餐品配送中</li>
+                                <li class="tx3" id="track_time_5">
+                                    <?php echo $this->Dt($osl['Received'], 'date') ?> <br>
+                                    <?php echo $this->Dt($osl['Received'], 'time') ?>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="proce ready">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                            </ul>
+                        </div>
+                    <?php } else { ?>
+                        <div class="node wait">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                                <li class="tx2">餐品配送中</li>
+                                <li class="tx3" id="track_time_5"></li>
+                            </ul>
+                        </div>
+                        <div class="proce wait">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                            </ul>
+                        </div>
+                    <?php } ?>
+
+                    <?php if (isset($osl['Delivered']) && $osl['Delivered'] != null) { ?>
+                        <div class="node ready">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                                <li class="tx2">已收货</li>
+                                <li class="tx3" id="track_time_6">
+                                    <?php echo $this->Dt($osl['Delivered'], 'date') ?> <br>
+                                    <?php echo $this->Dt($osl['Delivered'], 'time') ?>
+                                </li>
+                            </ul>
+                        </div>
+                    <?php } else { ?>
+                        <div class="node wait">
+                            <ul>
+                                <li class="tx1">&nbsp;</li>
+                                <li class="tx2">已收货</li>
+                            </ul>
+                        </div>
+                    <?php } ?>
+                </div>
+            <?php } ?>
+            <!--商品-->
+            <dl>
+                <dt>餐品清单：</dt>
+                <dd class="p-list">
+                    <table width="100%" cellspacing="0" cellpadding="0">
+                        <tbody>
+                        <tr>
+                            <th width="25%"> 菜品名称</th>
+                            <th width="25%"> 菜品数量</th>
+                            <th width="25%"> 菜品单价</th>
+                            <th width="25%"> 菜品总价</th>
+                        </tr>
+                        <?php foreach ($Order['items'] as $item) { ?>
+                            <tr>
+                                <td><?php echo $item['ItemName'] ?></td>
+                                <td><?php echo $item['ItemQty']; ?></td>
+                                <td><span class="ftx04"><?php echo $item['ItemPrice']; ?></span></td>
+                                <td><?php echo $item['ItemQty'] * $item['ItemPrice']; ?></td>
+                            </tr>
+                        <?php } ?>
+
+                        </tbody>
+                    </table>
+                </dd>
+            </dl>
+            <!--金额-->
+            <div class="total">
+                <ul>
+                    <li><span>餐品总额：</span>￥<?php echo $Order['order']['ItemAmount']; ?></span>
+                        <span>+&nbsp;打包盒：</span>￥<?php echo $Order['order']['BoxAmount']; ?></span>
+                        <span>+&nbsp;运费：</span><?php echo $Order['order']['Freight'] ? '￥' . $Order['order']['Freight'] : '尚未确定'; ?></span>
+                        <span>=&nbsp;总计￥<?php echo $Order['order']['TotalAmount']; ?></span></li>
+                </ul>
+            </div>
+        <?php } ?>
+        <dl class="fore">
+            <dt>收货人信息</dt>
+            <dd>
+                <ul>
+                    <li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：<?php echo $Order['sales']['CustName']; ?></li>
+                    <li>
+                        地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：<?php echo $this->coordName . $Order['sales']['CustAddress']; ?></li>
+                    <li>手机号码：<?php echo $Order['sales']['CallPhone']; ?></li>
+                    <li>送餐时间：<?php echo $Order['order']['ReqTimeStart'] ? '预订' : '尽快'; ?></li>
+                    <li>
+                        备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：<?php echo $Order['order']['Remark'] ? $Order['order']['Remark'] : '暂无备注'; ?></li>
+                    <?php if ($Order['order']['ReqTimeStart']) { ?>
+                        <li>
+                            预订时间：<?php echo $Order['sales']['ReqDate'] . ' ' . substr($Order['order']['ReqTimeStart'], 0, 5); ?></li>
+                    <?php } ?>
+                    <li> 支付方式：<?php echo $Order['order']['PaymentMethod'] ? '网上支付' : '到付'; ?></li>
+                    <div class="extra"> 应付金额：<span class="ftx04"><b>￥<?php echo $total; ?></b></span></div>
+                </ul>
+            </dd>
+        </dl>
+
     </div>
-  <?php }?>
-    <dl class="fore">
-    <dt>收货人信息</dt>
-    <dd>
-    <ul>
-      <li>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：<?php echo $Order['sales']['CustName'];?></li>
-      <li>地&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;址：<?php echo $this->coordName.$Order['sales']['CustAddress'];?></li>
-      <li>手机号码：<?php echo $Order['sales']['CallPhone'];?></li>
-      <li>送餐时间：<?php echo $Order['order']['ReqTimeStart'] ? '预订' : '尽快';?></li>
-      <li>备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：<?php echo $Order['order']['Remark'] ? $Order['order']['Remark'] : '暂无备注';?></li>
-      <?php if ($Order['order']['ReqTimeStart']) {?>
-      <li>预订时间：<?php echo $Order['sales']['ReqDate'].' '.substr($Order['order']['ReqTimeStart'], 0, 5);?></li>
-      <?php }?>
-      <li> 支付方式：<?php echo $Order['order']['PaymentMethod'] ? '网上支付' : '到付';?></li>
-      <div class="extra"> 应付金额：<span class="ftx04"><b>￥<?php echo $total;?></b></span></div>
-    </ul>
-    </dd>
-    </dl>
-    
-    </div>
-    </div>
-    </div>  
-    
-    <?php if ($this->hasValidOrderStatus && $Order['order']['PaymentMethod']) { ?>
-    <?php if ($this->op_ready>0 && (int)$this->hashData['Payed']<=0) { ?>
-    <div id="orderinfo" class="m">
-    <div class="mt"><strong>网银支付</strong></div>
-    <div class="mc"> 
-		<div class='order_onlinepay' style='text-align: center; min-height:40px;'>
-			<ul class='ol_onlinepay_banks'>
-				<li rel='goto_bank'>
-					<div class='bg'><img src='<?php echo $this->baseUrl;?>images/pay/banks.gif' alt='银联支付' /></div>
-				</li>
-				<li class='list_none'>
-				<input type="button" class="fancybox onlinepay" id='go_bank' name='go_bank' onclick="GoOnlinePay()" value="进入网银支付">
-				</li>
-			</ul>	 
-		</div>
-	</div>
-	</div>
-	<?php } else if ($this->op_ready>0 && (int)$this->hashData['Payed']>0) { ?>
-	<div class='op_done'>
-		<img alt="支付成功" src="<?php echo $this->staticUrl;?>images/pay/payed.png" />
-		<input class="fancybox" type='button' value='您已通过网上银行支付了：￥<?php echo (float)$this->hashData['PayedMoney'];?>' disabled='disabled' />
-	</div>
-	<?php } else { ?>
-	<div class='op_done'>
-		<img alt="请稍候..." src="<?php echo $this->staticUrl;?>images/pay/not_confirmed.png" />
-		<input class="fancybox" type='button' value='订单尚未确认，暂时不能进行网上支付。请稍候 ...' disabled='disabled' />
-	</div>
-	<?php } ?>
-	<?php } ?>
-  </div>   
+</div>
+</div>
+
+<?php if ($this->hasValidOrderStatus && $Order['order']['PaymentMethod']) { ?>
+    <?php if ($this->op_ready > 0 && (int)$this->hashData['Payed'] <= 0) { ?>
+        <div id="orderinfo" class="m">
+            <div class="mt"><strong>网银支付</strong></div>
+            <div class="mc">
+                <div class='order_onlinepay' style='text-align: center; min-height:40px;'>
+                    <ul class='ol_onlinepay_banks'>
+                        <li rel='goto_bank'>
+                            <input type="radio" name="payType" id="payType" value="1" checked="true"/>
+
+                            <div class='bg'><img src='<?php echo $this->baseUrl; ?>images/pay/jtyh.jpg' alt='银联支付'/>
+                            </div>
+                        </li>
+
+                        <li rel='goto_bank'>
+                            <input type="radio" name="payType" id="payType" value="2"/>
+
+                            <div class='bg'><img src='<?php echo $this->baseUrl; ?>images/pay/banks.gif' alt='银联支付'/>
+                            </div>
+                        </li>
+                        <li class='list_none'>
+                            <input type="button" class="fancybox onlinepay" id='go_bank' name='go_bank'
+                                   onclick="GoOnlinePay()" value="进入网银支付">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    <?php } else if ($this->op_ready > 0 && (int)$this->hashData['Payed'] > 0) { ?>
+        <div class='op_done'>
+            <img alt="支付成功" src="<?php echo $this->staticUrl; ?>images/pay/payed.png"/>
+            <input class="fancybox" type='button'
+                   value='您已通过网上银行支付了：￥<?php echo (float)$this->hashData['PayedMoney']; ?>' disabled='disabled'/>
+        </div>
+    <?php } else { ?>
+        <div class='op_done'>
+            <img alt="请稍候..." src="<?php echo $this->staticUrl; ?>images/pay/not_confirmed.png"/>
+            <input class="fancybox" type='button' value='订单尚未确认，暂时不能进行网上支付。请稍候 ...' disabled='disabled'/>
+        </div>
+    <?php } ?>
+<?php } ?>
+</div>
 </div>
 <div class="clear"></div>
 
 <div style='display:none'>
-	<div id='inline_content' style='padding:10px; background:#fff;'>
-		<P style="line-height:30px">订单支付中，请勿关闭该窗口...</P>
-		<p style="line-height:30px">如果您在支付过程中有任何疑问，请拨打我们的客服电话<span style='color:red;'>400-114-7777</span>进行协助，谢谢！</p>
-		<P style="line-height:30px">请在支付成功后<span style='color: red;'>保留银行给您的支付短信</span>，以便处理一些支付的异常情况。</p>
-		<P style="line-height:30px"><input type='button' id='pay_completed' value='支付完成' onclick="PayCompleted();" /><input type='button' id='pay_error' value='支付遇到问题' onclick="PayError();" /></P>
-	</div>
+    <div id='inline_content' style='padding:10px; background:#fff;'>
+        <P style="line-height:30px">订单支付中，请勿关闭该窗口...</P>
+
+        <p style="line-height:30px">如果您在支付过程中有任何疑问，请拨打我们的客服电话<span style='color:red;'>400-114-7777</span>进行协助，谢谢！</p>
+
+        <P style="line-height:30px">请在支付成功后<span style='color: red;'>保留银行给您的支付短信</span>，以便处理一些支付的异常情况。</p>
+
+        <P style="line-height:30px"><input type='button' id='pay_completed' value='支付完成'
+                                           onclick="PayCompleted();"/><input type='button' id='pay_error' value='支付遇到问题'
+                                                                             onclick="PayError();"/></P>
+    </div>
 </div>
-<?php include_once dirname(__FILE__).'/../include/bottom.phtml';?>
+<?php include_once dirname(__FILE__) . '/../include/bottom.phtml'; ?>
 
 
-<?php include_once dirname(__FILE__).'/../include/page_script.phtml';?>
+<?php include_once dirname(__FILE__) . '/../include/page_script.phtml'; ?>
 <script type='text/javascript'>
-var OP_READY = <?php echo (int)$this->op_ready;?>;
-var OP = <?php echo (int)$Order['order']['PaymentMethod'];?>;
-var SUPPORTED_BANKS = <?php echo json_encode($this->op_config['bankcmb']['support_banks']);?>;
-var PAYED = <?php echo (int)$this->hashData['Payed'];?>;
+    var OP_READY = <?php echo (int)$this->op_ready;?>;
+    var OP = <?php echo (int)$Order['order']['PaymentMethod'];?>;
+    var SUPPORTED_BANKS = <?php echo json_encode($this->op_config['bankcmb']['support_banks']);?>;
+    var PAYED = <?php echo (int)$this->hashData['Payed'];?>;
 
-function PayCompleted(){
-	window.location.reload();
-}
+    function PayCompleted() {
+        window.location.reload();
+    }
 
-function PayError(){
-	window.open(FANDIAN_SCRIPT_URL+'article/pay');
-}
+    function PayError() {
+        window.open(FANDIAN_SCRIPT_URL + 'article/pay');
+    }
 
-function GetChoosedBank(){
-	url = '';
-	try {
-		banks = document.getElementsByName('bank_radio');
-		for (i=0;i<banks.length;i++) {
-			_bank = banks[i];
-			if (_bank.checked) {
-				bank_id = _bank.value;
-				ipid = _bank.id.replace('radio', 'ip');
-				url = document.getElementById(ipid).value;
-				break;
-			}
-		}
-	} catch(e) {
-		
-	}
-	return url;
-}
+    function GetChoosedBank() {
+        url = '';
+        try {
+            banks = document.getElementsByName('bank_radio');
+            for (i = 0; i < banks.length; i++) {
+                _bank = banks[i];
+                if (_bank.checked) {
+                    bank_id = _bank.value;
+                    ipid = _bank.id.replace('radio', 'ip');
+                    url = document.getElementById(ipid).value;
+                    break;
+                }
+            }
+        } catch (e) {
+
+        }
+        return url;
+    }
 
 
-function GoOnlinePay(){
-	$(".onlinepay").colorbox({inline:true, width:"40%",height:"200px",scrolling: false,href:"#inline_content"});
-	ylurl = "http://order.fandian.com/FandianOrderPay.aspx?Hash=<?php echo $this->hash;?>";
-	window.open(ylurl);
-}
+    function GoOnlinePay() {
+        payType = $('#payType').val();
+        if (payType == 1) {
+            ylurl = "http://order.fandian.com/jtpay/Payment.aspx?Hash=<?php echo $this->hash;?>";
+        } else {
+            ylurl = "http://order.fandian.com/FandianOrderPay.aspx?Hash=<?php echo $this->hash;?>";
+        }
+        $(".onlinepay").colorbox({inline: true, width: "40%", height: "200px", scrolling: false, href: "#inline_content"});
 
-/**
- * 投票提交前的校验
- * 
- * @param vid
- */
-function VoteCheck(vid, multi){
-	multi = multi ? !!(multi) : false;
-	result = false;
-	
-	lis = document.getElementById('vote_form_'+vid).getElementsByTagName('li');
-	hasChoosed = false;
-	for (i in lis) {
-		if (typeof(lis[i])=='object') {
-			ip = lis[i].getElementsByTagName('input')[0];
-			if (ip.checked) {
-				hasChoosed = true;
-				break;
-			}
-		}
-	}
-	
-	if (hasChoosed) {
-		result = true;
-	} else {
-		alert('请先选择投票的选项！');
-	}
-	
-	return result;
-}
+        window.open(ylurl);
+    }
 
-function PayIsReady()
-{
-	$.get(FANDIAN_BASE_URL+'order/action?act=op_ready&hash=<?php echo $this->hash;?>',function(response){
-		result = eval('(' + response + ')');
-		if (result.success>0) {
-			window.location.reload();
-		}
-	});
-}
+    /**
+     * 投票提交前的校验
+     *
+     * @param vid
+     */
+    function VoteCheck(vid, multi) {
+        multi = multi ? !!(multi) : false;
+        result = false;
 
-function PayIsCompleted()
-{
-	$.get(FANDIAN_BASE_URL+'order/action?act=op_status&hash=<?php echo $this->hash;?>',function(response){
-		result = eval('(' + response + ')');
-		if (result.success>0) {
-			window.location.reload();
-		}
-	});
-}
+        lis = document.getElementById('vote_form_' + vid).getElementsByTagName('li');
+        hasChoosed = false;
+        for (i in lis) {
+            if (typeof(lis[i]) == 'object') {
+                ip = lis[i].getElementsByTagName('input')[0];
+                if (ip.checked) {
+                    hasChoosed = true;
+                    break;
+                }
+            }
+        }
 
-$(document).ready(function(){
-	window.onscroll = function() {
-		if(!$('#colorbox').is(":hidden"))
-		{
-			$('#colorbox').css('top',document.documentElement.scrollTop+'px');
-		}
-	}
-});
+        if (hasChoosed) {
+            result = true;
+        } else {
+            alert('请先选择投票的选项！');
+        }
 
-if (OP>0 && OP_READY<=0 && PAYED<=0) {
-	setInterval(PayIsReady, 10000);
-} else if (OP>0 && OP_READY>0 && PAYED<=0) {
-	setInterval(PayIsCompleted, 10000);
-}
+        return result;
+    }
+
+    function PayIsReady() {
+        $.get(FANDIAN_BASE_URL + 'order/action?act=op_ready&hash=<?php echo $this->hash;?>', function (response) {
+            result = eval('(' + response + ')');
+            if (result.success > 0) {
+                window.location.reload();
+            }
+        });
+    }
+
+    function PayIsCompleted() {
+        $.get(FANDIAN_BASE_URL + 'order/action?act=op_status&hash=<?php echo $this->hash;?>', function (response) {
+            result = eval('(' + response + ')');
+            if (result.success > 0) {
+                window.location.reload();
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        window.onscroll = function () {
+            if (!$('#colorbox').is(":hidden")) {
+                $('#colorbox').css('top', document.documentElement.scrollTop + 'px');
+            }
+        }
+    });
+
+    if (OP > 0 && OP_READY <= 0 && PAYED <= 0) {
+        setInterval(PayIsReady, 10000);
+    } else if (OP > 0 && OP_READY > 0 && PAYED <= 0) {
+        setInterval(PayIsCompleted, 10000);
+    }
 </script>
-<?php include_once dirname(__FILE__).'/../include/page_foot.phtml';?>
+<?php include_once dirname(__FILE__) . '/../include/page_foot.phtml'; ?>
