@@ -210,29 +210,30 @@
     <?php if ($this->hasValidOrderStatus && $Order['order']['PaymentMethod']) { ?>
         <?php if ($this->op_ready > 0 && (int)$this->hashData['Payed'] <= 0) { ?>
             <div id="orderinfo" class="m">
-                <div class="mt"><strong>网银支付</strong></div>
+                <div class="mt"><strong>网银支付</strong><font style="color: red">点击相应图片将会跳转到支付页面</font></div>
                 <div class="mc">
                     <div class='order_onlinepay' style='min-height:60px; margin-top:20px'>
                         <ul class='ol_onlinepay_banks'>
                             <li rel='goto_bank'>
-                                <input type="radio" name="payType" class="payType" value="1" checked="true"/>
-
-                                <div class='bg'><img height="35px" width="140px"
-                                                     src='<?php echo $this->baseUrl; ?>images/pay/jtyh.jpg' alt='银联支付'/>
+                                <div class='bg payType'>
+                                    <a href="http://order.fandian.com/jtpay/Payment.aspx?Hash=<?php echo $this->hash; ?>"
+                                       target="_blank">
+                                        <img height="35px" width="140px"
+                                             src='<?php echo $this->baseUrl; ?>images/pay/0301.jpg' alt='交通银行支付'/>
+                                    </a>
                                 </div>
                             </li>
 
                             <li rel='goto_bank'>
-                                <input type="radio" name="payType" class="payType" value="2"/>
 
-                                <div class='bg'><img height="35px" width="140px"
-                                                     src='<?php echo $this->baseUrl; ?>images/pay/banks.gif'
-                                                     alt='银联支付'/>
+                                <div class='bg payType'>
+                                    <a href="http://order.fandian.com/FandianOrderPay.aspx?Hash=<?php echo $this->hash; ?>"
+                                       target="_blank">
+                                        <img height="35px" width="140px"
+                                             src='<?php echo $this->baseUrl; ?>images/pay/banks.gif'
+                                             alt='银联支付'/>
+                                    </a>
                                 </div>
-                            </li>
-                            <li class='list_none'>
-                                <input type="button" class="fancybox onlinepay" id='go_bank' name='go_bank'
-                                       onclick="GoOnlinePay()" value="进入网银支付">
                             </li>
                         </ul>
                     </div>
@@ -307,18 +308,9 @@
             return url;
         }
 
-
-        function GoOnlinePay() {
-            payType = $("input[name='payType']:checked").val();
-            if (payType == 1) {
-                ylurl = "http://order.fandian.com/jtpay/Payment.aspx?Hash=<?php echo $this->hash;?>";
-            } else {
-                ylurl = "http://order.fandian.com/FandianOrderPay.aspx?Hash=<?php echo $this->hash;?>";
-            }
+        $('.payType').click(function () {
             $(".onlinepay").colorbox({inline: true, width: "40%", height: "250px", scrolling: false, href: "#inline_content"});
-
-            window.open(ylurl);
-        }
+        });
 
         /**
          * 投票提交前的校验
