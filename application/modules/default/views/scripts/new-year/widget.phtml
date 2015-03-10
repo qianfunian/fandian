@@ -1,12 +1,21 @@
-<div style="float: right; width:288px; height:355px;border:1px solid #ccc;margin-bottom:10px;background-color:#FEF8E2;line-height:25px;padding:5px">
+<div style="float: right; width:288px; height:400px;border:1px solid #ccc;margin-bottom:10px;background-color:#FEF8E2;line-height:25px;padding:5px">
 <p class="site-title" style="margin:5px 0;color:#323232;">年夜饭购买须知：</p>
-<font style="font-size:12px;font-weight:bold">预订时间</font>：2013.12.11—2014.01.27(10:00—21:30)<br>
-<font style="font-size:12px;font-weight:bolder">外送时间</font>：小年夜、大年夜、年初一、年初二、年初三(1月29日、30日、31日、2月1日、2日)<br>
-<font style="font-size:12px;font-weight:bolder">收费说明</font>：年夜饭预定须全额支付（含：餐费+运费），在3日内可通过网上支付或工作人员上门收取。 付款成功的年夜饭订单如需取消，请在1月25日前办理，并扣除订单全额的25%做为餐损费用。<br>
-<font style="font-size:12px;font-weight:bolder">友情提醒</font>：1.凡通过网上下单并支付金额的，顾客都会收到下单成功的短信通知。请顾客妥善保存，以便送餐人员验证核实。2.年夜饭送餐当日，餐品是冷的，回热后即可食用且不影响口感。3. 年夜饭套餐不与其他优惠活动同享。（饭店网保留最终解释权） 
+<font style="font-size:12px;font-weight:bold">预订时间</font>：2015.02.01—2015.02.14（10:00—21:00）<br>
+<?php if(MSD_FORCE_CITY == 'changzhou'){ ?>
+<font style="font-size:12px;font-weight:bolder">外送时间</font>：2月6号-2月19号<br>
+<?php }else{?>
+<font style="font-size:12px;font-weight:bolder">外送时间</font>：2015年2月17日、18日、19日，共三天<br>
+<?php }?>
+<font style="font-size:12px;font-weight:bolder">收费说明</font>：年夜饭预定须全额支付（含：餐费+运费），在3日内可通过网上支付或工作人员上门收取。 付款成功的年夜饭订单如需取消，请在2月12日前办理，并扣除订单全额的25%做为餐损费用。<br>
+<font style="font-size:12px;font-weight:bolder">友情提醒</font>：<br>1.凡通过网上下单并支付金额的，顾客都会收到下单成功的短信通知。请顾客妥善保存，以便送餐人员验证核实。<br>2.年夜饭送餐当日，餐品是冷的，回热后即可食用且不影响口感。<br>3. 年夜饭套餐不与其他优惠活动同享。（饭店网保留最终解释权） 
+<?php if(MSD_FORCE_CITY == 'changzhou'){ ?>
+<br>4、紧急联系号码：<font style='color:red;font-weight:bolder'>13584353523</font>
+<?php }else{?>
+<br>4、紧急联系号码：<font style='color:red;font-weight:bolder'>13812196319</font>
+<?php }?>
  </div>
 <div class="step-right">
-        <div class="my-step-right"  id="sidebar" style="top:380px" >
+        <div class="my-step-right"  id="sidebar" style="top:425px" >
           <?php echo $this->cart;?>
           <div class="my-info">
             <p class="site-title">配送信息</p>
